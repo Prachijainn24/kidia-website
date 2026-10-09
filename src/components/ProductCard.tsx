@@ -56,7 +56,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
         </div>
       </Link>
       {available ? (
-        <Button variant="outline" onClick={() => setQuick(true)} className="mt-3 h-11 w-full rounded-md border-primary/40 text-sm font-bold text-primary hover:bg-primary hover:text-primary-foreground">
+        <Button onClick={() => setQuick(true)} className="mt-3 h-11 w-full rounded-md text-sm font-bold transition hover:bg-accent">
           <ShoppingBag className="h-4 w-4" />Add to Cart
         </Button>
       ) : (

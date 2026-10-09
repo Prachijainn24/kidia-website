@@ -21,3 +21,4 @@
 - [ ] Admin dashboard with roles
 - [ ] Policy pages: About, Contact, FAQ, Shipping, Returns, Privacy, Terms
 - [ ] Razorpay (needs user's keys)
+- [x] Premium playful redesign: warm ivory/forest/terracotta/marigold palette, golden hero, refined celebration & parents sections, wavy dividers
