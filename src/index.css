@@ -8,39 +8,39 @@
     --font-serif: "Fraunces";
     --font-sans: "Nunito Sans";
 
-    --background: 42 36% 96%;
-    --foreground: 135 12% 22%;
+    --background: 39 59% 94%;
+    --foreground: 21 24% 23%;
     --card: 0 0% 100%;
-    --card-foreground: 135 12% 22%;
+    --card-foreground: 21 24% 23%;
     --popover: 0 0% 100%;
-    --popover-foreground: 135 12% 22%;
+    --popover-foreground: 21 24% 23%;
 
-    --primary: 133 16% 34%;
+    --primary: 149 22% 24%;
     --primary-foreground: 40 50% 97%;
-    --primary-soft: 130 16% 90%;
+    --primary-soft: 102 18% 87%;
 
-    --secondary: 40 27% 89%;
-    --secondary-foreground: 135 12% 22%;
-    --muted: 42 20% 91%;
-    --muted-foreground: 130 6% 40%;
-    --accent: 350 26% 43%;
+    --secondary: 42 52% 88%;
+    --secondary-foreground: 21 24% 23%;
+    --muted: 39 35% 89%;
+    --muted-foreground: 21 14% 36%;
+    --accent: 12 55% 47%;
     --accent-foreground: 0 0% 100%;
 
-    --peach: 23 33% 85%;
-    --butter: 43 41% 85%;
-    --blush: 350 29% 86%;
-    --mint: 125 14% 80%;
+    --peach: 18 60% 84%;
+    --butter: 45 80% 74%;
+    --blush: 10 48% 88%;
+    --mint: 102 18% 82%;
     --lavender: 280 12% 86%;
     --sky: 190 17% 84%;
-    --marigold: 40 34% 46%;
+    --marigold: 39 81% 54%;
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
     --success: 150 45% 35%;
 
-    --border: 35 25% 87%;
+    --border: 36 30% 82%;
     --input: 35 25% 85%;
-    --ring: 133 16% 34%;
+    --ring: 149 22% 24%;
     --radius: 0.5rem;
 
     --shadow-soft: 0 8px 30px -12px hsl(var(--primary) / 0.14);
@@ -77,5 +77,8 @@
 
   .boutique-stripes { background-image: repeating-linear-gradient(90deg, hsl(var(--mint) / 0.55) 0 9px, hsl(var(--primary-soft)) 9px 18px); }
   .age-ruler { background-image: repeating-linear-gradient(90deg, hsl(var(--primary) / 0.3) 0 1px, transparent 1px 16px); background-size: 100% 14px; background-repeat: no-repeat; background-position: bottom; }
+  .wave-top { -webkit-mask: radial-gradient(28px 18px at 50% 0, transparent 98%, #000) top/56px 100% repeat-x; mask: radial-gradient(28px 18px at 50% 0, transparent 98%, #000) top/56px 100% repeat-x; }
+  .scallop-bottom { -webkit-mask: radial-gradient(22px 16px at 50% 100%, transparent 98%, #000) bottom/44px 100% repeat-x; mask: radial-gradient(22px 16px at 50% 100%, transparent 98%, #000) bottom/44px 100% repeat-x; }
+  .line-pattern { background-image: repeating-linear-gradient(135deg, hsl(var(--primary) / 0.06) 0 1px, transparent 1px 14px); }
   .postcard-edge { outline: 1px dashed hsl(var(--primary) / 0.35); outline-offset: -12px; }
 }

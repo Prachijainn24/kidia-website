@@ -28,10 +28,10 @@ export const NewArrivals = () => {
   }, [paused]);
 
   return (
-    <section aria-labelledby="new-arrivals-title" className="bg-primary-soft pb-16 md:pb-24">
+    <section aria-labelledby="new-arrivals-title" className="bg-background pb-16 md:pb-24">
       <div className="container-kidia flex items-center justify-between gap-4 py-5">
         <p className="eyebrow">Fresh from our wardrobe</p>
-        <span className="font-serif text-sm italic text-primary">The 2026 edit</span>
+        <span className="inline-flex items-center gap-2 font-serif text-sm italic text-accent">✦ The 2026 edit</span>
       </div>
       <motion.div
         initial={{ opacity: 0 }}
@@ -84,7 +84,7 @@ export const NewArrivals = () => {
       </motion.div>
       <div className="container-kidia pt-10">
         <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="font-serif text-2xl italic text-primary">Just landed, just lovely.</p>
+          <p className="font-serif text-3xl italic text-primary md:text-4xl">Just landed, <span className="text-accent">just lovely.</span></p>
           <Button asChild variant="link" className="h-auto shrink-0 px-0 text-xs font-bold sm:text-sm">
             <Link to="/collections/new-arrivals">View All<ArrowUpRight /></Link>
           </Button>
