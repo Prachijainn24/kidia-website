@@ -35,7 +35,7 @@ const Bestsellers = () => {
 const Index = () => (
   <Layout>
     <section className="relative isolate overflow-hidden bg-gradient-to-br from-butter via-secondary to-background" aria-labelledby="home-title">
-      <Star className="absolute left-[46%] top-10 h-6 w-6 fill-marigold text-marigold motion-safe:animate-pulse" aria-hidden />
+      <Star className="absolute left-[46%] top-10 hidden h-6 w-6 md:block fill-marigold text-marigold motion-safe:animate-pulse" aria-hidden />
       <Sparkles className="absolute bottom-16 left-6 h-7 w-7 text-accent" strokeWidth={1.2} aria-hidden />
       <div className="container-kidia relative grid items-center gap-10 py-12 md:grid-cols-[0.9fr_1.1fr] md:py-20">
         <div className="relative z-10">
