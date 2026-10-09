@@ -48,4 +48,5 @@ export const Footer = () => (
       <div className="container-kidia py-6 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
     </div>
   </footer>
+  </>
 );
