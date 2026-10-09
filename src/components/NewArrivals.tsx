@@ -28,10 +28,10 @@ export const NewArrivals = () => {
   }, [paused]);
 
   return (
-    <section aria-labelledby="new-arrivals-title" className="py-12">
-      <div className="container-kidia mb-5 flex items-center justify-between gap-4">
-        <p className="eyebrow">The latest from KIDIA</p>
-        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2026 Edit</span>
+    <section aria-labelledby="new-arrivals-title" className="bg-primary-soft pb-16 md:pb-24">
+      <div className="container-kidia flex items-center justify-between gap-4 py-5">
+        <p className="eyebrow">Fresh from our wardrobe</p>
+        <span className="font-serif text-sm italic text-primary">The 2026 edit</span>
       </div>
       <motion.div
         initial={{ opacity: 0 }}
@@ -42,7 +42,7 @@ export const NewArrivals = () => {
         onMouseLeave={() => setPaused(false)}
         className="relative isolate overflow-hidden bg-secondary"
       >
-        <div className="relative aspect-[3/2] max-h-[720px] w-full">
+        <div className="relative h-[460px] w-full sm:h-[560px] md:h-[620px]">
           <AnimatePresence mode="sync">
             <motion.img
               key={index}
@@ -57,30 +57,34 @@ export const NewArrivals = () => {
             />
           </AnimatePresence>
         </div>
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <h2 id="new-arrivals-title" className="text-center font-serif text-5xl font-normal leading-none tracking-normal text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">New Arrivals</h2>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+        <div className="pointer-events-none container-kidia absolute inset-x-0 bottom-24">
+          <p className="mb-3 text-sm text-primary-foreground">A new chapter of little styles</p>
+          <h2 id="new-arrivals-title" className="font-serif text-5xl font-normal leading-none text-primary-foreground sm:text-7xl md:text-8xl">New <span className="italic">Arrivals</span></h2>
         </div>
-        <div className="absolute inset-x-0 bottom-3 flex justify-center sm:bottom-8">
-          <Button asChild variant="link" className="h-auto rounded-none border-b border-primary px-0 py-2 text-sm font-bold uppercase tracking-widest text-primary hover:no-underline sm:text-lg">
+        <div className="container-kidia absolute inset-x-0 bottom-8">
+          <Button asChild variant="link" className="h-auto rounded-none border-b border-primary-foreground px-0 py-2 text-sm font-bold text-primary-foreground hover:no-underline">
             <Link to="/collections/new-arrivals">Shop Now<ArrowUpRight className="h-5 w-5" /></Link>
           </Button>
         </div>
-        <div className="absolute right-4 top-4 flex gap-1.5 sm:right-6 sm:top-6">
+        <div className="absolute right-4 top-4 flex gap-1 sm:right-6 sm:top-6">
           {SLIDES.map((_, i) => (
-            <button
+            <Button
               key={i}
               type="button"
               aria-label={`Show slide ${i + 1}`}
               aria-current={i === index}
               onClick={() => setIndex(i)}
-              className={`h-2 rounded-full transition-all duration-500 ${i === index ? "w-6 bg-primary-foreground" : "w-2 bg-primary-foreground/50 hover:bg-primary-foreground/80"}`}
-            />
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
+            ><span className={`h-2 rounded-full transition-all duration-500 ${i === index ? "w-5 bg-primary-foreground" : "w-2 bg-primary-foreground/50"}`} /></Button>
           ))}
         </div>
       </motion.div>
       <div className="container-kidia pt-10">
-        <div className="mb-6 flex items-center justify-between gap-4 border-b pb-4">
-          <p className="font-serif text-xl sm:text-2xl">Fresh little favourites</p>
+        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+          <p className="font-serif text-2xl italic text-primary">Just landed, just lovely.</p>
           <Button asChild variant="link" className="h-auto shrink-0 px-0 text-xs font-bold sm:text-sm">
             <Link to="/collections/new-arrivals">View All<ArrowUpRight /></Link>
           </Button>

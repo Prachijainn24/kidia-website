@@ -5,6 +5,13 @@ import { Footer } from "./Footer";
 
 export const Layout = ({ children, title, description }: { children: ReactNode; title?: string; description?: string }) => {
   useEffect(() => {
+    if (!document.querySelector('link[data-kidia-fonts]')) {
+      const fonts = document.createElement('link');
+      fonts.rel = 'stylesheet';
+      fonts.dataset.kidiaFonts = 'true';
+      fonts.href = 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap';
+      document.head.appendChild(fonts);
+    }
     document.title = title ? `${title} | KIDIA` : "KIDIA — Little Styles. Big Smiles. | Kidswear for ages 1–12";
     if (description) document.querySelector('meta[name="description"]')?.setAttribute("content", description);
   }, [title, description]);

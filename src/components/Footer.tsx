@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { Logo } from "./Logo";
-import { Newsletter } from "./Newsletter";
 
 const cols = [
   { title: "Shop", links: [["New Arrivals", "/collections/new-arrivals"], ["Boys", "/collections/boys"], ["Girls", "/collections/girls"], ["Ethnic & Festive", "/collections/ethnic-festive"], ["Sale", "/collections/sale"]] },
@@ -16,7 +15,6 @@ export const Footer = () => (
         <Logo />
         <p className="font-serif text-lg italic text-primary">Little Styles. Big Smiles.</p>
         <p className="max-w-sm text-sm text-muted-foreground">Fashionable, comfortable clothing for kids aged 1–12, designed in India for everyday play and every celebration.</p>
-        <Newsletter compact />
       </div>
       {cols.map((c) => (
         <div key={c.title}>

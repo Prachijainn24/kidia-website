@@ -7,6 +7,7 @@ import { Product, discountPct, formatINR, inStock } from "@/data/catalog";
 import { useWishlist } from "@/hooks/useWishlist";
 import { QuickAdd } from "./QuickAdd";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export const WishButton = ({ p, className }: { p: Product; className?: string }) => {
   const saved = useWishlist((s) => s.ids.includes(p.id));
@@ -31,7 +32,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
   return (
     <motion.article initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} className="group">
       <Link to={`/product/${p.slug}`} className="block">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted">
           <img src={p.images[0]} alt={p.name} loading="lazy" width={768} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
           {p.images[1] && <img src={p.images[1]} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100" />}
           <div className="absolute left-3 top-3 flex flex-col gap-1">
@@ -45,7 +46,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
           <h3 className="font-sans text-sm font-semibold leading-snug text-foreground line-clamp-2">{p.name}</h3>
           <div className="flex items-baseline gap-2">
             <span className="font-bold text-foreground">{formatINR(p.price)}</span>
-            {off > 0 && <><span className="text-xs text-muted-foreground line-through">{formatINR(p.mrp!)}</span><span className="text-xs font-bold text-accent">{off}% off</span></>}
+            {off > 0 && p.mrp && <><span className="text-xs text-muted-foreground line-through">{formatINR(p.mrp)}</span><span className="text-xs font-bold text-accent">{off}% off</span></>}
           </div>
           {p.colours.length > 1 && (
             <div className="flex gap-1 pt-1" aria-label={`${p.colours.length} colours`}>
@@ -55,11 +56,11 @@ export const ProductCard = ({ p }: { p: Product }) => {
         </div>
       </Link>
       {available ? (
-        <button onClick={() => setQuick(true)} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90 hover:shadow-lift">
+        <Button variant="outline" onClick={() => setQuick(true)} className="mt-3 h-11 w-full rounded-md border-primary/40 text-sm font-bold text-primary hover:bg-primary hover:text-primary-foreground">
           <ShoppingBag className="h-4 w-4" />Add to Cart
-        </button>
+        </Button>
       ) : (
-        <button disabled className="mt-3 w-full rounded-full bg-muted py-2.5 text-sm font-bold text-muted-foreground">Sold out</button>
+        <Button disabled variant="secondary" className="mt-3 h-11 w-full rounded-md">Sold out</Button>
       )}
       <QuickAdd p={p} open={quick} onOpenChange={setQuick} />
     </motion.article>
