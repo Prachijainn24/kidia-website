@@ -1,51 +1,46 @@
-import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Pause, Play, Flower2, Scissors, Clapperboard } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import wardrobe from "@/assets/wardrobe.asset.json";
-import festive from "@/assets/festive.asset.json";
-import wardrobeWebm from "@/assets/wardrobe-webm.asset.json";
-import festiveWebm from "@/assets/festive-webm.asset.json";
-import dress from "@/assets/p-dress.jpg";
-import kurta from "@/assets/p-kurta.jpg";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import look1 from "@/assets/new-arrivals-editorial-3.jpg";
+import look2 from "@/assets/new-arrivals-editorial-2.jpg";
+import look3 from "@/assets/boutique-garden.jpg";
+import { Flower, Sparkle, Sticker, Float } from "./Motifs";
 
-function Film({ src, webm, poster, title }: { src: string; webm: string; poster: string; title: string }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const reduced = useReducedMotion();
-  const [playing, setPlaying] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const manual = useRef(false);
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || reduced) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !manual.current) void video.play().catch(() => setPlaying(false));
-      else video.pause();
-    }, { threshold: 0.35 });
-    observer.observe(video);
-    return () => { observer.disconnect(); video.pause(); };
-  }, [reduced]);
-  const toggle = async () => {
-    const video = ref.current;
-    if (!video) return;
-    manual.current = true;
-    if (video.paused) { try { await video.play(); } catch { setFailed(true); } }
-    else video.pause();
-  };
-  return <div className="relative aspect-[4/3] overflow-hidden bg-primary-soft">
-    <video ref={ref} poster={poster} muted loop playsInline preload="metadata" aria-label={title} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setFailed(true)} className="h-full w-full object-contain"><source src={webm} type="video/webm" /><source src={src} type="video/mp4" /></video>
-    {!failed && <Button variant="secondary" size="icon" aria-label={`${playing ? "Pause" : "Play"} ${title}`} onClick={() => void toggle()} className="absolute bottom-4 right-4 rounded-full shadow-soft">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}</Button>}
-    {failed && <p role="status" className="absolute bottom-4 left-4 right-4 bg-background p-3 text-sm">This film is unavailable right now.</p>}
-  </div>;
-}
+const LOOKS = [
+  { src: look1, alt: "Two children in a mint co-ord set and peach dress flying a kite", tag: "Everyday adventures", note: "Made for little adventures", to: "/shop?category=coords", cls: "md:col-span-7 aspect-[4/3]", tone: "bg-butter text-foreground" },
+  { src: look2, alt: "Children in a lavender lehenga and a cream kurta with marigold waistcoat", tag: "Festive moments", note: "Dressed for the celebration", to: "/collections/ethnic-festive", cls: "md:col-span-5 md:mt-16 aspect-[4/5]", tone: "bg-accent text-accent-foreground" },
+  { src: look3, alt: "Children in sage linen overalls and an ivory lace-collar dress in a garden", tag: "Playful outfits", note: "For garden days and giggles", to: "/collections/new-arrivals", cls: "md:col-span-8 md:col-start-3 aspect-[16/9]", tone: "bg-plum text-primary-foreground" },
+];
 
+/** "Little Stories in Motion" — editorial image lookbook with reveal motion */
 export function BrandFilms() {
-  return <section className="overflow-hidden bg-sky/25 py-16 md:py-24" aria-labelledby="films-title"><div className="container-kidia">
-    <div className="mb-9 flex items-end justify-between gap-5"><div><p className="eyebrow mb-3">The moving wardrobe</p><h2 id="films-title" className="section-title">Little stories in motion.</h2></div><Clapperboard aria-hidden="true" className="h-10 w-10 shrink-0 text-primary" strokeWidth={1} /></div>
-    <div className="grid items-start gap-8 md:grid-cols-[1.3fr_0.8fr] md:gap-12">
-      <div><Film src={wardrobe.url} webm={wardrobeWebm.url} poster={dress} title="KIDIA wardrobe film" /><div className="mt-4 flex items-center justify-between gap-4"><p className="font-serif text-xl italic">Everyday magic.</p><Button asChild variant="link" className="px-0"><Link to="/shop">Explore the wardrobe <ArrowUpRight className="h-4 w-4" /></Link></Button></div></div>
-      <div className="relative md:mt-16"><Scissors aria-hidden="true" className="absolute -top-11 right-5 h-8 w-8 -rotate-12 text-accent" strokeWidth={1} /><Film src={festive.url} webm={festiveWebm.url} poster={kurta} title="KIDIA festive film" /><div className="mt-4 flex items-center gap-3"><Flower2 aria-hidden="true" className="h-7 w-7 text-marigold" strokeWidth={1} /><p className="font-serif text-xl italic">Made for little celebrations.</p></div><Button asChild variant="link" className="mt-2 px-0"><Link to="/collections/ethnic-festive">Discover festive styles <ArrowUpRight className="h-4 w-4" /></Link></Button></div>
-    </div>
-  </div></section>;
+  return (
+    <section className="relative overflow-hidden bg-sky py-16 md:py-24" aria-labelledby="films-title">
+      <Float className="right-[6%] top-10 h-16 w-16 text-marigold"><Flower /></Float>
+      <Float className="left-[4%] bottom-20 h-8 w-8 text-accent" delay={2}><Sparkle /></Float>
+      <div className="container-kidia relative">
+        <div className="mb-10 max-w-xl">
+          <Sticker className="mb-4 bg-background text-primary">The KIDIA lookbook</Sticker>
+          <h2 id="films-title" className="font-display text-4xl leading-none text-primary md:text-6xl">Little stories in motion.</h2>
+          <p className="mt-4 text-foreground/80">Everyday adventures, playful outfits and festive moments — styled the KIDIA way.</p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-12 md:gap-8">
+          {LOOKS.map((l, i) => (
+            <motion.div key={l.tag} className={l.cls.split(" ").filter(c => c.startsWith("md:")).join(" ")} initial={{ opacity: 0, y: 40, clipPath: "inset(12% 0 0 0)" }} whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.8, delay: i * 0.1 }}>
+              <Link to={l.to} className="group block">
+                <div className={`relative overflow-hidden rounded-[2rem] border-4 border-background shadow-lift ${l.cls.split(" ").filter(c => !c.startsWith("md:")).join(" ")}`}>
+                  <img src={l.src} alt={l.alt} loading="lazy" className="h-full w-full object-cover transition duration-[1200ms] group-hover:scale-110" />
+                  <Sticker className={`absolute left-4 top-4 ${l.tone}`}>{l.tag}</Sticker>
+                </div>
+                <div className="mt-3 flex items-center justify-between px-2">
+                  <p className="font-hand text-2xl text-primary">{l.note}</p>
+                  <ArrowUpRight className="h-5 w-5 text-primary transition group-hover:-translate-y-1 group-hover:translate-x-1" />
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

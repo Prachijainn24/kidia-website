@@ -16,6 +16,8 @@ export default {
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["Bricolage Grotesque", "var(--font-serif)", "sans-serif"],
+        hand: ["Caveat", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -58,6 +60,8 @@ export default {
         lavender: "hsl(var(--lavender))",
         sky: "hsl(var(--sky))",
         marigold: "hsl(var(--marigold))",
+        plum: "hsl(var(--plum))",
+        coral: "hsl(var(--coral))",
         success: "hsl(var(--success))",
         "primary-soft": "hsl(var(--primary-soft))",
         sidebar: {

@@ -11,6 +11,7 @@ import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
 import heroGolden from "@/assets/hero-golden.jpg";
 import { BrandFilms } from "@/components/BrandFilms";
+import { Float, Flower, Sparkle, Sticker, Sunburst } from "@/components/Motifs";
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
@@ -34,26 +35,29 @@ const Bestsellers = () => {
 
 const Index = () => (
   <Layout>
-    <section className="relative isolate overflow-hidden bg-gradient-to-br from-butter via-secondary to-background" aria-labelledby="home-title">
-      <Star className="absolute left-[46%] top-10 hidden h-6 w-6 md:block fill-marigold text-marigold motion-safe:animate-pulse" aria-hidden />
-      <Sparkles className="absolute bottom-16 left-6 h-7 w-7 text-accent" strokeWidth={1.2} aria-hidden />
-      <div className="container-kidia relative grid items-center gap-10 py-12 md:grid-cols-[0.9fr_1.1fr] md:py-20">
+    <section className="relative isolate overflow-hidden bg-butter" aria-labelledby="home-title">
+      <Float className="left-[44%] top-8 hidden h-20 w-20 text-marigold md:block" spin><Sunburst /></Float>
+      <Float className="bottom-10 left-[3%] h-14 w-14 text-coral" delay={1}><Flower /></Float>
+      <Float className="right-[3%] top-14 h-8 w-8 text-plum" delay={2}><Sparkle /></Float>
+      <div className="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-marigold/40 blur-0" aria-hidden />
+      <div className="container-kidia relative grid items-center gap-10 py-12 md:grid-cols-[1fr_1fr] md:py-20">
         <div className="relative z-10">
-          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-5 inline-flex items-center gap-2 border-y border-primary/30 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-primary"><Star className="h-3 w-3 fill-marigold text-marigold" /> The little style edit</motion.p>
-          <motion.h1 id="home-title" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="font-serif text-5xl leading-[0.95] text-primary sm:text-6xl lg:text-7xl">Little Styles.<br /><span className="italic text-accent">Big Smiles.</span></motion.h1>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="mt-6 max-w-md text-base leading-relaxed text-foreground sm:text-lg">Beautifully dressed for every little moment, from everyday adventures to unforgettable celebrations.</motion.p>
+          <motion.div initial={{ opacity: 0, y: 12, rotate: -6 }} animate={{ opacity: 1, y: 0, rotate: -3 }} transition={{ duration: 0.5 }}><Sticker className="bg-plum text-primary-foreground"><Sparkle className="h-3 w-3 text-butter" /> The little style club</Sticker></motion.div>
+          <motion.h1 id="home-title" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-primary sm:text-6xl lg:text-[5.5rem]">Little Styles.<br /><span className="text-accent">Big Little</span> Moments.</motion.h1>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="mt-6 max-w-md text-base font-semibold leading-relaxed text-foreground sm:text-lg">From everyday adventures to festive twirls, discover outfits made for every chapter of childhood.</motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="h-12 rounded-md px-6 text-xs font-bold tracking-widest transition hover:-translate-y-0.5 hover:bg-accent"><Link to="/collections/new-arrivals">EXPLORE NEW ARRIVALS <ArrowRight className="h-4 w-4" /></Link></Button>
-            <Button asChild size="lg" variant="outline" className="h-12 rounded-md border-accent bg-transparent px-6 text-xs font-bold tracking-widest text-accent hover:bg-accent hover:text-accent-foreground"><Link to="/collections/ethnic-festive">SHOP FESTIVE WEAR</Link></Button>
+            <Button asChild size="lg" className="h-13 rounded-full px-7 py-4 text-xs font-extrabold tracking-widest shadow-lift transition hover:-translate-y-0.5 hover:bg-accent"><Link to="/shop">SHOP THE COLLECTION <ArrowRight className="h-4 w-4" /></Link></Button>
+            <Button asChild size="lg" variant="outline" className="h-13 rounded-full border-2 border-primary bg-background px-7 py-4 text-xs font-extrabold tracking-widest text-primary hover:bg-primary hover:text-primary-foreground"><Link to="/collections/ethnic-festive">DISCOVER FESTIVE WEAR</Link></Button>
           </motion.div>
-          <p className="mt-8 font-serif text-lg italic text-primary">KIDIA · Indian kidswear · Ages 1–12</p>
+          <p className="mt-8 font-hand text-2xl text-plum">KIDIA — a little world of style · ages 1–12</p>
         </div>
-        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, delay: 0.15 }} className="relative">
-          <div className="absolute -right-3 -top-3 h-full w-full rounded-t-[12rem] border border-accent/50" aria-hidden />
-          <div className="relative overflow-hidden rounded-t-[12rem] shadow-lift">
-            <img src={heroGolden} alt="Two children in a marigold anarkali and forest-green kurta laughing in a sunlit courtyard" width={1600} height={1104} className="aspect-[4/5] w-full object-cover object-[72%_center] transition duration-[2000ms] hover:scale-105 sm:aspect-[5/4] md:aspect-[4/5]" />
+        <motion.div initial={{ opacity: 0, scale: 0.94, rotate: 2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.9, delay: 0.15 }} className="relative">
+          <div className="absolute -left-4 top-6 h-full w-full rotate-[-3deg] rounded-[3rem] bg-coral" aria-hidden />
+          <div className="relative overflow-hidden rounded-[3rem] border-[6px] border-background shadow-lift">
+            <img src={heroGolden} alt="Two children in a marigold anarkali and forest-green kurta laughing in a sunlit courtyard" width={1600} height={1104} className="aspect-[4/5] w-full object-cover object-[72%_center] sm:aspect-[5/4] md:aspect-[4/5]" />
           </div>
-          <span className="absolute -bottom-4 left-4 bg-primary px-4 py-2 font-serif text-sm italic text-primary-foreground sm:left-[-1.5rem]">KIDIA · Festive ’26</span>
+          <Sticker className="absolute -bottom-3 right-6 rotate-3 bg-background text-accent">New season · 2026</Sticker>
+          <span className="absolute -left-2 top-10 -rotate-6 rounded-xl bg-background px-3 py-2 font-hand text-xl text-primary shadow-soft">made for little adventures ✿</span>
         </motion.div>
       </div>
     </section>
@@ -69,12 +73,12 @@ const Index = () => (
 
     <NewArrivals />
 
-    <section className="wave-top relative -mt-4 bg-blush py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-marigold text-marigold" aria-hidden /><Sparkles className="absolute left-[6%] bottom-12 h-6 w-6 text-accent" strokeWidth={1} aria-hidden />
+    <section className="wave-top relative -mt-4 bg-coral py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-butter text-butter" aria-hidden />
       <div className="container-kidia">
-        <div className="mb-10 text-center"><Sparkles className="mx-auto mb-3 h-7 w-7 text-marigold" strokeWidth={1} /><p className="eyebrow mb-3 tracking-[0.2em]">Dressed for the moments that matter</p><h2 id="festive-title" className="font-serif text-4xl text-primary md:text-6xl">A Little <span className="italic text-accent">Celebration.</span></h2><p className="mx-auto mt-4 max-w-md text-muted-foreground">Tiny twirls, family festivities, and memories dressed in colour.</p></div>
+        <div className="mb-10 text-center"><Sunburst className="mx-auto mb-3 h-12 w-12 text-butter" /><p className="mb-3 text-xs font-extrabold uppercase tracking-[0.2em] text-butter">Dressed for the moments that matter</p><h2 id="festive-title" className="font-display text-4xl font-extrabold text-background md:text-6xl">A Little <span className="text-butter">Celebration.</span></h2><p className="mx-auto mt-4 max-w-md font-semibold text-background/90">Tiny twirls, family festivities, and memories dressed in colour.</p></div>
         <div className="grid items-start gap-8 md:grid-cols-[1.15fr_0.85fr] md:gap-14">
-          <motion.div {...fade}><Link to="/collections/diwali" className="group block"><div className="relative aspect-[5/4] overflow-hidden rounded-sm ring-1 ring-marigold/60 ring-offset-8 ring-offset-blush"><img src={images.diwali} alt="Children celebrating Diwali in festive clothing" loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><span className="absolute bottom-4 left-4 bg-marigold px-4 py-2 text-xs font-bold tracking-widest text-foreground">DIWALI EDIT</span></div><div className="mt-5 flex items-start justify-between gap-4"><div><h3 className="font-serif text-2xl text-primary md:text-3xl">Little lights, lovely outfits.</h3><span className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-accent">Explore Diwali <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></div></Link></motion.div>
-          <motion.div {...fade} className="md:pt-16"><Link to="/collections/navratri" className="group block"><div className="aspect-[4/5] overflow-hidden rounded-t-[10rem]"><img src={images.navratri} alt="Children in Navratri garba outfits" loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /></div><p className="mt-5 text-xs font-bold tracking-widest text-accent">NAVRATRI EDIT</p><h3 className="mt-2 font-serif text-2xl italic text-primary md:text-3xl">Little twirls, big festive energy.</h3><span className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-accent">Explore Navratri <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link></motion.div>
+          <motion.div {...fade}><Link to="/collections/diwali" className="group block"><div className="relative aspect-[5/4] overflow-hidden rounded-sm rounded-[2rem] border-[6px] border-butter"><img src={images.diwali} alt="Children celebrating Diwali in festive clothing" loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><Sticker className="absolute bottom-4 left-4 -rotate-3 bg-marigold text-foreground">✦ Diwali edit</Sticker></div><div className="mt-5 rounded-2xl bg-butter p-5"><div><h3 className="font-display text-2xl font-extrabold text-primary md:text-3xl">Little Lights, Lovely Looks</h3><span className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-plum">Explore Diwali <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></div></Link></motion.div>
+          <motion.div {...fade} className="md:pt-16"><Link to="/collections/navratri" className="group block"><div className="aspect-[4/5] overflow-hidden rounded-t-[10rem] border-[6px] border-blush"><img src={images.navratri} alt="Children in Navratri garba outfits" loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /></div><div className="mt-5 rounded-2xl bg-plum p-5"><p className="text-xs font-extrabold tracking-widest text-blush">NAVRATRI EDIT</p><h3 className="mt-2 font-display text-2xl font-extrabold text-primary-foreground md:text-3xl">Little Twirls, Big Festive Energy</h3><span className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-butter">Explore Navratri <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></Link></motion.div>
         </div>
       </div>
     </section>
@@ -91,13 +95,6 @@ const Index = () => (
 
     <BrandFilms />
 
-    <section className="line-pattern bg-primary-soft py-16 md:py-24" aria-labelledby="promise-title">
-      <div className="container-kidia grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-20">
-        <motion.div {...fade}><p className="eyebrow mb-4">From one parent to another</p><h2 id="promise-title" className="font-serif text-4xl leading-tight text-primary md:text-5xl">Why parents<br />choose KIDIA</h2><p className="mt-6 max-w-md font-serif text-xl italic text-primary">Started by two mothers.<br />Chosen with a mother's heart.</p><p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">KIDIA was started by two mothers who wanted clothes their own children would love to wear, and that they would feel good buying. Every piece is chosen with a parent's eye for comfort, quality and joy.</p><Heart className="mt-6 h-8 w-8 text-accent" strokeWidth={1} /></motion.div>
-        <div className="space-y-6">{[{ I: Feather, t: 'Comfort Comes First', d: 'Soft, child-friendly fabrics chosen for all-day wear.' }, { I: Sparkles, t: 'Little Styles for Every Occasion', d: 'Everyday, festive and special-occasion clothing.' }, { I: Shirt, t: 'Easy Shopping for Parents', d: 'Shop by age, size and occasion, with clear details on every piece.' }, { I: Ruler, t: 'Made for Growing Kids', d: 'Clear age labels and a detailed size guide.' }].map(({ I, t, d }) => <motion.div key={t} {...fade} className="flex gap-5 border-b border-primary/20 pb-6 last:border-0"><I className="mt-1 h-6 w-6 shrink-0 text-accent" strokeWidth={1} /><div><h3 className="font-serif text-xl">{t}</h3><p className="mt-2 text-sm text-muted-foreground">{d}</p></div></motion.div>)}</div>
-      </div>
-    </section>
-
     <section className="container-kidia py-16 md:py-24" aria-labelledby="lookbook-title">
       <div className="grid items-center gap-8 md:grid-cols-[1fr_1.4fr]">
         <div className="text-center md:text-left"><Instagram className="mb-4 inline-block h-7 w-7 text-accent" strokeWidth={1} /><p className="eyebrow mb-3">The KIDIA album</p><h2 id="lookbook-title" className="section-title">Little moments,<br /><span className="italic">beautifully dressed.</span></h2><a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 border-b border-primary pb-2 text-sm font-semibold text-primary">@{CONTACT.instagramHandle}<ArrowUpRight className="h-4 w-4" /></a></div>
@@ -105,7 +102,14 @@ const Index = () => (
       </div>
     </section>
 
-    <section className="bg-secondary py-14 md:py-20" aria-labelledby="newsletter-title">
+    <section className="relative overflow-hidden bg-primary py-16 text-primary-foreground md:py-24" aria-labelledby="promise-title"><Float className="right-[4%] top-8 h-20 w-20 text-marigold/80" spin><Sunburst /></Float><Float className="bottom-8 left-[45%] h-12 w-12 text-blush/70" delay={1}><Flower /></Float>
+      <div className="container-kidia grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-20">
+        <motion.div {...fade}><Sticker className="mb-5 bg-butter text-primary">From one parent to another</Sticker><h2 id="promise-title" className="font-display text-4xl font-extrabold leading-tight text-butter md:text-5xl">Why parents<br />choose KIDIA</h2><p className="mt-6 max-w-md font-hand text-3xl text-blush">Started by two mothers.<br />Chosen with a mother's heart.</p><p className="mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/85">KIDIA was started by two mothers who wanted clothes their own children would love to wear, and that they would feel good buying. Every piece is chosen with a parent's eye for comfort, quality and joy.</p><Heart className="mt-6 h-8 w-8 fill-coral text-coral" strokeWidth={1} /></motion.div>
+        <div className="space-y-4">{[{ I: Feather, t: 'Comfort Comes First', d: 'Soft, child-friendly fabrics chosen for all-day wear.' }, { I: Sparkles, t: 'Little Styles for Every Occasion', d: 'Everyday, festive and special-occasion clothing.' }, { I: Shirt, t: 'Easy Shopping for Parents', d: 'Shop by age, size and occasion, with clear details on every piece.' }, { I: Ruler, t: 'Made for Growing Kids', d: 'Clear age labels and a detailed size guide.' }].map(({ I, t, d }) => <motion.div key={t} {...fade} className="flex gap-5 rounded-2xl border-2 border-dashed border-butter/50 p-5"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-butter"><I className="h-5 w-5 text-primary" strokeWidth={1.6} /></span><div><h3 className="font-display text-xl font-bold text-primary-foreground">{t}</h3><p className="mt-1 text-sm text-primary-foreground/80">{d}</p></div></motion.div>)}</div>
+      </div>
+    </section>
+
+    <section className="bg-blush py-14 md:py-20" aria-labelledby="newsletter-title">
       <div className="container-kidia grid items-center gap-8 md:grid-cols-2 md:gap-16">
         <div className="flex items-start gap-5"><Mail className="h-12 w-12 shrink-0 text-primary" strokeWidth={1} /><div><p className="eyebrow mb-3">A note from KIDIA</p><h2 id="newsletter-title" className="font-serif text-3xl">Little updates.<br /><span className="italic">Lovely surprises.</span></h2><p className="mt-4 max-w-sm text-sm text-muted-foreground">New collections, festive edits and members-first news — straight to your inbox.</p></div></div>
         <div className="postcard-edge bg-background p-6 sm:p-8"><Newsletter /></div>
