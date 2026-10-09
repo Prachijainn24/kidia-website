@@ -6,3 +6,4 @@
 - Give homepage editorial sections independent compositions while reusing shopping controls, so visual variety does not duplicate cart or catalogue logic.
 - Centralize account state in the auth provider and validate users with getUser; profile access is enforced by ownership policies, not browser state.
 - Auto-create customer profiles with an auth lifecycle trigger so email and social registrations share the same profile flow.
+- Brand films use stored asset pointers and viewport-aware playback with pause controls; reduced-motion visitors start with still posters.

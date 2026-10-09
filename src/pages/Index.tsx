@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
 import garden from "@/assets/boutique-garden.jpg";
+import { BrandFilms } from "@/components/BrandFilms";
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
@@ -77,6 +78,8 @@ const Index = () => (
     </section>
 
     <Bestsellers />
+
+    <BrandFilms />
 
     <section className="boutique-stripes py-16 md:py-24" aria-labelledby="promise-title">
       <div className="container-kidia grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-20">
