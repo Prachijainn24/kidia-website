@@ -41,7 +41,7 @@ const AnnouncementBar = () => {
             {MESSAGES[i]}
           </motion.p>
         </AnimatePresence>
-        <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-primary-foreground/10">
+        <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-foreground/10">
           <X className="h-3.5 w-3.5" />
         </button>
       </div>

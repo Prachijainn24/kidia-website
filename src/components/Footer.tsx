@@ -10,7 +10,9 @@ const cols = [
 ];
 
 export const Footer = () => (
-  <footer className="mt-24 bg-secondary">
+  <>
+    <div className="rainbow-bar" aria-hidden="true" />
+    <footer className="bg-secondary">
     <div className="container-kidia grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5">
       <div className="lg:col-span-2 space-y-4">
         <Logo />
