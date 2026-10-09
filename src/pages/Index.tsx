@@ -39,6 +39,7 @@ const Bestsellers = () => {
         <button aria-label="Previous" onClick={() => scroll(-1)} className="absolute -left-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronLeft className="h-5 w-5" /></button>
         <button aria-label="Next" onClick={() => scroll(1)} className="absolute -right-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronRight className="h-5 w-5" /></button>
       </div>
+      </div>
     </section>
   );
 };
