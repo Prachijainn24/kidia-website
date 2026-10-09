@@ -35,9 +35,9 @@ export const ProductCard = ({ p }: { p: Product }) => {
           <img src={p.images[0]} alt={p.name} loading="lazy" width={768} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
           {p.images[1] && <img src={p.images[1]} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100" />}
           <div className="absolute left-3 top-3 flex flex-col gap-1">
-            {p.isNew && <span className="rounded-full bg-mint px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground">New</span>}
+            {p.isNew && <span className="rounded-full bg-mint px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-success">New</span>}
             {p.bestseller && <span className="rounded-full bg-butter px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground">Bestseller</span>}
-            {!available && <span className="rounded-full bg-muted px-2.5 py-1 text-[10px] font-bold uppercase">Sold out</span>}
+            {!available && <span className="rounded-full bg-muted px-2.5 py-1 text-[10px] font-bold uppercase text-muted-foreground">Sold out</span>}
           </div>
           <WishButton p={p} className="absolute right-3 top-3" />
         </div>
@@ -55,7 +55,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
         </div>
       </Link>
       {available ? (
-        <button onClick={() => setQuick(true)} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
+        <button onClick={() => setQuick(true)} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90 hover:shadow-lift">
           <ShoppingBag className="h-4 w-4" />Add to Cart
         </button>
       ) : (
