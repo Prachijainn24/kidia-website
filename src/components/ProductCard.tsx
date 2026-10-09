@@ -51,6 +51,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
             <span className="font-bold text-foreground">{formatINR(p.price)}</span>
             {off > 0 && p.mrp && <><span className="text-xs text-muted-foreground line-through">{formatINR(p.mrp)}</span><span className="text-xs font-bold text-accent">{off}% off</span></>}
           </div>
+          {(() => { const av = Object.entries(p.stock).filter(([, n]) => n > 0).map(([sz]) => sz); return av.length > 0 && <p className="text-[11px] font-semibold text-muted-foreground">Sizes: {av[0]}{av.length > 1 ? ` – ${av[av.length - 1]}` : ""}</p>; })()}
           {p.colours.length > 1 && (
             <div className="flex gap-1 pt-1" aria-label={`${p.colours.length} colours`}>
               {p.colours.map((c) => <span key={c.name} title={c.name} className="h-3 w-3 rounded-full border" style={{ backgroundColor: c.hex }} />)}
