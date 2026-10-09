@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, Feather, Sparkles, ShoppingBag, Ruler, Instagram } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Feather, Sparkles, ShoppingBag, Ruler, Instagram, Heart } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { Newsletter } from "@/components/Newsletter";
@@ -136,11 +136,12 @@ const Index = () => {
       <section className="bg-primary-soft py-20">
         <div className="container-kidia">
           <SectionHead eyebrow="Our promise" title="Why parents choose KIDIA" />
+          <p className="-mt-4 mb-10 max-w-2xl text-muted-foreground">KIDIA was started by two mothers who wanted clothes their own children would love to wear, and that they would feel good buying. Every piece is chosen with a parent's eye for comfort, quality and joy.</p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { I: Feather, t: "Comfort First", d: "Soft, child-friendly fabrics chosen for all-day wear." },
               { I: Sparkles, t: "Styles for Every Moment", d: "Everyday, festive and special-occasion clothing." },
-              { I: ShoppingBag, t: "Easy Shopping", d: "Simple discovery, helpful filters and a smooth bag." },
+              { I: Heart, t: "Started by Mothers", d: "Founded by two moms who know what kids and parents really need." },
               { I: Ruler, t: "Made for Growing Kids", d: "Clear age labels and a detailed size guide." },
             ].map(({ I, t, d }) => (
               <motion.div key={t} {...fade} className="rounded-3xl bg-card p-8 shadow-soft">

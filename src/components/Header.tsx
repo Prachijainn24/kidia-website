@@ -135,13 +135,13 @@ export const Header = () => {
       <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur" onMouseLeave={() => setMega(null)}>
         <div className="container-kidia flex h-16 items-center justify-between gap-4 md:h-20">
           <div className="flex items-center gap-2">
-            <button className="lg:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
+            <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
           </div>
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Main">
+          <nav className="hidden min-[900px]:flex items-center gap-4 xl:gap-6" aria-label="Main">
             {NAV.map((n) => (
               <div key={n.to} onMouseEnter={() => setMega(n.mega ?? null)} className="relative">
-                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-sm font-semibold transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
+                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-[13px] xl:text-sm font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
                   {n.label}{n.mega && <ChevronDown className="h-3 w-3" />}
                 </NavLink>
               </div>
@@ -155,7 +155,7 @@ export const Header = () => {
         </div>
         <AnimatePresence>
           {mega && (
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full hidden border-b bg-background shadow-soft lg:block">
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full hidden border-b bg-background shadow-soft min-[900px]:block">
               <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
             </motion.div>
           )}

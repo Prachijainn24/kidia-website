@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Heart, Plus } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { Product, discountPct, formatINR, inStock } from "@/data/catalog";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -40,11 +40,6 @@ export const ProductCard = ({ p }: { p: Product }) => {
             {!available && <span className="rounded-full bg-muted px-2.5 py-1 text-[10px] font-bold uppercase">Sold out</span>}
           </div>
           <WishButton p={p} className="absolute right-3 top-3" />
-          {available && (
-            <button onClick={(e) => { e.preventDefault(); setQuick(true); }} className="absolute inset-x-3 bottom-3 flex items-center justify-center gap-1 rounded-full bg-card/95 py-2.5 text-sm font-bold text-primary opacity-100 shadow-soft transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
-              <Plus className="h-4 w-4" />Quick Add
-            </button>
-          )}
         </div>
         <div className="mt-3 space-y-1 px-1">
           <h3 className="font-sans text-sm font-semibold leading-snug text-foreground line-clamp-2">{p.name}</h3>
@@ -59,6 +54,13 @@ export const ProductCard = ({ p }: { p: Product }) => {
           )}
         </div>
       </Link>
+      {available ? (
+        <button onClick={() => setQuick(true)} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
+          <ShoppingBag className="h-4 w-4" />Add to Cart
+        </button>
+      ) : (
+        <button disabled className="mt-3 w-full rounded-full bg-muted py-2.5 text-sm font-bold text-muted-foreground">Sold out</button>
+      )}
       <QuickAdd p={p} open={quick} onOpenChange={setQuick} />
     </motion.article>
   );
