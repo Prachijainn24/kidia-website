@@ -34,7 +34,7 @@ const AnnouncementBar = () => {
   }, []);
   if (!open) return null;
   return (
-    <div className="relative bg-primary text-primary-foreground text-xs sm:text-sm">
+    <div className="bg-rainbow relative text-foreground">
       <div className="container-kidia flex h-9 items-center justify-center overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.p key={i} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -12, opacity: 0 }} transition={{ duration: 0.3 }} className="truncate px-8 text-center font-semibold">
