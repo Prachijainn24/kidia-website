@@ -7,7 +7,7 @@ const NotFound = () => {
   return (
     <Layout>
       <section className="py-20 md:py-28">
-        <div className="container-narrow text-center">
+        <div className="container-kidia text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -21,11 +21,11 @@ const NotFound = () => {
               The page you're looking for doesn't exist or has been moved.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="rounded-sm">
+              <Button asChild className="rounded-full">
                 <Link to="/">Return Home</Link>
               </Button>
-              <Button asChild variant="outline" className="rounded-sm">
-                <Link to="/products">Browse Products</Link>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link to="/shop">Browse Products</Link>
               </Button>
             </div>
           </motion.div>

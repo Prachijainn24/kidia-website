@@ -1,0 +1,203 @@
+import { useMemo, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { SlidersHorizontal, X, SearchX } from "lucide-react";
+import { Layout } from "@/components/Layout";
+import { ProductCard } from "@/components/ProductCard";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, products, sizeStartAge } from "@/data/catalog";
+import NotFound from "./NotFound";
+
+const PAGE = 8;
+const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
+const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
+const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }, { v: "unisex", l: "Unisex" }];
+
+type Key = "category" | "gender" | "age" | "size" | "colour" | "occasion" | "price" | "flags";
+
+const Shop = () => {
+  const { slug } = useParams();
+  const [params, setParams] = useSearchParams();
+  const [visible, setVisible] = useState(PAGE);
+  const [mobileFilters, setMobileFilters] = useState(false);
+  const collection = slug ? COLLECTIONS[slug] : undefined;
+
+  const get = (k: Key) => params.get(k)?.split(",").filter(Boolean) ?? [];
+  const q = params.get("q") ?? "";
+  const sort = params.get("sort") ?? "recommended";
+
+  const toggle = (k: Key, v: string) => {
+    const cur = get(k);
+    const next = cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v];
+    const p = new URLSearchParams(params);
+    next.length ? p.set(k, next.join(",")) : p.delete(k);
+    setParams(p, { replace: true });
+    setVisible(PAGE);
+  };
+  const setOne = (k: string, v: string) => { const p = new URLSearchParams(params); v ? p.set(k, v) : p.delete(k); setParams(p, { replace: true }); };
+  const clearAll = () => setParams(q ? { q } : {}, { replace: true });
+
+  const results = useMemo(() => {
+    let list: Product[] = collection ? products.filter(collection.filter) : products;
+    const term = q.trim().toLowerCase();
+    if (term) list = list.filter((p) => `${p.name} ${categoryName(p.category)} ${p.occasions.join(" ")} ${p.gender} ${p.festive.join(" ")} ${p.description}`.toLowerCase().includes(term));
+    const f = { category: get("category"), gender: get("gender"), age: get("age"), size: get("size"), colour: get("colour"), occasion: get("occasion"), price: get("price"), flags: get("flags") };
+    list = list.filter((p) => {
+      const sizes = Object.keys(p.stock);
+      if (f.category.length && !f.category.includes(p.category)) return false;
+      if (f.gender.length && !f.gender.includes(p.gender)) return false;
+      if (f.age.length && !f.age.some((a) => { const g = AGE_GROUPS.find((x) => x.slug === a)!; return sizes.some((s) => p.stock[s] > 0 && sizeStartAge(s) >= g.min && sizeStartAge(s) <= g.max); })) return false;
+      if (f.size.length && !f.size.some((s) => (p.stock[s] ?? 0) > 0)) return false;
+      if (f.colour.length && !p.colours.some((c) => f.colour.includes(c.name))) return false;
+      if (f.occasion.length && !p.occasions.some((o) => f.occasion.includes(o))) return false;
+      if (f.price.length && !f.price.some((r) => { const [a, b] = r.split("-").map(Number); return p.price >= a && p.price <= b; })) return false;
+      if (f.flags.includes("instock") && !inStock(p)) return false;
+      if (f.flags.includes("discount") && discountPct(p) === 0) return false;
+      if (f.flags.includes("new") && !p.isNew) return false;
+      if (f.flags.includes("bestseller") && !p.bestseller) return false;
+      return true;
+    });
+    const s = [...list];
+    if (sort === "newest") s.sort((a, b) => b.addedAt.localeCompare(a.addedAt));
+    if (sort === "price-asc") s.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") s.sort((a, b) => b.price - a.price);
+    if (sort === "recommended") s.sort((a, b) => Number(!!b.bestseller) + Number(!!b.isNew) - (Number(!!a.bestseller) + Number(!!a.isNew)));
+    return s;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params, collection]);
+
+  if (slug && !collection) return <NotFound />;
+
+  const chipLabel = (k: Key, v: string) =>
+    k === "category" ? categoryName(v) : k === "gender" ? GENDERS.find((g) => g.v === v)?.l : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
+  const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
+
+  const Group = ({ title, k, opts }: { title: string; k: Key; opts: { v: string; l: string; swatch?: string }[] }) => (
+    <fieldset className="border-b py-5">
+      <legend className="mb-3 text-sm font-bold">{title}</legend>
+      <div className="space-y-2">
+        {opts.map((o) => (
+          <label key={o.v} className="flex cursor-pointer items-center gap-2 text-sm">
+            <Checkbox checked={get(k).includes(o.v)} onCheckedChange={() => toggle(k, o.v)} />
+            {o.swatch && <span className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: o.swatch }} />}
+            {o.l}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+
+  const filters = (
+    <div>
+      <Group title="Age group" k="age" opts={AGE_GROUPS.map((a) => ({ v: a.slug, l: a.label }))} />
+      <Group title="Category" k="category" opts={CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug)).map((c) => ({ v: c.slug, l: c.name }))} />
+      <Group title="Boys / Girls" k="gender" opts={GENDERS} />
+      <Group title="Price" k="price" opts={PRICES.map((p) => ({ v: p.v, l: p.l }))} />
+      <Group title="Occasion" k="occasion" opts={OCCASIONS.map((o) => ({ v: o, l: o }))} />
+      <Group title="Colour" k="colour" opts={COLOURS.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} />
+      <fieldset className="border-b py-5">
+        <legend className="mb-3 text-sm font-bold">Size</legend>
+        <div className="flex flex-wrap gap-2">
+          {ALL_SIZES.map((s) => (
+            <button key={s} onClick={() => toggle("size", s)} aria-pressed={get("size").includes(s)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${get("size").includes(s) ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{s}</button>
+          ))}
+        </div>
+      </fieldset>
+      <Group title="More" k="flags" opts={[{ v: "instock", l: "In stock only" }, { v: "discount", l: "On discount" }, { v: "new", l: "New arrivals" }, { v: "bestseller", l: "Bestsellers" }]} />
+    </div>
+  );
+
+  const title = q ? `Results for "${q}"` : collection?.title ?? "Shop All";
+
+  return (
+    <Layout title={collection?.title ?? (q ? "Search" : "Shop All")} description={collection?.intro}>
+      {collection?.banner ? (
+        <section className="relative h-64 overflow-hidden md:h-80">
+          <img src={collection.banner} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-foreground/50" />
+          <div className="container-kidia relative flex h-full flex-col justify-end pb-10 text-background">
+            <h1 className="font-serif text-3xl md:text-5xl">{collection.title}</h1>
+            <p className="mt-2 opacity-90">{collection.intro}</p>
+          </div>
+        </section>
+      ) : (
+        <section className="bg-secondary py-12">
+          <div className="container-kidia">
+            <nav className="mb-3 text-xs text-muted-foreground"><Link to="/" className="hover:text-primary">Home</Link> / {title}</nav>
+            <h1 className="font-serif text-4xl md:text-5xl">{title}</h1>
+            {collection && <p className="mt-2 text-muted-foreground">{collection.intro}</p>}
+          </div>
+        </section>
+      )}
+
+      <div className="container-kidia py-8">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground" aria-live="polite">{results.length} {results.length === 1 ? "product" : "products"}</p>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" className="rounded-full lg:hidden" onClick={() => setMobileFilters(true)}><SlidersHorizontal className="mr-2 h-4 w-4" />Filters{chips.length ? ` (${chips.length})` : ""}</Button>
+            <Select value={sort} onValueChange={(v) => setOne("sort", v === "recommended" ? "" : v)}>
+              <SelectTrigger className="w-48 rounded-full" aria-label="Sort products"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recommended">Recommended</SelectItem>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                <SelectItem value="price-desc">Price: High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {(chips.length > 0 || q) && (
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            {q && <button onClick={() => setOne("q", "")} className="flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold text-primary">Search: {q}<X className="h-3 w-3" /></button>}
+            {chips.map(({ k, v }) => (
+              <button key={k + v} onClick={() => toggle(k, v)} className="flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold text-primary">{chipLabel(k, v)}<X className="h-3 w-3" /></button>
+            ))}
+            {chips.length > 0 && <button onClick={clearAll} className="text-xs font-bold underline">Clear all</button>}
+          </div>
+        )}
+
+        <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
+          <aside className="hidden lg:block" aria-label="Filters">{filters}</aside>
+          <div>
+            {results.length === 0 ? (
+              <div className="rounded-3xl bg-muted py-20 text-center">
+                <SearchX className="mx-auto h-10 w-10 text-muted-foreground" />
+                <h2 className="mt-4 font-serif text-2xl">No styles match yet</h2>
+                <p className="mt-2 text-sm text-muted-foreground">Try removing a filter or searching for "kurta", "dress" or "pyjama".</p>
+                <Button className="mt-6 rounded-full" onClick={() => setParams({}, { replace: true })}>Clear search & filters</Button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+                  {results.slice(0, visible).map((p) => <ProductCard key={p.id} p={p} />)}
+                </div>
+                {visible < results.length && (
+                  <div className="mt-12 text-center">
+                    <p className="mb-3 text-xs text-muted-foreground">Showing {visible} of {results.length}</p>
+                    <Button variant="outline" className="rounded-full px-10" onClick={() => setVisible((v) => v + PAGE)}>Load more</Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <Sheet open={mobileFilters} onOpenChange={setMobileFilters}>
+        <SheetContent side="left" className="w-[88vw] max-w-sm overflow-y-auto">
+          <SheetTitle className="font-serif">Filters</SheetTitle>
+          {filters}
+          <div className="sticky bottom-0 flex gap-2 bg-background py-4">
+            <Button variant="outline" className="flex-1 rounded-full" onClick={clearAll}>Clear</Button>
+            <Button className="flex-1 rounded-full" onClick={() => setMobileFilters(false)}>Show {results.length}</Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </Layout>
+  );
+};
+
+export default Shop;

@@ -1,353 +1,182 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowDown, Instagram } from "lucide-react";
-import { useRef } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight, Feather, Sparkles, ShoppingBag, Ruler, Instagram } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
-import { CollectionCard } from "@/components/CollectionCard";
-import { collections, getNewProducts, products } from "@/data/products";
+import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
+import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
+
+const fade = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
+
+const SectionHead = ({ eyebrow, title, link, linkText }: { eyebrow: string; title: string; link?: string; linkText?: string }) => (
+  <motion.div {...fade} className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div><p className="eyebrow mb-2">{eyebrow}</p><h2 className="section-title">{title}</h2></div>
+    {link && <Link to={link} className="inline-flex items-center gap-1 text-sm font-bold text-primary hover:gap-2 transition-all">{linkText}<ArrowRight className="h-4 w-4" /></Link>}
+  </motion.div>
+);
+
+const Bestsellers = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (d: number) => ref.current?.scrollBy({ left: d * ref.current.clientWidth * 0.8, behavior: "smooth" });
+  const list = products.filter((p) => p.bestseller);
+  return (
+    <section className="container-kidia py-20">
+      <div className="flex items-end justify-between">
+        <SectionHead eyebrow="Loved by families" title="Bestsellers" link="/collections/bestsellers" linkText="View all" />
+      </div>
+      <div className="relative">
+        <div ref={ref} className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 md:gap-6">
+          {list.map((p) => <div key={p.id} className="w-[46%] shrink-0 snap-start sm:w-[31%] lg:w-[23%]"><ProductCard p={p} /></div>)}
+        </div>
+        <button aria-label="Previous" onClick={() => scroll(-1)} className="absolute -left-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronLeft className="h-5 w-5" /></button>
+        <button aria-label="Next" onClick={() => scroll(1)} className="absolute -right-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronRight className="h-5 w-5" /></button>
+      </div>
+    </section>
+  );
+};
 
 const Index = () => {
-  const newProducts = getNewProducts();
-  const latestProducts = products.slice(0, 4);
-  const displayedCollections = collections.slice(0, 6);
-  const featuredCollection = collections[0]; // Lighting
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroImageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  // Instagram placeholder images
-  const instagramImages = [
-    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=400&q=80",
-    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&q=80",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
-    "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=80",
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&q=80",
-    "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=400&q=80",
-  ];
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const newest = [...products].filter((p) => p.isNew).slice(0, 8);
 
   return (
     <Layout>
-      {/* Hero Section — Full Viewport */}
-      <section ref={heroRef} className="relative h-[100svh] -mt-16 md:-mt-20 overflow-hidden">
-        <motion.div className="absolute inset-0" style={{ y: heroImageY }}>
-          <img
-            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80"
-            alt="Curated home lifestyle"
-            className="w-full h-[120%] object-cover animate-ken-burns"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal/30 via-charcoal/10 to-charcoal/50" />
-        </motion.div>
-
-        <motion.div
-          className="relative container-full h-full flex flex-col justify-end pb-20 md:pb-28 pt-16 md:pt-20"
-          style={{ opacity: heroOpacity }}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-            className="max-w-3xl"
-          >
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/70 mb-6"
-            >
-              Curated for Considered Living
-            </motion.p>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white mb-8 leading-[0.9] tracking-tight">
-              Objects of
-              <br />
-              <span className="italic font-normal">Quiet Beauty</span>
-            </h1>
-            <p className="text-base md:text-lg text-white/80 mb-10 leading-relaxed max-w-lg">
-              Handcrafted home goods and lifestyle pieces designed to bring
-              warmth and intention to everyday moments.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-none px-10 py-6 text-sm tracking-[0.15em] uppercase btn-premium"
-              >
-                <Link to="/products">
-                  Shop Now
-                  <ArrowRight className="ml-3 w-4 h-4" />
-                </Link>
-              </Button>
+      {/* Hero */}
+      <section ref={heroRef} className="relative overflow-hidden bg-secondary">
+        <motion.img style={{ y }} src={images.hero} alt="Children wearing KIDIA festive kurta sets and a pastel lehenga" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[70%_center]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent md:via-background/50" />
+        <div className="container-kidia relative flex min-h-[78svh] items-center py-20">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-xl">
+            <p className="eyebrow mb-4 flex items-center gap-2"><Sparkles className="h-4 w-4" />Festive Collection 2026</p>
+            <h1 className="font-serif text-5xl leading-[1.05] text-foreground md:text-7xl">Little Looks. <span className="italic text-primary">Big Festive Energy.</span></h1>
+            <p className="mt-6 text-lg text-foreground/80">Everyday comfort, celebration-ready styles, and outfits made for their biggest little moments.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="h-12 rounded-full px-8"><Link to="/collections/new-arrivals">Shop New Arrivals</Link></Button>
+              <Button asChild size="lg" variant="outline" className="h-12 rounded-full border-primary bg-card/60 px-8 text-primary"><Link to="/collections/ethnic-festive">Explore Festive Wear</Link></Button>
             </div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-            <span className="text-[10px] tracking-[0.3em] uppercase text-white/50">Scroll</span>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <ArrowDown className="w-4 h-4 text-white/50" />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Featured Collection */}
-      <section className="py-20 md:py-28">
-        <div className="container-full">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-              className="relative aspect-[4/5] overflow-hidden group"
-            >
-              <img
-                src={featuredCollection.heroImage || featuredCollection.image}
-                alt={featuredCollection.name}
-                className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent" />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-              className="md:py-12"
-            >
-              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-primary mb-4">
-                Featured Collection
-              </p>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-[0.95]">
-                {featuredCollection.name}
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
-                {featuredCollection.description}. Discover sculptural forms that cast warmth and shadow, 
-                designed to transform any space into a sanctuary of light.
-              </p>
-              <Button
-                asChild
-                size="lg"
-                className="rounded-none px-10 py-6 text-sm tracking-[0.15em] uppercase btn-premium"
-              >
-                <Link to={`/products?collection=${featuredCollection.slug}`}>
-                  Shop {featuredCollection.name}
-                  <ArrowRight className="ml-3 w-4 h-4" />
-                </Link>
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Latest Products */}
-      <section className="py-20 md:py-28 bg-linen">
-        <div className="container-full">
-          <div className="flex items-end justify-between mb-14">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-primary mb-3">
-                Just Arrived
-              </p>
-              <h2 className="font-serif text-4xl md:text-5xl text-foreground">
-                Latest Products
-              </h2>
-            </motion.div>
-            <Link
-              to="/products"
-              className="hidden md:flex items-center gap-3 text-sm font-medium tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors group"
-            >
-              View All
-              <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-            {latestProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
-
-          <div className="mt-14 text-center md:hidden">
-            <Button
-              asChild
-              variant="outline"
-              className="rounded-none px-8 py-5 text-sm tracking-[0.15em] uppercase"
-            >
-              <Link to="/products">View All Products</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Collections Grid */}
-      <section className="py-24 md:py-32">
-        <div className="container-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-primary mb-3">
-              Browse By
-            </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground">
-              Collections
-            </h2>
-          </motion.div>
-
-          {/* Asymmetric grid layout */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
-            {/* First row: 2 items */}
-            <div className="md:col-span-7">
-              <CollectionCard
-                collection={displayedCollections[0]}
-                index={0}
-                variant="wide"
-              />
-            </div>
-            <div className="md:col-span-5">
-              <CollectionCard
-                collection={displayedCollections[1]}
-                index={1}
-              />
-            </div>
-
-            {/* Second row: 3 items */}
-            <div className="md:col-span-4">
-              <CollectionCard
-                collection={displayedCollections[2]}
-                index={2}
-              />
-            </div>
-            <div className="md:col-span-4">
-              <CollectionCard
-                collection={displayedCollections[3]}
-                index={3}
-              />
-            </div>
-            <div className="md:col-span-4">
-              <CollectionCard
-                collection={displayedCollections[4]}
-                index={4}
-              />
-            </div>
-
-            {/* Third row: 1 wide item */}
-            <div className="md:col-span-12">
-              <CollectionCard
-                collection={displayedCollections[5]}
-                index={5}
-                variant="wide"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Us Section */}
-      <section className="py-24 md:py-32 bg-linen">
-        <div className="container-narrow text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-          >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-primary mb-6">
-              About Us
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.3] mb-8">
-              We believe in the beauty of slow living—in objects made with care,
-              materials that age gracefully, and spaces that invite{" "}
-              <span className="italic">pause</span>.
-            </h2>
-            <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-10">
-              Every piece in our collection is selected for its material integrity, 
-              its maker's story, and its ability to endure beautifully. We work with 
-              artisans who share our commitment to craft and sustainability.
-            </p>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="rounded-none px-10 py-6 text-sm tracking-[0.15em] uppercase"
-            >
-              <Link to="/about">
-                Read Our Story
-                <ArrowRight className="ml-3 w-4 h-4" />
-              </Link>
-            </Button>
           </motion.div>
         </div>
       </section>
 
-      {/* Follow Us / Instagram Section */}
-      <section className="py-20 md:py-28">
-        <div className="container-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-primary mb-3">
-              Follow Us
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-4">
-              @maisonhome
-            </h2>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              Join our community and get inspired by curated spaces and behind-the-scenes moments.
-            </p>
-          </motion.div>
-
-          {/* Instagram Grid */}
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4">
-            {instagramImages.map((image, index) => (
-              <motion.a
-                key={index}
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative aspect-square overflow-hidden group cursor-pointer"
-              >
-                <img
-                  src={image}
-                  alt="Instagram post"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/40 transition-colors duration-300 flex items-center justify-center">
-                  <Instagram className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Categories */}
+      <section className="container-kidia py-20">
+        <SectionHead eyebrow="Find their style" title="Shop by category" />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {CATEGORIES.map((c, i) => (
+            <motion.div key={c.slug} {...fade} transition={{ duration: 0.5, delay: i * 0.05 }}>
+              <Link to={c.link} className="group block">
+                <div className="aspect-square overflow-hidden rounded-[2rem] bg-muted">
+                  <img src={c.image} alt={c.name} loading="lazy" className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-110" />
                 </div>
-              </motion.a>
+                <p className="mt-3 text-center font-serif text-lg group-hover:text-primary">{c.name}</p>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* New arrivals */}
+      <section className="container-kidia py-12">
+        <SectionHead eyebrow="Just landed" title="New Arrivals" link="/collections/new-arrivals" linkText="View All New Arrivals" />
+        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+          {newest.map((p) => <ProductCard key={p.id} p={p} />)}
+        </div>
+      </section>
+
+      {/* Festive spotlight */}
+      <section className="relative mt-20 overflow-hidden bg-butter/60 py-20">
+        <div className="pointer-events-none absolute -left-10 top-10 h-40 w-40 rounded-full bg-marigold/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-10 h-56 w-56 rounded-full bg-blush blur-3xl" />
+        <div className="container-kidia relative">
+          <SectionHead eyebrow="The festive season" title="Celebrate in KIDIA" />
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              { img: images.diwali, t: "Diwali Edit", s: "Little Lights, Big Looks", d: "Kurta sets, lehenga sets, festive dresses and waistcoat sets ready for the festival of lights.", to: "/collections/diwali", cta: "Shop Diwali Collection" },
+              { img: images.navratri, t: "Navratri Edit", s: "Twirl Into Festivities", d: "Colourful chaniya cholis, kediyu and dhoti sets made for nine nights of garba.", to: "/collections/navratri", cta: "Shop Navratri Collection" },
+            ].map((c, i) => (
+              <motion.div key={c.t} {...fade} transition={{ duration: 0.6, delay: i * 0.1 }}>
+                <Link to={c.to} className="group relative block aspect-[4/5] overflow-hidden rounded-[2rem] md:aspect-[4/5]">
+                  <img src={c.img} alt={c.t} loading="lazy" className="h-full w-full object-cover transition duration-1000 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-background md:p-10">
+                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-butter">{c.t}</p>
+                    <h3 className="mt-1 font-serif text-3xl md:text-4xl">{c.s}</h3>
+                    <p className="mt-2 max-w-sm text-sm opacity-90">{c.d}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-bold text-primary">{c.cta}<ArrowRight className="h-4 w-4" /></span>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Shop by age */}
+      <section className="container-kidia py-20">
+        <SectionHead eyebrow="Made for growing kids" title="Shop by age" />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {AGE_GROUPS.map((a, i) => (
+            <motion.div key={a.slug} {...fade} transition={{ duration: 0.5, delay: i * 0.08 }}>
+              <Link to={`/shop?age=${a.slug}`} className={`flex aspect-[4/3] flex-col items-center justify-center rounded-[2rem] ${a.tone} transition hover:-translate-y-1 hover:shadow-lift`}>
+                <span className="font-serif text-4xl text-foreground md:text-5xl">{a.label.split(" ")[0]}</span>
+                <span className="text-sm font-bold uppercase tracking-widest text-foreground/70">Years</span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <Bestsellers />
+
+      {/* Why KIDIA */}
+      <section className="bg-primary-soft py-20">
+        <div className="container-kidia">
+          <SectionHead eyebrow="Our promise" title="Why parents choose KIDIA" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { I: Feather, t: "Comfort First", d: "Soft, child-friendly fabrics chosen for all-day wear." },
+              { I: Sparkles, t: "Styles for Every Moment", d: "Everyday, festive and special-occasion clothing." },
+              { I: ShoppingBag, t: "Easy Shopping", d: "Simple discovery, helpful filters and a smooth bag." },
+              { I: Ruler, t: "Made for Growing Kids", d: "Clear age labels and a detailed size guide." },
+            ].map(({ I, t, d }) => (
+              <motion.div key={t} {...fade} className="rounded-3xl bg-card p-8 shadow-soft">
+                <div className="mb-5 inline-flex rounded-2xl bg-peach p-3"><I className="h-6 w-6 text-primary" /></div>
+                <h3 className="font-serif text-xl">{t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lookbook */}
+      <section className="container-kidia py-20">
+        <SectionHead eyebrow="Lookbook" title="Styled by KIDIA" link="/collections/ethnic-festive" linkText="Get Inspired" />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2">
+          <img src={images.hero} alt="Festive sibling looks" loading="lazy" className="col-span-2 row-span-2 h-full w-full rounded-[2rem] object-cover" />
+          <img src={images.coord} alt="Mint co-ord set" loading="lazy" className="aspect-square w-full rounded-[2rem] object-cover object-top" />
+          <img src={images.dress} alt="Blush party dress" loading="lazy" className="aspect-square w-full rounded-[2rem] object-cover object-top" />
+          <img src={images.anarkali} alt="Yellow anarkali" loading="lazy" className="aspect-square w-full rounded-[2rem] object-cover object-top" />
+          <img src={images.dhoti} alt="Maroon dhoti kurta" loading="lazy" className="aspect-square w-full rounded-[2rem] object-cover object-top" />
+        </div>
+        <div className="mt-12 text-center">
+          <p className="flex items-center justify-center gap-2 font-serif text-2xl"><Instagram className="h-5 w-5 text-primary" />@kidia.in</p>
+          <p className="mt-1 text-sm text-muted-foreground">Share your little one's KIDIA moments. Our Instagram gallery is coming soon.</p>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="container-kidia">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-lavender px-6 py-16 text-center md:px-16">
+          <Sparkles className="absolute left-8 top-8 h-6 w-6 text-primary/40" />
+          <Sparkles className="absolute bottom-10 right-10 h-8 w-8 text-accent/40" />
+          <h2 className="section-title">Little Updates, Lovely Surprises.</h2>
+          <p className="mx-auto mt-3 max-w-md text-muted-foreground">New collections, festive edits and members-first news — straight to your inbox.</p>
+          <div className="mx-auto mt-8 max-w-lg text-left"><Newsletter /></div>
         </div>
       </section>
     </Layout>

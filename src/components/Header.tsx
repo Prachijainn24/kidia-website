@@ -1,243 +1,192 @@
-import { Link } from "react-router-dom";
-import { Heart, Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { Heart, Menu, Search, ShoppingBag, X, ChevronDown, Ruler } from "lucide-react";
+import { Logo } from "./Logo";
+import { useCartCount } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { CartIcon } from "@/components/CartIcon";
-import { collections } from "@/data/products";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { AGE_GROUPS, CATEGORIES, products } from "@/data/catalog";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-export const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { items } = useWishlist();
+const MESSAGES = [
+  "Festive Season Is Here — Discover KIDIA's New Collection",
+  "Free Shipping on Eligible Orders",
+  "Find Their Perfect Fit with Our Size Guide",
+];
 
+const NAV = [
+  { to: "/", label: "Home" },
+  { to: "/collections/new-arrivals", label: "New Arrivals" },
+  { to: "/collections/boys", label: "Boys", mega: "boys" },
+  { to: "/collections/girls", label: "Girls", mega: "girls" },
+  { to: "/shop", label: "Clothing", mega: "all" },
+  { to: "/collections/ethnic-festive", label: "Ethnic & Festive", mega: "festive" },
+  { to: "/collections/sale", label: "Sale" },
+];
+
+const AnnouncementBar = () => {
+  const [i, setI] = useState(0);
+  const [open, setOpen] = useState(() => sessionStorage.getItem("kidia-bar") !== "off");
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const t = setInterval(() => setI((x) => (x + 1) % MESSAGES.length), 4500);
+    return () => clearInterval(t);
   }, []);
+  if (!open) return null;
+  return (
+    <div className="relative bg-primary text-primary-foreground text-xs sm:text-sm">
+      <div className="container-kidia flex h-9 items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.p key={i} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -12, opacity: 0 }} transition={{ duration: 0.3 }} className="truncate px-8 text-center font-semibold">
+            {MESSAGES[i]}
+          </motion.p>
+        </AnimatePresence>
+        <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-primary-foreground/10">
+          <X className="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const MegaMenu = ({ kind }: { kind: string }) => {
+  const base = kind === "boys" ? "/collections/boys" : kind === "girls" ? "/collections/girls" : "/shop";
+  const cats = kind === "festive" ? [] : CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug));
+  return (
+    <div className="grid grid-cols-3 gap-8 p-8">
+      {kind === "festive" ? (
+        <div className="col-span-2 grid grid-cols-2 gap-4">
+          {[{ to: "/collections/diwali", t: "Diwali Edit", s: "Little Lights, Big Looks", tone: "bg-butter" }, { to: "/collections/navratri", t: "Navratri Edit", s: "Twirl Into Festivities", tone: "bg-blush" }].map((x) => (
+            <Link key={x.to} to={x.to} className={cn("rounded-2xl p-6 transition hover:shadow-soft", x.tone)}>
+              <p className="font-serif text-xl text-foreground">{x.t}</p>
+              <p className="text-sm text-muted-foreground">{x.s}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="col-span-2">
+          <p className="eyebrow mb-3">Shop by category</p>
+          <ul className="grid grid-cols-2 gap-2">
+            {cats.map((c) => (
+              <li key={c.slug}><Link className="text-sm hover:text-primary" to={`${base}?category=${c.slug}`}>{c.name}</Link></li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div>
+        <p className="eyebrow mb-3">Shop by age</p>
+        <ul className="space-y-2">
+          {AGE_GROUPS.map((a) => (
+            <li key={a.slug}><Link className="text-sm hover:text-primary" to={`${base}?age=${a.slug}`}>{a.label}</Link></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+const SearchBox = ({ onDone }: { onDone: () => void }) => {
+  const [q, setQ] = useState("");
+  const nav = useNavigate();
+  const term = q.trim().toLowerCase();
+  const hits = term ? products.filter((p) => `${p.name} ${p.category} ${p.occasions.join(" ")} ${p.gender}`.toLowerCase().includes(term)).slice(0, 5) : [];
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); if (term) { nav(`/shop?q=${encodeURIComponent(q.trim())}`); onDone(); } }} className="container-kidia py-4">
+      <label htmlFor="site-search" className="sr-only">Search products</label>
+      <div className="flex items-center gap-3 rounded-full border bg-card px-4">
+        <Search className="h-4 w-4 text-muted-foreground" />
+        <input id="site-search" autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search kurtas, dresses, nightwear…" className="h-11 flex-1 bg-transparent outline-none" />
+        <button type="button" onClick={onDone} aria-label="Close search"><X className="h-4 w-4" /></button>
+      </div>
+      {term && (
+        <ul className="mt-2 rounded-2xl border bg-card p-2 shadow-soft">
+          {hits.length === 0 && <li className="p-3 text-sm text-muted-foreground">No matches for "{q}". Try "kurta" or "dress".</li>}
+          {hits.map((p) => (
+            <li key={p.id}>
+              <Link to={`/product/${p.slug}`} onClick={onDone} className="flex items-center gap-3 rounded-xl p-2 hover:bg-muted">
+                <img src={p.images[0]} alt="" className="h-12 w-10 rounded-lg object-cover" />
+                <span className="text-sm">{p.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </form>
+  );
+};
+
+const Badge = ({ n }: { n: number }) =>
+  n > 0 ? (
+    <motion.span key={n} initial={{ scale: 0.4 }} animate={{ scale: 1 }} className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-foreground">
+      {n}
+    </motion.span>
+  ) : null;
+
+export const Header = () => {
+  const cart = useCartCount();
+  const wish = useWishlist((s) => s.ids.length);
+  const [mega, setMega] = useState<string | null>(null);
+  const [search, setSearch] = useState(false);
+  const [mobile, setMobile] = useState(false);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 transition-all duration-500",
-        scrolled
-          ? "bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
-          : "bg-background/80 backdrop-blur-sm border-b border-transparent"
-      )}
-    >
-      <nav className="container-full">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="font-serif text-2xl md:text-3xl tracking-tight text-foreground hover:text-primary transition-colors duration-300"
-          >
-            Maison
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-transparent text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground">
-                    Collections
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-1 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {collections.map((collection) => (
-                        <li key={collection.id}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={`/products?collection=${collection.slug}`}
-                              className={cn(
-                                "block select-none space-y-1 rounded-sm p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              )}
-                            >
-                              <div className="text-sm font-medium leading-none">
-                                {collection.name}
-                              </div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                {collection.description}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
-            <Link
-              to="/products"
-              className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 link-underline"
-            >
-              Shop All
-            </Link>
-
-            <Link
-              to="/about"
-              className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 link-underline"
-            >
-              About
-            </Link>
-          </div>
-
-          {/* Right side actions */}
+    <>
+      <AnnouncementBar />
+      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur" onMouseLeave={() => setMega(null)}>
+        <div className="container-kidia flex h-16 items-center justify-between gap-4 md:h-20">
           <div className="flex items-center gap-2">
-            {/* Wishlist Icon with Tooltip */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className="relative p-2 hover:bg-accent transition-colors duration-300 group">
-                  <Heart className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                  <AnimatePresence>
-                    {items.length > 0 && (
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                        className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full flex items-center justify-center"
-                      >
-                        {items.length > 9 ? "9+" : items.length}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-xs">
-                {items.length === 0 ? (
-                  <p className="text-sm">Your wishlist is empty</p>
-                ) : (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">{items.length} saved {items.length === 1 ? 'item' : 'items'}</p>
-                    <div className="space-y-1">
-                      {items.slice(0, 3).map((item) => (
-                        <p key={item.id} className="text-xs text-muted-foreground truncate">
-                          {item.name}
-                        </p>
-                      ))}
-                      {items.length > 3 && (
-                        <p className="text-xs text-muted-foreground">+{items.length - 3} more</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </TooltipContent>
-            </Tooltip>
-
-            {/* Cart Icon */}
-            <CartIcon />
-
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden p-2 hover:bg-accent transition-colors duration-300"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <AnimatePresence mode="wait">
-                {mobileMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="w-5 h-5" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="w-5 h-5" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
+            <button className="lg:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
+            <Logo />
+          </div>
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Main">
+            {NAV.map((n) => (
+              <div key={n.to} onMouseEnter={() => setMega(n.mega ?? null)} className="relative">
+                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-sm font-semibold transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
+                  {n.label}{n.mega && <ChevronDown className="h-3 w-3" />}
+                </NavLink>
+              </div>
+            ))}
+          </nav>
+          <div className="flex items-center gap-1">
+            <button aria-label="Search" onClick={() => setSearch((s) => !s)} className="rounded-full p-2 hover:bg-muted"><Search className="h-5 w-5" /></button>
+            <Link to="/wishlist" aria-label={`Wishlist, ${wish} items`} className="relative rounded-full p-2 hover:bg-muted"><Heart className="h-5 w-5" /><Badge n={wish} /></Link>
+            <Link to="/cart" aria-label={`Bag, ${cart} items`} className="relative rounded-full p-2 hover:bg-muted"><ShoppingBag className="h-5 w-5" /><Badge n={cart} /></Link>
           </div>
         </div>
-
-        {/* Mobile Menu */}
         <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-              className="md:hidden border-t border-border overflow-hidden"
-            >
-              <div className="py-8 space-y-6">
-                <div className="space-y-1">
-                  <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-muted-foreground/50 px-2 mb-3">
-                    Collections
-                  </p>
-                  {collections.slice(0, 6).map((collection, i) => (
-                    <motion.div
-                      key={collection.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                    >
-                      <Link
-                        to={`/products?collection=${collection.slug}`}
-                        className="block px-2 py-2.5 text-sm hover:bg-accent transition-colors duration-300"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {collection.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="pt-6 border-t border-border space-y-1">
-                  {[
-                    { to: "/products", label: "Shop All" },
-                    { to: "/about", label: "About" },
-                    { to: "/cart", label: "Shopping Bag" },
-                  ].map((link, i) => (
-                    <motion.div
-                      key={link.to}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + i * 0.05 }}
-                    >
-                      <Link
-                        to={link.to}
-                        className="block px-2 py-2.5 text-sm font-medium hover:bg-accent transition-colors duration-300"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+          {mega && (
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full hidden border-b bg-background shadow-soft lg:block">
+              <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
+            </motion.div>
+          )}
+          {search && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full border-b bg-background shadow-soft">
+              <SearchBox onDone={() => setSearch(false)} />
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
-    </header>
+      </header>
+
+      <Sheet open={mobile} onOpenChange={setMobile}>
+        <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto bg-background">
+          <SheetTitle className="sr-only">Menu</SheetTitle>
+          <Logo className="mb-8" />
+          <nav className="space-y-1" aria-label="Mobile">
+            {NAV.map((n) => (
+              <Link key={n.to} to={n.to} onClick={() => setMobile(false)} className="block rounded-xl px-3 py-3 text-lg font-serif hover:bg-muted">{n.label}</Link>
+            ))}
+            <Link to="/collections/diwali" onClick={() => setMobile(false)} className="block rounded-xl bg-butter px-3 py-3 font-serif">Diwali Edit</Link>
+            <Link to="/collections/navratri" onClick={() => setMobile(false)} className="mt-1 block rounded-xl bg-blush px-3 py-3 font-serif">Navratri Edit</Link>
+          </nav>
+          <p className="eyebrow mt-8 mb-3">Shop by age</p>
+          <div className="grid grid-cols-2 gap-2">
+            {AGE_GROUPS.map((a) => (
+              <Link key={a.slug} to={`/shop?age=${a.slug}`} onClick={() => setMobile(false)} className={cn("rounded-xl p-3 text-center text-sm font-semibold", a.tone)}>{a.label}</Link>
+            ))}
+          </div>
+          <Link to="/size-guide" onClick={() => setMobile(false)} className="mt-6 flex items-center gap-2 text-sm font-semibold text-primary"><Ruler className="h-4 w-4" />Size Guide</Link>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
