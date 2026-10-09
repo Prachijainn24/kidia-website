@@ -27,7 +27,8 @@ const Bestsellers = () => {
   const scroll = (d: number) => ref.current?.scrollBy({ left: d * ref.current.clientWidth * 0.8, behavior: "smooth" });
   const list = products.filter((p) => p.bestseller);
   return (
-    <section className="container-kidia py-20">
+    <section className="bg-blush/40 py-20">
+      <div className="container-kidia">
       <div className="flex items-end justify-between">
         <SectionHead eyebrow="Loved by families" title="Bestsellers" link="/collections/bestsellers" linkText="View all" />
       </div>
