@@ -89,9 +89,10 @@ const Index = () => {
       <NewArrivals />
 
       {/* Festive spotlight */}
-      <section className="relative mt-20 overflow-hidden bg-butter/60 py-20">
-        <div className="pointer-events-none absolute -left-10 top-10 h-40 w-40 rounded-full bg-marigold/20 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-10 h-56 w-56 rounded-full bg-blush blur-3xl" />
+      <section className="relative mt-20 overflow-hidden bg-butter/70 py-20">
+        <div className="pointer-events-none absolute -left-10 top-10 h-44 w-44 rounded-full bg-marigold/30 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-10 h-60 w-60 rounded-full bg-blush/80 blur-3xl" />
+        <div className="pointer-events-none absolute left-1/3 top-6 h-40 w-40 rounded-full bg-mint/60 blur-3xl" />
         <div className="container-kidia relative">
           <SectionHead eyebrow="The festive season" title="Celebrate in KIDIA" />
           <div className="grid gap-6 md:grid-cols-2">
@@ -144,11 +145,11 @@ const Index = () => {
               { I: Sparkles, t: "Styles for Every Moment", d: "Everyday, festive and special-occasion clothing." },
               { I: Heart, t: "Started by Mothers", d: "Founded by two moms who know what kids and parents really need." },
               { I: Ruler, t: "Made for Growing Kids", d: "Clear age labels and a detailed size guide." },
-            ].map(({ I, t, d }) => (
-              <motion.div key={t} {...fade} className="rounded-3xl bg-card p-8 shadow-soft">
-                <div className="mb-5 inline-flex rounded-2xl bg-peach p-3"><I className="h-6 w-6 text-primary" /></div>
+            ].map(({ I, t, d }, i) => (
+              <motion.div key={t} {...fade} className={`rounded-3xl p-8 shadow-soft ${PROMISE_TONES[i]}`}>
+                <div className="mb-5 inline-flex rounded-2xl bg-card p-3"><I className="h-6 w-6 text-primary" /></div>
                 <h3 className="font-serif text-xl">{t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+                <p className="mt-2 text-sm text-foreground/70">{d}</p>
               </motion.div>
             ))}
           </div>
@@ -173,11 +174,12 @@ const Index = () => {
 
       {/* Newsletter */}
       <section className="container-kidia">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-lavender px-6 py-16 text-center md:px-16">
-          <Sparkles className="absolute left-8 top-8 h-6 w-6 text-primary/40" />
-          <Sparkles className="absolute bottom-10 right-10 h-8 w-8 text-accent/40" />
+        <div className="bg-rainbow-soft relative overflow-hidden rounded-[2.5rem] px-6 py-16 text-center md:px-16">
+          <Sparkles className="absolute left-8 top-8 h-6 w-6 text-accent/60" />
+          <Sparkles className="absolute bottom-10 right-10 h-8 w-8 text-primary/40" />
+          <Sparkles className="absolute right-1/4 top-10 h-5 w-5 text-success" />
           <h2 className="section-title">Little Updates, Lovely Surprises.</h2>
-          <p className="mx-auto mt-3 max-w-md text-muted-foreground">New collections, festive edits and members-first news — straight to your inbox.</p>
+          <p className="mx-auto mt-3 max-w-md text-foreground/70">New collections, festive edits and members-first news — straight to your inbox.</p>
           <div className="mx-auto mt-8 max-w-lg text-left"><Newsletter /></div>
         </div>
       </section>
