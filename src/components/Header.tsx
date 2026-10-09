@@ -8,6 +8,9 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { AGE_GROUPS, CATEGORIES, products } from "@/data/catalog";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { AccountMenu } from "./AccountMenu";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const MESSAGES = [
   "Festive Season Is Here — Discover KIDIA's New Collection",
@@ -123,6 +126,7 @@ const Badge = ({ n }: { n: number }) =>
   ) : null;
 
 export const Header = () => {
+  const { user } = useAuth();
   const cart = useCartCount();
   const wish = useWishlist((s) => s.ids.length);
   const [mega, setMega] = useState<string | null>(null);
@@ -138,7 +142,7 @@ export const Header = () => {
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
           </div>
-          <nav className="hidden min-[900px]:flex items-center gap-4 xl:gap-6" aria-label="Main">
+          <nav className="hidden min-[900px]:flex items-center gap-3 xl:gap-6" aria-label="Main">
             {NAV.map((n) => (
               <div key={n.to} onMouseEnter={() => setMega(n.mega ?? null)} className="relative">
                 <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-[13px] xl:text-sm font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
@@ -148,6 +152,7 @@ export const Header = () => {
             ))}
           </nav>
           <div className="flex items-center gap-1">
+            <AccountMenu />
             <button aria-label="Search" onClick={() => setSearch((s) => !s)} className="rounded-full p-2 hover:bg-muted"><Search className="h-5 w-5" /></button>
             <Link to="/wishlist" aria-label={`Wishlist, ${wish} items`} className="relative rounded-full p-2 hover:bg-muted"><Heart className="h-5 w-5" /><Badge n={wish} /></Link>
             <Link to="/cart" aria-label={`Bag, ${cart} items`} className="relative rounded-full p-2 hover:bg-muted"><ShoppingBag className="h-5 w-5" /><Badge n={cart} /></Link>
@@ -171,6 +176,10 @@ export const Header = () => {
         <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto bg-background">
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <Logo className="mb-8" />
+          <div className="mb-6 flex gap-3">
+            <Button asChild variant="outline" onClick={() => setMobile(false)}><Link to={user ? "/account" : "/auth"}>{user ? "My profile" : "Sign in"}</Link></Button>
+            {!user && <Button asChild onClick={() => setMobile(false)}><Link to="/auth?mode=signup">Sign up</Link></Button>}
+          </div>
           <nav className="space-y-1" aria-label="Mobile">
             {NAV.map((n) => (
               <Link key={n.to} to={n.to} onClick={() => setMobile(false)} className="block rounded-xl px-3 py-3 text-lg font-serif hover:bg-muted">{n.label}</Link>
