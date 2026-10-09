@@ -8,7 +8,7 @@
     --font-serif: "Fraunces";
     --font-sans: "Nunito Sans";
 
-    --background: 39 59% 94%;
+    --background: 38 100% 96%;
     --foreground: 21 24% 23%;
     --card: 0 0% 100%;
     --card-foreground: 21 24% 23%;
@@ -19,21 +19,23 @@
     --primary-foreground: 40 50% 97%;
     --primary-soft: 102 18% 87%;
 
-    --secondary: 42 52% 88%;
+    --secondary: 46 86% 84%;
     --secondary-foreground: 21 24% 23%;
     --muted: 39 35% 89%;
     --muted-foreground: 21 14% 36%;
-    --accent: 12 55% 47%;
+    --accent: 9 66% 52%;
     --accent-foreground: 0 0% 100%;
 
     --peach: 18 60% 84%;
-    --butter: 45 80% 74%;
-    --blush: 10 48% 88%;
+    --butter: 46 86% 72%;
+    --blush: 356 52% 89%;
     --mint: 102 18% 82%;
     --lavender: 280 12% 86%;
-    --sky: 190 17% 84%;
-    --marigold: 39 81% 54%;
+    --sky: 201 64% 85%;
+    --marigold: 38 81% 54%;
 
+    --plum: 322 27% 34%;
+    --coral: 10 78% 61%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
     --success: 150 45% 35%;
