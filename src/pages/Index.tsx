@@ -12,6 +12,9 @@ import { CONTACT, instagramUrl } from "@/data/contact";
 
 const fade = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
+const CAT_TONES = ["bg-peach", "bg-butter", "bg-mint", "bg-lavender", "bg-blush", "bg-sky", "bg-butter", "bg-peach"];
+const PROMISE_TONES = ["bg-peach", "bg-butter", "bg-mint", "bg-lavender"];
+
 const SectionHead = ({ eyebrow, title, link, linkText }: { eyebrow: string; title: string; link?: string; linkText?: string }) => (
   <motion.div {...fade} className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
     <div><p className="eyebrow mb-2">{eyebrow}</p><h2 className="section-title">{title}</h2></div>
@@ -24,7 +27,8 @@ const Bestsellers = () => {
   const scroll = (d: number) => ref.current?.scrollBy({ left: d * ref.current.clientWidth * 0.8, behavior: "smooth" });
   const list = products.filter((p) => p.bestseller);
   return (
-    <section className="container-kidia py-20">
+    <section className="bg-blush/40 py-20">
+      <div className="container-kidia">
       <div className="flex items-end justify-between">
         <SectionHead eyebrow="Loved by families" title="Bestsellers" link="/collections/bestsellers" linkText="View all" />
       </div>
@@ -34,6 +38,7 @@ const Bestsellers = () => {
         </div>
         <button aria-label="Previous" onClick={() => scroll(-1)} className="absolute -left-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronLeft className="h-5 w-5" /></button>
         <button aria-label="Next" onClick={() => scroll(1)} className="absolute -right-4 top-1/3 hidden rounded-full bg-card p-3 shadow-lift md:block"><ChevronRight className="h-5 w-5" /></button>
+      </div>
       </div>
     </section>
   );
@@ -49,11 +54,13 @@ const Index = () => {
       {/* Hero */}
       <section ref={heroRef} className="relative overflow-hidden bg-secondary">
         <motion.img style={{ y }} src={images.hero} alt="Children wearing KIDIA festive kurta sets and a pastel lehenga" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[70%_center]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent md:via-background/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-peach/20 md:via-background/55" />
+        <div className="pointer-events-none absolute -bottom-16 right-10 h-52 w-52 rounded-full bg-blush/70 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-36 w-36 rounded-full bg-mint/60 blur-3xl" />
         <div className="container-kidia relative flex min-h-[78svh] items-center py-20">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-xl">
-            <p className="eyebrow mb-4 flex items-center gap-2"><Sparkles className="h-4 w-4" />Festive Collection 2026</p>
-            <h1 className="font-serif text-5xl leading-[1.05] text-foreground md:text-7xl">Little Looks. <span className="italic text-primary">Big Festive Energy.</span></h1>
+            <p className="mb-4 flex w-fit items-center gap-2 rounded-full bg-butter px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-accent"><Sparkles className="h-4 w-4" />Festive Collection 2026</p>
+            <h1 className="font-serif text-5xl leading-[1.05] text-foreground md:text-7xl">Little Looks. <span className="italic rainbow-text">Big Festive Energy.</span></h1>
             <p className="mt-6 text-lg text-foreground/80">Everyday comfort, celebration-ready styles, and outfits made for their biggest little moments.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="h-12 rounded-full px-8"><Link to="/collections/new-arrivals">Shop New Arrivals</Link></Button>
@@ -73,7 +80,7 @@ const Index = () => {
                 <div className="aspect-square overflow-hidden rounded-[2rem] bg-muted">
                   <img src={c.image} alt={c.name} loading="lazy" className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-110" />
                 </div>
-                <p className="mt-3 text-center font-serif text-lg group-hover:text-primary">{c.name}</p>
+                <p className={`mx-auto mt-3 w-fit rounded-full px-4 py-1 text-center font-serif text-lg transition group-hover:shadow-soft ${CAT_TONES[i % CAT_TONES.length]}`}>{c.name}</p>
               </Link>
             </motion.div>
           ))}
@@ -84,9 +91,10 @@ const Index = () => {
       <NewArrivals />
 
       {/* Festive spotlight */}
-      <section className="relative mt-20 overflow-hidden bg-butter/60 py-20">
-        <div className="pointer-events-none absolute -left-10 top-10 h-40 w-40 rounded-full bg-marigold/20 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-10 h-56 w-56 rounded-full bg-blush blur-3xl" />
+      <section className="relative mt-20 overflow-hidden bg-butter/70 py-20">
+        <div className="pointer-events-none absolute -left-10 top-10 h-44 w-44 rounded-full bg-marigold/30 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-10 h-60 w-60 rounded-full bg-blush/80 blur-3xl" />
+        <div className="pointer-events-none absolute left-1/3 top-6 h-40 w-40 rounded-full bg-mint/60 blur-3xl" />
         <div className="container-kidia relative">
           <SectionHead eyebrow="The festive season" title="Celebrate in KIDIA" />
           <div className="grid gap-6 md:grid-cols-2">
@@ -139,11 +147,11 @@ const Index = () => {
               { I: Sparkles, t: "Styles for Every Moment", d: "Everyday, festive and special-occasion clothing." },
               { I: Heart, t: "Started by Mothers", d: "Founded by two moms who know what kids and parents really need." },
               { I: Ruler, t: "Made for Growing Kids", d: "Clear age labels and a detailed size guide." },
-            ].map(({ I, t, d }) => (
-              <motion.div key={t} {...fade} className="rounded-3xl bg-card p-8 shadow-soft">
-                <div className="mb-5 inline-flex rounded-2xl bg-peach p-3"><I className="h-6 w-6 text-primary" /></div>
+            ].map(({ I, t, d }, i) => (
+              <motion.div key={t} {...fade} className={`rounded-3xl p-8 shadow-soft ${PROMISE_TONES[i]}`}>
+                <div className="mb-5 inline-flex rounded-2xl bg-card p-3"><I className="h-6 w-6 text-primary" /></div>
                 <h3 className="font-serif text-xl">{t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+                <p className="mt-2 text-sm text-foreground/70">{d}</p>
               </motion.div>
             ))}
           </div>
@@ -168,11 +176,12 @@ const Index = () => {
 
       {/* Newsletter */}
       <section className="container-kidia">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-lavender px-6 py-16 text-center md:px-16">
-          <Sparkles className="absolute left-8 top-8 h-6 w-6 text-primary/40" />
-          <Sparkles className="absolute bottom-10 right-10 h-8 w-8 text-accent/40" />
+        <div className="bg-rainbow-soft relative overflow-hidden rounded-[2.5rem] px-6 py-16 text-center md:px-16">
+          <Sparkles className="absolute left-8 top-8 h-6 w-6 text-accent/60" />
+          <Sparkles className="absolute bottom-10 right-10 h-8 w-8 text-primary/40" />
+          <Sparkles className="absolute right-1/4 top-10 h-5 w-5 text-success" />
           <h2 className="section-title">Little Updates, Lovely Surprises.</h2>
-          <p className="mx-auto mt-3 max-w-md text-muted-foreground">New collections, festive edits and members-first news — straight to your inbox.</p>
+          <p className="mx-auto mt-3 max-w-md text-foreground/70">New collections, festive edits and members-first news — straight to your inbox.</p>
           <div className="mx-auto mt-8 max-w-lg text-left"><Newsletter /></div>
         </div>
       </section>

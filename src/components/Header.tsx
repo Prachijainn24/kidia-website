@@ -34,14 +34,14 @@ const AnnouncementBar = () => {
   }, []);
   if (!open) return null;
   return (
-    <div className="relative bg-primary text-primary-foreground text-xs sm:text-sm">
+    <div className="bg-rainbow relative text-foreground">
       <div className="container-kidia flex h-9 items-center justify-center overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.p key={i} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -12, opacity: 0 }} transition={{ duration: 0.3 }} className="truncate px-8 text-center font-semibold">
             {MESSAGES[i]}
           </motion.p>
         </AnimatePresence>
-        <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-primary-foreground/10">
+        <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-foreground/10">
           <X className="h-3.5 w-3.5" />
         </button>
       </div>

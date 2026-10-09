@@ -56,6 +56,7 @@ export default {
         blush: "hsl(var(--blush))",
         mint: "hsl(var(--mint))",
         lavender: "hsl(var(--lavender))",
+        sky: "hsl(var(--sky))",
         marigold: "hsl(var(--marigold))",
         success: "hsl(var(--success))",
         "primary-soft": "hsl(var(--primary-soft))",
