@@ -70,8 +70,8 @@
 
 @layer components {
   .container-kidia { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
-  .eyebrow { @apply text-xs font-bold uppercase text-accent; }
-  .section-title { @apply font-serif text-3xl md:text-4xl lg:text-5xl text-foreground; }
+  .eyebrow { @apply text-xs font-extrabold uppercase tracking-[0.18em] text-accent; }
+  .section-title { @apply font-display font-extrabold tracking-tight text-3xl md:text-4xl lg:text-5xl text-primary; }
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-lift { box-shadow: var(--shadow-lift); }
   .no-scrollbar::-webkit-scrollbar { display: none; }
