@@ -10,9 +10,7 @@ const cols = [
 ];
 
 export const Footer = () => (
-  <>
-    <div className="rainbow-bar" aria-hidden="true" />
-    <footer className="bg-secondary">
+  <footer className="bg-secondary">
     <div className="container-kidia grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5">
       <div className="lg:col-span-2 space-y-4">
         <Logo />
@@ -48,5 +46,4 @@ export const Footer = () => (
       <div className="container-kidia py-6 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
     </div>
   </footer>
-  </>
 );
