@@ -15,21 +15,21 @@ function Film({ src, webm, poster, title }: { src: string; webm: string; poster:
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [manual, setManual] = useState(false);
+  const manual = useRef(false);
   useEffect(() => {
     const video = ref.current;
-    if (!video || reduced || manual) return;
+    if (!video || reduced) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) void video.play().catch(() => setPlaying(false));
+      if (entry.isIntersecting && !manual.current) void video.play().catch(() => setPlaying(false));
       else video.pause();
     }, { threshold: 0.35 });
     observer.observe(video);
     return () => { observer.disconnect(); video.pause(); };
-  }, [reduced, manual]);
+  }, [reduced]);
   const toggle = async () => {
     const video = ref.current;
     if (!video) return;
-    setManual(true);
+    manual.current = true;
     if (video.paused) { try { await video.play(); } catch { setFailed(true); } }
     else video.pause();
   };
