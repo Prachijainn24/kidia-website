@@ -34,16 +34,16 @@ const Bestsellers = () => {
 const Index = () => (
   <Layout>
     <section className="relative isolate overflow-hidden bg-secondary" aria-labelledby="home-title">
-      <img src={garden} alt="Children in sage and ivory clothing sharing a happy garden moment" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover object-[65%_center]" />
-      <div className="absolute inset-0 bg-background/25 md:bg-transparent" />
-      <div className="container-kidia relative flex min-h-[580px] items-start py-12 sm:items-center sm:py-20 md:min-h-[620px]">
+      <img src={garden} alt="Children in sage and ivory clothing sharing a happy garden moment" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover object-[65%_center] max-sm:object-contain max-sm:object-bottom" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/65 via-transparent to-transparent max-sm:hidden" />
+      <div className="container-kidia relative flex min-h-[620px] items-start py-7 sm:min-h-[580px] sm:items-center sm:py-20 md:min-h-[620px]">
         <motion.div {...fade} className="max-w-[280px] sm:max-w-md">
-          <p className="mb-5 text-sm font-semibold text-primary">Thoughtfully chosen. Joyfully worn.</p>
-          <h1 id="home-title" className="font-serif text-6xl leading-none text-primary md:text-8xl">KIDIA</h1>
-          <p className="mt-4 font-serif text-3xl leading-tight sm:text-4xl">Little Styles.<br /><span className="italic text-accent">Big Smiles.</span></p>
-          <p className="mt-5 max-w-xs text-sm leading-relaxed sm:text-base">For garden adventures, family celebrations and all the little moments in between.</p>
-          <Button asChild size="lg" className="mt-7 h-12 rounded-md px-7"><Link to="/collections/new-arrivals">Discover the collection <ArrowRight className="h-4 w-4" /></Link></Button>
-          <p className="mt-6 text-xs text-primary">Indian kidswear · Ages 1–12</p>
+          <p className="mb-4 text-xs font-semibold text-primary sm:text-sm">Thoughtfully chosen. Joyfully worn.</p>
+          <h1 id="home-title" className="font-serif text-5xl leading-none text-primary sm:text-6xl md:text-8xl">KIDIA</h1>
+          <p className="mt-3 font-serif text-2xl leading-tight sm:mt-4 sm:text-4xl">Little Styles.<br /><span className="italic text-accent">Big Smiles.</span></p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed sm:mt-5 sm:text-base">For garden adventures, family celebrations and all the little moments in between.</p>
+          <Button asChild size="lg" className="mt-5 h-12 rounded-md px-7 sm:mt-7"><Link to="/collections/new-arrivals">Discover the collection <ArrowRight className="h-4 w-4" /></Link></Button>
+          <p className="mt-4 text-xs text-primary sm:mt-6">Indian kidswear · Ages 1–12</p>
         </motion.div>
       </div>
     </section>

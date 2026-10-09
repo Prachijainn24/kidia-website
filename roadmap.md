@@ -9,7 +9,7 @@
 - [x] Cart (size/colour, move to wishlist), wishlist page
 - [x] Size guide page
 - [x] Restyle New Arrivals to match the supplied Pinterest reference
-- [ ] Apply sage/cream boutique reference with distinct homepage sections; verify shopping and slideshow
+- [x] Apply sage/cream boutique reference with distinct homepage sections; verify shopping and slideshow
 
 ## Phase 2 (next)
 - [ ] Lovable Cloud: logins, profiles, addresses, wishlist/cart sync, welcome popup
