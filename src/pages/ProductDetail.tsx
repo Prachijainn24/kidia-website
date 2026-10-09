@@ -87,7 +87,7 @@ const ProductDetail = () => {
                 </button>
               ))}
             </div>
-            <button onClick={() => setZoom(true)} className="relative flex-1 overflow-hidden rounded-3xl bg-muted" aria-label="Enlarge image">
+            <button onClick={() => setZoom(true)} className="relative h-fit flex-1 self-start overflow-hidden rounded-3xl bg-muted" aria-label="Enlarge image">
               <AnimatePresence mode="wait">
                 <motion.img key={img} src={p.images[img]} alt={p.name} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="aspect-[3/4] w-full object-cover" />
               </AnimatePresence>
@@ -109,7 +109,7 @@ const ProductDetail = () => {
               <p className="text-xs text-muted-foreground">Inclusive of all taxes</p>
             </div>
             <p className="text-foreground/80">{p.description}</p>
-            <p className="text-sm"><span className="font-bold">Recommended age:</span> {sizes[0].replace("Y", "")} to {sizes[sizes.length - 1]} years</p>
+            <p className="text-sm"><span className="font-bold">Recommended age:</span> {parseInt(sizes[0])} to {parseInt(sizes[sizes.length - 1].split("-")[1])} years</p>
 
             <OptionPickers p={p} size={size} setSize={setSize} colour={colour} setColour={setColour} />
             {tried && !ready && <p className="text-sm font-semibold text-destructive" role="alert">Please select {!colour ? "a colour" : "a size"} to continue.</p>}

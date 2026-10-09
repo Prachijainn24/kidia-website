@@ -1,13 +1,13 @@
 # KIDIA roadmap
 
 ## Phase 1 (now)
-- [ ] Design system, logo, fonts, colors
-- [ ] Header (announcement bar, mega menu, search, mobile menu), footer
-- [ ] Homepage (all sections from brief)
-- [ ] Shop with filters/sort/search/load more; collection routes (boys, girls, festive, diwali, navratri, new, sale, age)
-- [ ] Product detail (colour/size required, gallery zoom, size chart, PIN check, recently viewed)
-- [ ] Cart (size/colour, move to wishlist), wishlist page
-- [ ] Size guide page
+- [x] Design system, logo, fonts, colors
+- [x] Header (announcement bar, mega menu, search, mobile menu), footer
+- [x] Homepage (all sections from brief)
+- [x] Shop with filters/sort/search/load more; collection routes (boys, girls, festive, diwali, navratri, new, sale, age)
+- [x] Product detail (colour/size required, gallery zoom, size chart, PIN check, recently viewed)
+- [x] Cart (size/colour, move to wishlist), wishlist page
+- [x] Size guide page
 
 ## Phase 2 (next)
 - [ ] Lovable Cloud: logins, profiles, addresses, wishlist/cart sync, welcome popup
