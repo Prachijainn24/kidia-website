@@ -1,35 +1,28 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Product } from '@/data/products';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface WishlistState {
-  items: Product[];
-  addItem: (product: Product) => void;
-  removeItem: (productId: string) => void;
-  isInWishlist: (productId: string) => boolean;
-  clearWishlist: () => void;
+  ids: string[];
+  toggle: (id: string) => boolean; // returns true if now saved
+  remove: (id: string) => void;
 }
 
 export const useWishlist = create<WishlistState>()(
   persist(
     (set, get) => ({
-      items: [],
-      addItem: (product) => {
-        const { items } = get();
-        if (!items.find((item) => item.id === product.id)) {
-          set({ items: [...items, product] });
-        }
+      ids: [],
+      toggle: (id) => {
+        const has = get().ids.includes(id);
+        set({ ids: has ? get().ids.filter((x) => x !== id) : [...get().ids, id] });
+        return !has;
       },
-      removeItem: (productId) => {
-        set({ items: get().items.filter((item) => item.id !== productId) });
-      },
-      isInWishlist: (productId) => {
-        return get().items.some((item) => item.id === productId);
-      },
-      clearWishlist: () => set({ items: [] }),
+      remove: (id) => set({ ids: get().ids.filter((x) => x !== id) }),
     }),
-    {
-      name: 'wishlist-storage',
-    }
+    { name: "kidia-wishlist" }
   )
+);
+
+interface RecentState { ids: string[]; push: (id: string) => void }
+export const useRecent = create<RecentState>()(
+  persist((set, get) => ({ ids: [], push: (id) => set({ ids: [id, ...get().ids.filter((x) => x !== id)].slice(0, 8) }) }), { name: "kidia-recent" })
 );
