@@ -12,6 +12,8 @@
 - [x] Apply sage/cream boutique reference with distinct homepage sections; verify shopping and slideshow
 
 ## Phase 2 (next)
+- [ ] Add animated brand videos and unique decorative props
+- [ ] Add sign-up, sign-in, sign-out and editable customer profiles
 - [ ] Lovable Cloud: logins, profiles, addresses, wishlist/cart sync, welcome popup
 - [ ] Checkout (test mode) + order confirmation, My Account, orders
 - [ ] Coupons, newsletter storage
