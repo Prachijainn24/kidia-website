@@ -8,6 +8,7 @@ import { NewArrivals } from "@/components/NewArrivals";
 import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
+import { CONTACT, instagramUrl } from "@/data/contact";
 
 const fade = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
@@ -160,8 +161,8 @@ const Index = () => {
           <img src={images.dhoti} alt="Maroon dhoti kurta" loading="lazy" className="aspect-square w-full rounded-[2rem] object-cover object-top" />
         </div>
         <div className="mt-12 text-center">
-          <p className="flex items-center justify-center gap-2 font-serif text-2xl"><Instagram className="h-5 w-5 text-primary" />@kidia.in</p>
-          <p className="mt-1 text-sm text-muted-foreground">Share your little one's KIDIA moments. Our Instagram gallery is coming soon.</p>
+          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 font-serif text-2xl hover:text-primary"><Instagram className="h-5 w-5 text-primary" />@{CONTACT.instagramHandle}</a>
+          <p className="mt-1 text-sm text-muted-foreground">Share your little one's KIDIA moments and follow us for new drops, festive edits and everyday style.</p>
         </div>
       </section>
 
