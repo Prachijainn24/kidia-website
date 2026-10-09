@@ -12,6 +12,9 @@ import { CONTACT, instagramUrl } from "@/data/contact";
 
 const fade = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
+const CAT_TONES = ["bg-peach", "bg-butter", "bg-mint", "bg-lavender", "bg-blush", "bg-sky", "bg-butter", "bg-peach"];
+const PROMISE_TONES = ["bg-peach", "bg-butter", "bg-mint", "bg-lavender"];
+
 const SectionHead = ({ eyebrow, title, link, linkText }: { eyebrow: string; title: string; link?: string; linkText?: string }) => (
   <motion.div {...fade} className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
     <div><p className="eyebrow mb-2">{eyebrow}</p><h2 className="section-title">{title}</h2></div>
@@ -49,11 +52,13 @@ const Index = () => {
       {/* Hero */}
       <section ref={heroRef} className="relative overflow-hidden bg-secondary">
         <motion.img style={{ y }} src={images.hero} alt="Children wearing KIDIA festive kurta sets and a pastel lehenga" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[70%_center]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent md:via-background/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-peach/20 md:via-background/55" />
+        <div className="pointer-events-none absolute -bottom-16 right-10 h-52 w-52 rounded-full bg-blush/70 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-36 w-36 rounded-full bg-mint/60 blur-3xl" />
         <div className="container-kidia relative flex min-h-[78svh] items-center py-20">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-xl">
-            <p className="eyebrow mb-4 flex items-center gap-2"><Sparkles className="h-4 w-4" />Festive Collection 2026</p>
-            <h1 className="font-serif text-5xl leading-[1.05] text-foreground md:text-7xl">Little Looks. <span className="italic text-primary">Big Festive Energy.</span></h1>
+            <p className="mb-4 flex w-fit items-center gap-2 rounded-full bg-butter px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-accent"><Sparkles className="h-4 w-4" />Festive Collection 2026</p>
+            <h1 className="font-serif text-5xl leading-[1.05] text-foreground md:text-7xl">Little Looks. <span className="italic rainbow-text">Big Festive Energy.</span></h1>
             <p className="mt-6 text-lg text-foreground/80">Everyday comfort, celebration-ready styles, and outfits made for their biggest little moments.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="h-12 rounded-full px-8"><Link to="/collections/new-arrivals">Shop New Arrivals</Link></Button>
@@ -73,7 +78,7 @@ const Index = () => {
                 <div className="aspect-square overflow-hidden rounded-[2rem] bg-muted">
                   <img src={c.image} alt={c.name} loading="lazy" className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-110" />
                 </div>
-                <p className="mt-3 text-center font-serif text-lg group-hover:text-primary">{c.name}</p>
+                <p className={`mx-auto mt-3 w-fit rounded-full px-4 py-1 text-center font-serif text-lg transition group-hover:shadow-soft ${CAT_TONES[i % CAT_TONES.length]}`}>{c.name}</p>
               </Link>
             </motion.div>
           ))}
