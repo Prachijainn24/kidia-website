@@ -8,6 +8,7 @@
 - [x] Product detail (colour/size required, gallery zoom, size chart, PIN check, recently viewed)
 - [x] Cart (size/colour, move to wishlist), wishlist page
 - [x] Size guide page
+- [x] Restyle New Arrivals to match the supplied Pinterest reference
 
 ## Phase 2 (next)
 - [ ] Lovable Cloud: logins, profiles, addresses, wishlist/cart sync, welcome popup

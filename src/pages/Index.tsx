@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Feather, Sparkles, ShoppingBag, Ruler, Instagram, Heart } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
+import { NewArrivals } from "@/components/NewArrivals";
 import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
@@ -41,7 +42,6 @@ const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const newest = [...products].filter((p) => p.isNew).slice(0, 8);
 
   return (
     <Layout>
@@ -80,12 +80,7 @@ const Index = () => {
       </section>
 
       {/* New arrivals */}
-      <section className="container-kidia py-12">
-        <SectionHead eyebrow="Just landed" title="New Arrivals" link="/collections/new-arrivals" linkText="View All New Arrivals" />
-        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
-          {newest.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </section>
+      <NewArrivals />
 
       {/* Festive spotlight */}
       <section className="relative mt-20 overflow-hidden bg-butter/60 py-20">
