@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Instagram, Facebook, Youtube, Mail, Phone } from "lucide-react";
+import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
+import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { Logo } from "./Logo";
 import { Newsletter } from "./Newsletter";
 
@@ -27,16 +28,17 @@ export const Footer = () => (
       ))}
       <div>
         <h3 className="mb-4 font-sans text-sm font-bold uppercase tracking-wider">Customer care</h3>
-        <ul className="space-y-2 text-sm text-muted-foreground">
-          <li className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@kidia.in*</li>
-          <li className="flex items-center gap-2"><Phone className="h-4 w-4" />+91 00000 00000*</li>
-          <li>Mon–Sat, 10am–7pm IST</li>
-          <li className="text-xs">*Placeholder details — to be replaced.</li>
+        <ul className="space-y-3 text-sm text-muted-foreground">
+          <li><a href={`mailto:${CONTACT.email}`} className="flex items-center gap-2 hover:text-primary"><Mail className="h-4 w-4" />{CONTACT.email}</a></li>
+          <li><a href={`tel:+${CONTACT.whatsappNumber}`} className="flex items-center gap-2 hover:text-primary"><Phone className="h-4 w-4" />{CONTACT.phoneDisplay}</a></li>
+          <li><a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary"><MessageCircle className="h-4 w-4" />Chat on WhatsApp</a></li>
+          <li><a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary"><Instagram className="h-4 w-4" />@{CONTACT.instagramHandle}</a></li>
+          <li>{CONTACT.hours}</li>
         </ul>
         <div className="mt-4 flex gap-2">
-          {[Instagram, Facebook, Youtube].map((I, i) => (
-            <a key={i} href="#" aria-label="Social link (to be added)" onClick={(e) => e.preventDefault()} className="rounded-full bg-background p-2 hover:text-primary"><I className="h-4 w-4" /></a>
-          ))}
+          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="KIDIA on Instagram" className="rounded-full bg-background p-2 hover:text-primary"><Instagram className="h-4 w-4" /></a>
+          <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" aria-label="Message KIDIA on WhatsApp" className="rounded-full bg-background p-2 hover:text-primary"><MessageCircle className="h-4 w-4" /></a>
+          <a href={`mailto:${CONTACT.email}`} aria-label="Email KIDIA" className="rounded-full bg-background p-2 hover:text-primary"><Mail className="h-4 w-4" /></a>
         </div>
       </div>
     </div>
