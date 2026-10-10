@@ -94,7 +94,7 @@ const Shop = () => {
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
   const Group = ({ title, k, opts, children }: { title: string; k?: Key; opts?: { v: string; l: string; swatch?: string }[]; children?: React.ReactNode }) => (
-    <AccordionItem value={title} defaultOpen={defaultOpen} className="border-b border-primary/10">
+    <AccordionItem value={title} className="border-b border-primary/10">
       <AccordionTrigger className="py-4 text-sm font-bold hover:no-underline">{title}</AccordionTrigger>
       <AccordionContent className="pb-5">
         {children ?? (
