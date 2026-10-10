@@ -60,3 +60,4 @@
 - [x] Scrollbar: match the theme (cream track, forest thumb) site-wide.
 - [x] "Why parents choose KIDIA": reverted to the original green section (user asked to change the white back to green).
 - [x] Navbar pill: reduce the white space above and below the links (top/bottom inside the floating bar).
+- [x] Baby approved section: decreased the white space below the review panel (desktop 28px, phone 20px bottom padding).
