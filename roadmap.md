@@ -49,5 +49,3 @@
 
 - [x] "A Little Celebration" festive section: trimmed top/bottom space (py-20/28 -> pt-12 pb-20, md:pt-16 md:pb-24), heading margins and the Navratri stagger; desktop height 1189px (was ~1310).
 
-- [x] Footer wordmark: removed the star and both sparkles from around KIDIA and pulled the remaining decorations closer to the word (left/right 9-13
-- [x] Footer wordmark: removed the star and both sparkles from around KIDIA and pulled the remaining decorations closer to the word (sides at 9-13%, sun/cloud/butterfly hugging the top and bottom).
