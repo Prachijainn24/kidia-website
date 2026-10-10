@@ -20,12 +20,11 @@ const MESSAGES = [
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/collections/new-arrivals", label: "New Arrivals" },
+  { to: "/collections/sale", label: "Sale" },
   { to: "/collections/boys", label: "Boys", mega: "boys" },
   { to: "/collections/girls", label: "Girls", mega: "girls" },
-  { to: "/shop", label: "Clothing", mega: "all" },
-  { to: "/collections/sale", label: "Sale" },
 ];
+
 
 const AnnouncementBar = () => {
   const [i, setI] = useState(0);
