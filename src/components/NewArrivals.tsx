@@ -25,7 +25,7 @@ export const NewArrivals = () => {
   }, [paused]);
 
   return (
-    <section aria-labelledby="new-arrivals-title" className="bg-background pb-16 md:pb-24">
+    <section aria-labelledby="new-arrivals-title" className="bg-background">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
