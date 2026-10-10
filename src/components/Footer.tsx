@@ -123,24 +123,10 @@ export const Footer = () => (
             >KIDIA</text>
           </svg>
 
-          {/* hugging the word — left */}
-          <Float className="hidden left-[9%] top-[24%] h-9 w-9 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
-          <Float className="hidden left-[13%] top-[54%] h-8 w-8 text-sky/80 lg:block" delay={0.9}><Hanger /></Float>
-          <Float className="hidden left-[10%] top-[76%] h-6 w-6 text-coral/80 sm:block" delay={1.4}><Heart /></Float>
+          {/* two little flowers, one each side of the word */}
+          <Float className="left-[7%] top-[34%] h-6 w-6 text-blush/80 sm:left-[9%] sm:h-9 sm:w-9" delay={0.4}><Flower /></Float>
+          <Float className="right-[7%] top-[34%] h-6 w-6 text-coral/80 sm:right-[9%] sm:h-8 sm:w-8" delay={0.2}><Daisy /></Float>
 
-          {/* hugging the word — right */}
-          <Float className="hidden right-[9%] top-[24%] h-8 w-8 text-coral/80 sm:block" delay={0.2}><Daisy /></Float>
-          <Float className="hidden right-[13%] top-[54%] h-8 w-8 text-plum/70 lg:block" delay={0.5}><Tee /></Float>
-          <Float className="hidden right-[10%] top-[76%] h-7 w-7 text-blush/90 sm:block" delay={0.6}><Bow /></Float>
-
-          {/* just above and below the word */}
-          <Float className="hidden right-[22%] top-[2%] h-7 w-7 text-plum/70 lg:block" delay={2.1}><Butterfly /></Float>
-          <Float className="hidden left-[22%] bottom-0 h-10 w-10 text-butter/90 sm:block" delay={0.8} spin><Sunburst /></Float>
-          <Float className="hidden left-[48%] -bottom-1 h-6 w-6 text-sky/80 sm:block" delay={1.9}><Cloud /></Float>
-
-          {/* phone: two tiny accents tucked in the wordmark's side padding */}
-          <Float className="left-[2%] top-[38%] h-5 w-5 text-blush/70 sm:hidden" delay={0.4}><Flower /></Float>
-          <Float className="right-[2%] top-[38%] h-5 w-5 text-marigold/80 sm:hidden" delay={1.2} spin><Sunburst /></Float>
 
         </div>
 
