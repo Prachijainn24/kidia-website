@@ -168,8 +168,12 @@ export const Header = () => {
         </div>
         <AnimatePresence>
           {mega && (
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full mt-2 hidden rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl min-[900px]:block sm:inset-x-5">
-              <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full hidden min-[900px]:block sm:inset-x-5">
+              {/* invisible bridge: keeps the pointer inside the header while crossing the gap */}
+              <div className="h-2" />
+              <div className="rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl">
+                <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
+              </div>
             </motion.div>
           )}
           {search && (
