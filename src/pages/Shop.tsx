@@ -13,7 +13,8 @@ import NotFound from "./NotFound";
 const PAGE = 6;
 const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
 const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
-const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }, { v: "unisex", l: "Unisex" }];
+const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }];
+const GENDER_LABEL: Record<string, string> = { boys: "Boys", girls: "Girls", unisex: "Unisex" };
 
 type Key = "category" | "gender" | "age" | "size" | "colour" | "occasion" | "price" | "flags";
 
@@ -88,7 +89,7 @@ const Shop = () => {
     .forEach((n, i, arr) => { if (i && n - arr[i - 1] > 1) pageItems.push("…"); pageItems.push(n); });
 
   const chipLabel = (k: Key, v: string) =>
-    k === "category" ? categoryName(v) : k === "gender" ? GENDERS.find((g) => g.v === v)?.l : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
+    k === "category" ? categoryName(v) : k === "gender" ? GENDER_LABEL[v] : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
   const Group = ({ title, k, opts }: { title: string; k: Key; opts: { v: string; l: string; swatch?: string }[] }) => (
