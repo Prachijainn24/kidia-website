@@ -30,3 +30,5 @@
 - [x] Footer: remove the extra blank space so it looks tighter
 - [x] "Baby Approved, Parents Confirmed" review section after Why parents choose KIDIA (real reviews only)
 - [x] Remove the "Little stories in motion" lookbook section from the homepage
+- [x] Sizes section: trim extra top/bottom space (py-8 md:py-12)
+- [x] Remove the "Little moments, beautifully dressed" Instagram album section from the homepage

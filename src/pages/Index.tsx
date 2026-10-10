@@ -1,14 +1,13 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Instagram, Heart, Ribbon, Star, Shirt } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Heart, Ribbon, Star, Shirt } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { NewArrivals } from "@/components/NewArrivals";
 import { CollectionStrip } from "@/components/CollectionStrip";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, images, products } from "@/data/catalog";
-import { CONTACT, instagramUrl } from "@/data/contact";
 import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 import { BabyApproved } from "@/components/BabyApproved";
 
@@ -52,7 +51,7 @@ const Index = () => (
       </div>
     </section>
 
-    <section className="bg-butter/60 py-16 md:py-24" aria-labelledby="age-title"><div className="container-kidia">
+    <section className="bg-butter/60 py-8 md:py-12" aria-labelledby="age-title"><div className="container-kidia">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="eyebrow mb-2">With them as they grow</p><h2 id="age-title" className="section-title">Small steps. New sizes.</h2></div><Button asChild variant="link" className="px-0"><Link to="/size-guide"><Ruler className="h-4 w-4" /> Size guide</Link></Button></div>
       <div className="grid grid-cols-2 md:grid-cols-4">
         {AGE_GROUPS.map((a, i) => <Link key={a.slug} to={`/shop?age=${a.slug}`} className="age-ruler group border-l border-primary/30 px-4 pb-8 pt-5 transition hover:bg-background sm:px-8"><span className="text-xs text-muted-foreground">0{i + 1}</span><p className="mt-3 font-serif text-4xl text-primary">{a.label.split(' ')[0]}<span className="ml-2 font-sans text-xs text-muted-foreground">years</span></p><span className="mt-4 flex items-center justify-between text-sm">{['First adventures', 'Playful little days', 'Growing imaginations', 'Their own style'][i]}<ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-1" /></span></Link>)}
@@ -60,14 +59,6 @@ const Index = () => (
       </div>
     </section>
 
-
-
-    <section className="container-kidia py-16 md:py-24" aria-labelledby="lookbook-title">
-      <div className="grid items-center gap-8 md:grid-cols-[1fr_1.4fr]">
-        <div className="text-center md:text-left"><Instagram className="mb-4 inline-block h-7 w-7 text-accent" strokeWidth={1} /><p className="eyebrow mb-3">The KIDIA album</p><h2 id="lookbook-title" className="section-title">Little moments,<br /><span className="italic">beautifully dressed.</span></h2><a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 border-b border-primary pb-2 text-sm font-semibold text-primary">@{CONTACT.instagramHandle}<ArrowUpRight className="h-4 w-4" /></a></div>
-        <div className="grid grid-cols-2 items-center gap-4 sm:gap-7"><Link to="/collections/ethnic-festive" className="block -rotate-3 bg-card p-3 shadow-soft transition hover:rotate-0"><img src={images.hero} alt="Sibling festive styles from the KIDIA lookbook" loading="lazy" width={1920} height={1088} className="aspect-[4/5] w-full object-cover object-right" /><p className="py-3 text-center font-serif text-sm italic">Together is our favourite.</p></Link><Link to="/collections/girls" className="mt-12 block rotate-3 bg-card p-3 shadow-soft transition hover:rotate-0"><img src={images.dress} alt="Blush dress for a special little occasion" loading="lazy" width={768} height={1024} className="aspect-[4/5] w-full object-cover" /><p className="py-3 text-center font-serif text-sm italic">A little dress-up day.</p></Link></div>
-      </div>
-    </section>
 
     <section className="relative overflow-hidden bg-primary py-16 text-primary-foreground md:py-24" aria-labelledby="promise-title"><Float className="right-[4%] top-8 h-20 w-20 text-marigold/80" spin><Sunburst /></Float><Float className="bottom-8 left-[45%] h-12 w-12 text-blush/70" delay={1}><Flower /></Float>
       <div className="container-kidia grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-20">
