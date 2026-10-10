@@ -15,7 +15,7 @@ const bumps = (n: number) => Array.from({ length: n });
 
 /** Cream "postage stamp" panel: same-colour bumps on all four edges read as one deliberate scalloped seam */
 const StampPanel = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex p-3">
+  <div className="relative flex self-start p-3">
     <div aria-hidden className="pointer-events-none absolute inset-x-8 top-0 flex justify-between">
       {bumps(11).map((_, i) => <span key={`t${i}`} className="h-6 w-6 rounded-full bg-background" />)}
     </div>
