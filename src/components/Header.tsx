@@ -13,9 +13,9 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
 const MESSAGES = [
-  "Festive Season Is Here — Discover KIDIA's New Collection",
-  "Free Shipping on Eligible Orders",
-  "Find Their Perfect Fit with Our Size Guide",
+  { full: "Festive Season Is Here — Discover KIDIA's New Collection", short: "Festive Season Is Here" },
+  { full: "Free Shipping on Eligible Orders", short: "Free Shipping on Eligible Orders" },
+  { full: "Find Their Perfect Fit with Our Size Guide", short: "Find Their Perfect Fit" },
 ];
 
 const NAV = [
@@ -38,7 +38,10 @@ const AnnouncementBar = () => {
     <div className="relative bg-primary text-primary-foreground">
       <div className="container-kidia flex h-9 items-center justify-center overflow-hidden">
         <AnimatePresence mode="wait">
-          <motion.p key={i} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -12, opacity: 0 }} transition={{ duration: 0.3 }} className="truncate px-8 text-center font-semibold">
+          <motion.p key={i} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -12, opacity: 0 }} transition={{ duration: 0.3 }} className="min-w-0 px-8 text-center font-semibold">
+            <span className="block truncate sm:hidden">{MESSAGES[i].short}</span>
+            <span className="hidden truncate sm:block">{MESSAGES[i].full}</span>
+          </motion.p>
             {MESSAGES[i]}
           </motion.p>
         </AnimatePresence>
