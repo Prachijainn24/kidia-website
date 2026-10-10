@@ -52,7 +52,7 @@ const Index = () => (
       </div>
     </section>
 
-    <section className="bg-butter/60 py-16 md:py-24" aria-labelledby="age-title"><div className="container-kidia">
+    <section className="bg-butter/60 py-8 md:py-12" aria-labelledby="age-title"><div className="container-kidia">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="eyebrow mb-2">With them as they grow</p><h2 id="age-title" className="section-title">Small steps. New sizes.</h2></div><Button asChild variant="link" className="px-0"><Link to="/size-guide"><Ruler className="h-4 w-4" /> Size guide</Link></Button></div>
       <div className="grid grid-cols-2 md:grid-cols-4">
         {AGE_GROUPS.map((a, i) => <Link key={a.slug} to={`/shop?age=${a.slug}`} className="age-ruler group border-l border-primary/30 px-4 pb-8 pt-5 transition hover:bg-background sm:px-8"><span className="text-xs text-muted-foreground">0{i + 1}</span><p className="mt-3 font-serif text-4xl text-primary">{a.label.split(' ')[0]}<span className="ml-2 font-sans text-xs text-muted-foreground">years</span></p><span className="mt-4 flex items-center justify-between text-sm">{['First adventures', 'Playful little days', 'Growing imaginations', 'Their own style'][i]}<ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-1" /></span></Link>)}
