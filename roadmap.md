@@ -35,3 +35,4 @@
 - [ ] KIDIA logo: explore two concepts, get the user's pick, then apply it across the site
 - [ ] Footer: remove remaining extra space above and below the footer content
 - [ ] Little favourites: show only the top 8 bestsellers and improve the section's presentation
+- [ ] Footer: rebuild to match the user's uploaded reference image (user-uploads://image-4.png)
