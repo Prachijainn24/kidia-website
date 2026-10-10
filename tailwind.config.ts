@@ -18,6 +18,7 @@ export default {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         display: ["Bricolage Grotesque", "var(--font-serif)", "sans-serif"],
         hand: ["Caveat", "cursive"],
+        script: ["Pacifico", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",
