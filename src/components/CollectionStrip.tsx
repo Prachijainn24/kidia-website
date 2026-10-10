@@ -31,7 +31,6 @@ export const CollectionStrip = () => {
     <section className="container-kidia py-16 md:py-24" aria-labelledby="category-title">
       <div className="mb-8 flex items-end justify-between gap-4">
         <div>
-          <p className="eyebrow mb-2">Their little wardrobe</p>
           <h2 id="category-title" className="font-display text-4xl font-extrabold text-primary md:text-5xl">Collection</h2>
         </div>
         <div className="flex items-center gap-3">
