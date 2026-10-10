@@ -15,6 +15,10 @@ import { AuthProvider } from "./hooks/useAuth";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
 import ResetPassword from "./pages/ResetPassword";
+import RefundReturns from "./pages/RefundReturns";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
 
 const queryClient = new QueryClient();
 
@@ -37,6 +41,10 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/account" element={<Account />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/refund-returns" element={<RefundReturns />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         </AuthProvider>
