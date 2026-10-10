@@ -37,7 +37,7 @@ export const NewArrivals = () => {
         onMouseLeave={() => setPaused(false)}
         className="relative isolate overflow-hidden bg-secondary"
       >
-        <div className="relative h-[460px] w-full sm:h-[560px] md:h-[620px]">
+        <div className="relative h-[100svh] min-h-[520px] w-full overflow-hidden">
           <AnimatePresence mode="sync">
             <motion.img
               key={index}
@@ -52,7 +52,7 @@ export const NewArrivals = () => {
             />
           </AnimatePresence>
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/25 via-45% to-transparent" />
         <div className="pointer-events-none container-kidia absolute inset-x-0 bottom-24">
           <p className="mb-3 text-sm text-primary-foreground">A new chapter of little styles</p>
           <h1 id="new-arrivals-title" className="font-serif text-5xl font-normal leading-none text-primary-foreground sm:text-7xl md:text-8xl">New <span className="italic">Arrivals</span></h1>

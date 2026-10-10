@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, Search, ShoppingBag, X, ChevronDown, Ruler } from "lucide-react";
 import { Logo } from "./Logo";
@@ -127,17 +127,37 @@ const Badge = ({ n }: { n: number }) =>
 
 export const Header = () => {
   const { user } = useAuth();
+  const { pathname } = useLocation();
   const cart = useCartCount();
   const wish = useWishlist((s) => s.ids.length);
   const [mega, setMega] = useState<string | null>(null);
   const [search, setSearch] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (y > last + 6) setHidden(true);
+      else if (y < last - 6) setHidden(false);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const solid = !isHome || scrolled;
 
   return (
     <>
-      <AnnouncementBar />
-      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur" onMouseLeave={() => setMega(null)}>
-        <div className="container-kidia flex h-16 items-center justify-between gap-4 md:h-20">
+      <div className={cn(isHome ? "fixed inset-x-0" : "sticky", "top-0 z-40 transition-transform duration-300 ease-out", hidden && "-translate-y-full")}>
+        <AnnouncementBar />
+        <header className="px-3 pt-3 sm:px-5" onMouseLeave={() => setMega(null)}>
+          <div className={cn("container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border transition-colors duration-300 md:h-[74px]", solid ? "border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl" : "border-transparent bg-transparent")}>
           <div className="flex items-center gap-2">
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
@@ -153,24 +173,25 @@ export const Header = () => {
           </nav>
           <div className="flex items-center gap-1">
             <AccountMenu />
-            <button aria-label="Search" onClick={() => setSearch((s) => !s)} className="rounded-full p-2 hover:bg-muted"><Search className="h-5 w-5" /></button>
+            <button aria-label="Search" onClick={() => { setMega(null); setSearch((s) => !s); }} className="rounded-full p-2 hover:bg-muted"><Search className="h-5 w-5" /></button>
             <Link to="/wishlist" aria-label={`Wishlist, ${wish} items`} className="relative rounded-full p-2 hover:bg-muted"><Heart className="h-5 w-5" /><Badge n={wish} /></Link>
             <Link to="/cart" aria-label={`Bag, ${cart} items`} className="relative rounded-full p-2 hover:bg-muted"><ShoppingBag className="h-5 w-5" /><Badge n={cart} /></Link>
           </div>
         </div>
         <AnimatePresence>
           {mega && (
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full hidden border-b bg-background shadow-soft min-[900px]:block">
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full mt-2 hidden rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl min-[900px]:block sm:inset-x-5">
               <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
             </motion.div>
           )}
           {search && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full border-b bg-background shadow-soft">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full mt-2 rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl sm:inset-x-5">
               <SearchBox onDone={() => setSearch(false)} />
             </motion.div>
           )}
         </AnimatePresence>
-      </header>
+        </header>
+      </div>
 
       <Sheet open={mobile} onOpenChange={setMobile}>
         <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto bg-background">
