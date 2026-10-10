@@ -77,17 +77,6 @@ export const NewArrivals = () => {
           ))}
         </div>
       </motion.div>
-      <div className="container-kidia pt-10">
-        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="font-serif text-3xl italic text-primary md:text-4xl">Just landed, <span className="text-accent">just lovely.</span></p>
-          <Button asChild variant="link" className="h-auto shrink-0 px-0 text-xs font-bold sm:text-sm">
-            <Link to="/collections/new-arrivals">View All<ArrowUpRight /></Link>
-          </Button>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
-          {newest.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </div>
     </section>
   );
 };
