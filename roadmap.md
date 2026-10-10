@@ -54,3 +54,9 @@
 - [x] Footer wordmark: trimmed to two flowers only (user: "remove most elements"); star/sparkles/hanger/tee/bow/heart/butterfly/cloud removed from that block.
 - [x] Collection strip: smaller on phone only — narrower cards, shorter label strip, tighter heading/padding (md and up unchanged); verify height at 390px.
 - [x] Footer wordmark: add a sun and a diamond beside KIDIA (new Diamond motif added to Motifs.tsx).
+- [x] Footer wordmark: add a shimmer sweep (later removed at user request) across the cursive KIDIA (skipped for reduced-motion users).
+- [x] "Why parents choose KIDIA" section: try white/cream instead of green — pick whichever suits the boutique theme; verify contrast and the section above/below.
+- [x] Footer wordmark: shimmer removed (user: "remove shimmer") — plain butter letters, no gloss sweep.
+- [x] Scrollbar: match the theme (cream track, forest thumb) site-wide.
+- [x] "Why parents choose KIDIA": reverted to the original green section (user asked to change the white back to green).
+- [x] Navbar pill: reduce the white space above and below the links (top/bottom inside the floating bar).

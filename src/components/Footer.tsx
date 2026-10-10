@@ -42,6 +42,19 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+/** Giant cursive KIDIA wordmark */
+const Wordmark = () => {
+  return (
+    <svg viewBox="-62 -73 900 344" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
+      <text
+        x="380" y="162" textAnchor="middle"
+        className="font-script"
+        style={{ fontSize: 150, fontWeight: 400, letterSpacing: "0.02em", paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 13, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
+      >KIDIA</text>
+    </svg>
+  );
+};
+
 export const Footer = () => (
   <div className="bg-butter/35">
     <footer className="overflow-hidden rounded-t-[2.5rem] bg-primary md:rounded-t-[4rem]">
@@ -115,13 +128,7 @@ export const Footer = () => (
 
         {/* ---------- giant cursive sticker wordmark, ringed with brand doodles ---------- */}
         <div className="relative mt-4 px-1">
-          <svg viewBox="-62 -73 900 344" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
-            <text
-              x="380" y="162" textAnchor="middle"
-              className="font-script"
-              style={{ fontSize: 150, fontWeight: 400, letterSpacing: "0.02em", paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 13, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
-            >KIDIA</text>
-          </svg>
+          <Wordmark />
 
           {/* flowers, sun and diamond close around the word */}
           <Float className="left-[7%] top-[34%] h-6 w-6 text-blush/80 sm:left-[9%] sm:h-9 sm:w-9" delay={0.4}><Flower /></Float>
