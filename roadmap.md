@@ -52,5 +52,5 @@
 - [x] Footer wordmark: removed the star and both sparkles from around KIDIA and pulled the remaining decorations closer to the word.
 
 - [x] Footer wordmark: trimmed to two flowers only (user: "remove most elements"); star/sparkles/hanger/tee/bow/heart/butterfly/cloud removed from that block.
-- [ ] Collection strip: smaller on phone only — narrower cards, shorter label strip, tighter heading/padding (md and up unchanged); verify height at 390px.
-- [ ] Footer wordmark: add a sun and a diamond beside KIDIA (new Diamond motif added to Motifs.tsx).
+- [x] Collection strip: smaller on phone only — narrower cards, shorter label strip, tighter heading/padding (md and up unchanged); verify height at 390px.
+- [x] Footer wordmark: add a sun and a diamond beside KIDIA (new Diamond motif added to Motifs.tsx).
