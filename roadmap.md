@@ -10,6 +10,8 @@
 - [x] Size guide page
 - [x] Restyle New Arrivals to match the supplied Pinterest reference
 - [x] Apply sage/cream boutique reference with distinct homepage sections; verify shopping and slideshow
+- [x] Hero banner photos re-framed so the children are never cut off; verified on desktop (1280 & 1600) and phone
+- [ ] Floating translucent navbar (pill that detaches from the top edge); verify on desktop and phone
 
 ## Phase 2 (next)
 - [x] Add animated brand videos and unique decorative props

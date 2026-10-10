@@ -136,8 +136,8 @@ export const Header = () => {
   return (
     <>
       <AnnouncementBar />
-      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur" onMouseLeave={() => setMega(null)}>
-        <div className="container-kidia flex h-16 items-center justify-between gap-4 md:h-20">
+      <header className="sticky top-3 z-40 px-3 sm:px-5" onMouseLeave={() => setMega(null)}>
+        <div className="container-kidia flex h-16 items-center justify-between gap-4 rounded-full border border-foreground/10 bg-background/85 shadow-soft backdrop-blur-xl md:h-[68px]">
           <div className="flex items-center gap-2">
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
@@ -160,12 +160,12 @@ export const Header = () => {
         </div>
         <AnimatePresence>
           {mega && (
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full hidden border-b bg-background shadow-soft min-[900px]:block">
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full mt-2 hidden rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl min-[900px]:block sm:inset-x-5">
               <div className="container-kidia" onClick={() => setMega(null)}><MegaMenu kind={mega} /></div>
             </motion.div>
           )}
           {search && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-x-0 top-full border-b bg-background shadow-soft">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-x-3 top-full mt-2 rounded-3xl border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl sm:inset-x-5">
               <SearchBox onDone={() => setSearch(false)} />
             </motion.div>
           )}
