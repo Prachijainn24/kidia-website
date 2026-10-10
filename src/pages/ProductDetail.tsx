@@ -79,7 +79,7 @@ const ProductDetail = () => {
       <div className="container-kidia py-8">
         <nav className="mb-6 text-xs text-muted-foreground"><Link to="/" className="hover:text-primary">Home</Link> / <Link to={`/shop?category=${p.category}`} className="hover:text-primary">{categoryName(p.category)}</Link> / {p.name}</nav>
         <div className="grid gap-10 lg:grid-cols-2">
-          <div className="flex flex-col-reverse gap-4 md:flex-row">
+          <div className="flex flex-col-reverse gap-4 md:flex-row lg:sticky lg:top-24 lg:self-start">
             <div className="flex gap-3 md:flex-col">
               {p.images.map((src, i) => (
                 <button key={i} onClick={() => setImg(i)} aria-label={`View image ${i + 1}`} className={`h-24 w-20 overflow-hidden rounded-xl border-2 ${img === i ? "border-primary" : "border-transparent"}`}>
