@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { SlidersHorizontal, X, SearchX } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, X, SearchX } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, products, sizeStartAge } from "@/data/catalog";
 import NotFound from "./NotFound";
 
-const PAGE = 8;
+const PAGE = 6;
 const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
 const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
 const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }, { v: "unisex", l: "Unisex" }];
@@ -20,23 +20,31 @@ type Key = "category" | "gender" | "age" | "size" | "colour" | "occasion" | "pri
 const Shop = () => {
   const { slug } = useParams();
   const [params, setParams] = useSearchParams();
-  const [visible, setVisible] = useState(PAGE);
+  const gridRef = useRef<HTMLDivElement>(null);
   const [mobileFilters, setMobileFilters] = useState(false);
   const collection = slug ? COLLECTIONS[slug] : undefined;
 
   const get = (k: Key) => params.get(k)?.split(",").filter(Boolean) ?? [];
   const q = params.get("q") ?? "";
   const sort = params.get("sort") ?? "recommended";
+  const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
+
+  const goPage = (n: number) => {
+    const p = new URLSearchParams(params);
+    if (n <= 1) p.delete("page"); else p.set("page", String(n));
+    setParams(p, { replace: true });
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const toggle = (k: Key, v: string) => {
     const cur = get(k);
     const next = cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v];
     const p = new URLSearchParams(params);
     next.length ? p.set(k, next.join(",")) : p.delete(k);
+    p.delete("page");
     setParams(p, { replace: true });
-    setVisible(PAGE);
   };
-  const setOne = (k: string, v: string) => { const p = new URLSearchParams(params); v ? p.set(k, v) : p.delete(k); setParams(p, { replace: true }); };
+  const setOne = (k: string, v: string) => { const p = new URLSearchParams(params); v ? p.set(k, v) : p.delete(k); p.delete("page"); setParams(p, { replace: true }); };
   const clearAll = () => setParams(q ? { q } : {}, { replace: true });
 
   const results = useMemo(() => {
@@ -69,6 +77,15 @@ const Shop = () => {
   }, [params, collection]);
 
   if (slug && !collection) return <NotFound />;
+
+  const pages = Math.max(1, Math.ceil(results.length / PAGE));
+  const cur = Math.min(page, pages);
+  const start = (cur - 1) * PAGE;
+  const shown = results.slice(start, start + PAGE);
+  const pageItems: (number | "…")[] = [];
+  Array.from({ length: pages }, (_, i) => i + 1)
+    .filter((n) => pages <= 7 || n === 1 || n === pages || Math.abs(n - cur) <= 1)
+    .forEach((n, i, arr) => { if (i && n - arr[i - 1] > 1) pageItems.push("…"); pageItems.push(n); });
 
   const chipLabel = (k: Key, v: string) =>
     k === "category" ? categoryName(v) : k === "gender" ? GENDERS.find((g) => g.v === v)?.l : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
@@ -171,14 +188,22 @@ const Shop = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-                  {results.slice(0, visible).map((p) => <ProductCard key={p.id} p={p} />)}
+                <div ref={gridRef} className="grid scroll-mt-28 grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+                  {shown.map((p) => <ProductCard key={p.id} p={p} />)}
                 </div>
-                {visible < results.length && (
-                  <div className="mt-12 text-center">
-                    <p className="mb-3 text-xs text-muted-foreground">Showing {visible} of {results.length}</p>
-                    <Button variant="outline" className="rounded-full px-10" onClick={() => setVisible((v) => v + PAGE)}>Load more</Button>
-                  </div>
+                {pages > 1 && (
+                  <>
+                    <nav className="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Product pages">
+                      <button onClick={() => goPage(cur - 1)} disabled={cur === 1} aria-label="Previous page" className="grid h-10 w-10 place-items-center rounded-full border text-primary transition hover:border-primary disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
+                      {pageItems.map((n, i) => n === "…" ? (
+                        <span key={`gap${i}`} className="px-1 text-sm text-muted-foreground">…</span>
+                      ) : (
+                        <button key={n} onClick={() => goPage(n)} aria-current={n === cur ? "page" : undefined} className={`grid h-10 w-10 place-items-center rounded-full border text-sm font-bold transition ${n === cur ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{n}</button>
+                      ))}
+                      <button onClick={() => goPage(cur + 1)} disabled={cur === pages} aria-label="Next page" className="grid h-10 w-10 place-items-center rounded-full border text-primary transition hover:border-primary disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
+                    </nav>
+                    <p className="mt-4 text-center text-xs text-muted-foreground">Showing {start + 1}–{start + shown.length} of {results.length}</p>
+                  </>
                 )}
               </>
             )}

@@ -7,6 +7,8 @@ import { Layout } from "@/components/Layout";
 import { ProductCard, WishButton } from "@/components/ProductCard";
 import { OptionPickers } from "@/components/QuickAdd";
 import { SizeChart } from "@/components/SizeChart";
+import { ProductReviews } from "@/components/ProductReviews";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -79,7 +81,7 @@ const ProductDetail = () => {
       <div className="container-kidia py-8">
         <nav className="mb-6 text-xs text-muted-foreground"><Link to="/" className="hover:text-primary">Home</Link> / <Link to={`/shop?category=${p.category}`} className="hover:text-primary">{categoryName(p.category)}</Link> / {p.name}</nav>
         <div className="grid gap-10 lg:grid-cols-2">
-          <div className="flex flex-col-reverse gap-4 md:flex-row">
+          <div className="flex flex-col-reverse gap-4 md:flex-row lg:sticky lg:top-24 lg:self-start">
             <div className="flex gap-3 md:flex-col">
               {p.images.map((src, i) => (
                 <button key={i} onClick={() => setImg(i)} aria-label={`View image ${i + 1}`} className={`h-24 w-20 overflow-hidden rounded-xl border-2 ${img === i ? "border-primary" : "border-transparent"}`}>
@@ -128,18 +130,20 @@ const ProductDetail = () => {
 
             <PinCheck />
 
-            <Accordion type="multiple" defaultValue={["fabric"]}>
-              <AccordionItem value="fabric"><AccordionTrigger>Fabric & care</AccordionTrigger>
-                <AccordionContent><p className="mb-2">{p.fabric}</p><ul className="list-disc pl-5">{p.care.map((c) => <li key={c}>{c}</li>)}</ul></AccordionContent></AccordionItem>
-              <AccordionItem value="sizes"><AccordionTrigger>Available sizes</AccordionTrigger>
-                <AccordionContent>{sizes.map((s) => `${s}${p.stock[s] === 0 ? " (sold out)" : ""}`).join(" · ")}. Please check garment measurements in the size chart before ordering.</AccordionContent></AccordionItem>
-              <AccordionItem value="returns"><AccordionTrigger><span className="flex items-center gap-2"><RotateCcw className="h-4 w-4" />Returns & exchanges</span></AccordionTrigger>
-                <AccordionContent>Our returns and exchange policy will be published before launch. Unworn items with original tags will be eligible for exchange.</AccordionContent></AccordionItem>
-              <AccordionItem value="reviews"><AccordionTrigger>Reviews</AccordionTrigger>
-                <AccordionContent>No reviews yet. Reviews from verified buyers will appear here.</AccordionContent></AccordionItem>
-            </Accordion>
           </div>
         </div>
+
+        <Accordion type="multiple" defaultValue={["fabric"]} className="mt-14 max-w-4xl border-t border-primary/10 pt-6">
+          <AccordionItem value="fabric"><AccordionTrigger>Fabric & care</AccordionTrigger>
+            <AccordionContent><p className="mb-2">{p.fabric}</p><ul className="list-disc pl-5">{p.care.map((c) => <li key={c}>{c}</li>)}</ul></AccordionContent></AccordionItem>
+          <AccordionItem value="sizes"><AccordionTrigger>Available sizes</AccordionTrigger>
+            <AccordionContent>{sizes.map((s) => `${s}${p.stock[s] === 0 ? " (sold out)" : ""}`).join(" · ")}. Please check garment measurements in the size chart before ordering.</AccordionContent></AccordionItem>
+          <AccordionItem value="returns"><AccordionTrigger><span className="flex items-center gap-2"><RotateCcw className="h-4 w-4" />Returns & exchanges</span></AccordionTrigger>
+            <AccordionContent>Our returns and exchange policy will be published before launch. Unworn items with original tags will be eligible for exchange.</AccordionContent></AccordionItem>
+        </Accordion>
+
+        <ProductReviews p={p} />
+
 
         {related.length > 0 && (
           <section className="mt-24"><h2 className="section-title mb-8">You may also like</h2>
