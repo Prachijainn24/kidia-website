@@ -62,3 +62,4 @@
 - [x] Navbar pill: reduce the white space above and below the links (top/bottom inside the floating bar).
 - [x] Baby approved section: decreased the white space below the review panel (desktop 28px, phone 20px bottom padding).
 - [ ] Product cards: decrease card height (user is on /collections/sale).
+- [ ] Shop/collection list: numbered pagination.
