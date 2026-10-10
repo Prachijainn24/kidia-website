@@ -126,8 +126,9 @@ export const Footer = () => (
           {/* flowers, sun and diamond close around the word */}
           <Float className="left-[7%] top-[34%] h-6 w-6 text-blush/80 sm:left-[9%] sm:h-9 sm:w-9" delay={0.4}><Flower /></Float>
           <Float className="right-[7%] top-[34%] h-6 w-6 text-coral/80 sm:right-[9%] sm:h-8 sm:w-8" delay={0.2}><Daisy /></Float>
-          <Float className="left-[21%] top-[6%] h-6 w-6 text-marigold sm:left-[23%] sm:h-8 sm:w-8" delay={0.8} spin><Sunburst /></Float>
-          <Float className="right-[21%] bottom-[7%] h-5 w-5 text-sky/85 sm:right-[23%] sm:h-7 sm:w-7" delay={1.5}><Diamond /></Float>
+          <Float className="left-[4%] top-[1%] h-5 w-5 text-marigold sm:left-[23%] sm:top-[6%] sm:h-8 sm:w-8" delay={0.8} spin><Sunburst /></Float>
+          <Float className="right-[4%] bottom-[1%] h-4 w-4 text-sky/85 sm:right-[23%] sm:bottom-[7%] sm:h-7 sm:w-7" delay={1.5}><Diamond /></Float>
+
 
 
 
