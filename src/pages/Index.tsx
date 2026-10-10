@@ -15,18 +15,25 @@ import { BabyApproved } from "@/components/BabyApproved";
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
 const Bestsellers = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const scroll = (d: number) => ref.current?.scrollBy({ left: d * ref.current.clientWidth * 0.8, behavior: "smooth" });
+  const top = products.filter(p => p.bestseller).slice(0, 8);
   return (
     <section className="bg-blush/40 py-16 md:py-24" aria-labelledby="bestseller-title">
       <div className="container-kidia">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
           <div className="flex items-center gap-4"><Heart strokeWidth={1} className="hidden h-12 w-12 -translate-y-px text-accent sm:block" /><div><h2 id="bestseller-title" className="section-title">Little favourites.</h2></div></div>
-          <div className="flex items-center gap-3"><Button asChild variant="link" className="px-0"><Link to="/collections/bestsellers">All bestsellers <ArrowUpRight className="h-4 w-4" /></Link></Button><Button variant="outline" size="icon" aria-label="Previous bestsellers" onClick={() => scroll(-1)} className="rounded-full"><ChevronLeft /></Button><Button variant="outline" size="icon" aria-label="Next bestsellers" onClick={() => scroll(1)} className="rounded-full"><ChevronRight /></Button></div>
+          <Button asChild variant="link" className="px-0"><Link to="/collections/bestsellers">All bestsellers <ArrowUpRight className="h-4 w-4" /></Link></Button>
         </div>
-        <div ref={ref} className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6">
-          {products.filter(p => p.bestseller).map(p => <div key={p.id} className="w-[72%] shrink-0 snap-start sm:w-[40%] lg:w-[23%]"><ProductCard p={p} /></div>)}
-        </div>
+        <ol className="grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-4 md:gap-x-6">
+          {top.map((p, i) => (
+            <li key={p.id}>
+              <div className="mb-2 flex items-center gap-2">
+                <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-primary font-display text-xs font-extrabold text-butter">{i + 1}</span>
+                <span className="h-px flex-1 bg-primary/15" />
+              </div>
+              <ProductCard p={p} />
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
