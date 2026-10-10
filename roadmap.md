@@ -63,3 +63,4 @@
 - [x] Baby approved section: decreased the white space below the review panel (desktop 28px, phone 20px bottom padding).
 - [ ] Product cards: decrease card height (user is on /collections/sale).
 - [ ] Shop/collection list: numbered pagination.
+- [ ] Product page: customer review section styled like the user\u2019s reference image.
