@@ -93,34 +93,41 @@ const Shop = () => {
     k === "category" ? categoryName(v) : k === "gender" ? GENDER_LABEL[v] : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
-  const Group = ({ title, k, opts, children }: { title: string; k?: Key; opts?: { v: string; l: string; swatch?: string }[]; children?: React.ReactNode }) => (
-    <AccordionItem value={title} className="border-b border-primary/10">
-      <AccordionTrigger className="py-4 text-sm font-bold hover:no-underline">{title}</AccordionTrigger>
-      <AccordionContent className="pb-5">
-        {children ?? (
-          <div className="space-y-2">
-            {opts!.map((o) => (
-              <label key={o.v} className="flex cursor-pointer items-center gap-2 text-sm">
-                <Checkbox checked={get(k!).includes(o.v)} onCheckedChange={() => toggle(k!, o.v)} />
-                {o.swatch && <span className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: o.swatch }} />}
-                {o.l}
-              </label>
-            ))}
+  const LIMIT = 5;
+
+  const Group = ({ title, k, opts, variant = "check" }: { title: string; k: Key; opts: { v: string; l: string; swatch?: string }[]; variant?: "check" | "pills" }) => {
+    const [open, setOpen] = useState(false);
+    const shown = open ? opts : opts.slice(0, LIMIT);
+    return (
+      <AccordionItem value={title} className="border-b border-primary/10">
+        <AccordionTrigger className="py-4 text-sm font-bold hover:no-underline">{title}</AccordionTrigger>
+        <AccordionContent className="pb-5">
+          <div className={variant === "pills" ? "flex flex-wrap gap-2" : "space-y-2"}>
+            {shown.map((o) =>
+              variant === "pills" ? (
+                <button key={o.v} onClick={() => toggle(k, o.v)} aria-pressed={get(k).includes(o.v)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${get(k).includes(o.v) ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{o.l}</button>
+              ) : (
+                <label key={o.v} className="flex cursor-pointer items-center gap-2 text-sm">
+                  <Checkbox checked={get(k).includes(o.v)} onCheckedChange={() => toggle(k, o.v)} />
+                  {o.swatch && <span className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: o.swatch }} />}
+                  {o.l}
+                </label>
+              )
+            )}
           </div>
-        )}
-      </AccordionContent>
-    </AccordionItem>
-  );
+          {opts.length > LIMIT && (
+            <button onClick={() => setOpen(!open)} className="mt-3 text-xs font-bold underline underline-offset-2">
+              {open ? "Show less" : `Show more (${opts.length - LIMIT})`}
+            </button>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+    );
+  };
 
   const filters = (
     <Accordion type="multiple" defaultValue={["Size", "Price", "Category", "Colour", "Occasion"]} className="-mt-2">
-      <Group title="Size">
-        <div className="flex flex-wrap gap-2">
-          {ALL_SIZES.map((s) => (
-            <button key={s} onClick={() => toggle("size", s)} aria-pressed={get("size").includes(s)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${get("size").includes(s) ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{s}</button>
-          ))}
-        </div>
-      </Group>
+      <Group title="Size" k="size" variant="pills" opts={ALL_SIZES.map((s) => ({ v: s, l: s }))} />
       <Group title="Price" k="price" opts={PRICES.map((p) => ({ v: p.v, l: p.l }))} />
       <Group title="Category" k="category" opts={CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug)).map((c) => ({ v: c.slug, l: c.name }))} />
       <Group title="Colour" k="colour" opts={COLOURS.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} />
