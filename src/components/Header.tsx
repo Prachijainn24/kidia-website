@@ -42,8 +42,6 @@ const AnnouncementBar = () => {
             <span className="block truncate sm:hidden">{MESSAGES[i].short}</span>
             <span className="hidden truncate sm:block">{MESSAGES[i].full}</span>
           </motion.p>
-            {MESSAGES[i]}
-          </motion.p>
         </AnimatePresence>
         <button aria-label="Dismiss announcement" onClick={() => { sessionStorage.setItem("kidia-bar", "off"); setOpen(false); }} className="absolute right-3 rounded-full p-1 hover:bg-foreground/10">
           <X className="h-3.5 w-3.5" />
