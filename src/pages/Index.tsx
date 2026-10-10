@@ -23,10 +23,9 @@ const Bestsellers = () => {
           <Button asChild variant="link" className="px-0"><Link to="/collections/bestsellers">All bestsellers <ArrowUpRight className="h-4 w-4" /></Link></Button>
         </div>
         <ol className="grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-4 md:gap-x-6">
-          {top.map((p, i) => (
+          {top.map((p) => (
             <li key={p.id}>
               <div className="mb-2 flex items-center gap-2">
-                <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-primary font-display text-xs font-extrabold text-butter">{i + 1}</span>
                 <span className="h-px flex-1 bg-primary/15" />
               </div>
               <ProductCard p={p} />
