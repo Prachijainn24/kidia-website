@@ -44,9 +44,10 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const Footer = () => (
-  <footer className="bg-background pb-4 pt-2">
-    <div className="container-kidia">
-      <div className="relative overflow-hidden rounded-[2.25rem] bg-primary px-5 pb-3 pt-8 md:rounded-[2.75rem] md:px-8 md:pt-10">
+  <div className="bg-butter/35">
+    <footer className="overflow-hidden rounded-t-[2.5rem] bg-primary md:rounded-t-[4rem]">
+      <div className="relative px-5 pb-4 pt-10 md:px-8 md:pt-14">
+        <div className="container-kidia">
         <span aria-hidden className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-marigold/15 blur-2xl" />
         <span aria-hidden className="pointer-events-none absolute -bottom-28 right-1/3 h-72 w-72 rounded-full bg-coral/10 blur-3xl" />
 
@@ -78,7 +79,6 @@ export const Footer = () => (
               <li><a href={`mailto:${CONTACT.email}`} className="flex items-center gap-2 hover:text-butter"><Mail className="h-4 w-4" />{CONTACT.email}</a></li>
               <li><a href={`tel:+${CONTACT.whatsappNumber}`} className="flex items-center gap-2 hover:text-butter"><Phone className="h-4 w-4" />{CONTACT.phoneDisplay}</a></li>
               <li><a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-butter"><MessageCircle className="h-4 w-4" />Chat on WhatsApp</a></li>
-              <li className="pt-1 text-primary-foreground/60">{CONTACT.hours}</li>
             </ul>
           </div>
 
@@ -121,7 +121,7 @@ export const Footer = () => (
             <text
               x="350" y="135" textAnchor="middle"
               className="font-serif"
-              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.02em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 22, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
+              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.05em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 14, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
             >KIDIA</text>
           </svg>
           <Float className="hidden left-[4%] top-0 h-8 w-8 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
@@ -129,10 +129,11 @@ export const Footer = () => (
           <Float className="hidden left-[20%] bottom-0 h-9 w-9 text-sky/70 sm:block" delay={0.8} spin><Sunburst /></Float>
         </div>
 
-        <div className="mt-2 border-t border-primary-foreground/10 py-3 text-center text-xs text-primary-foreground/60">
+        <div className="relative left-1/2 mt-2 w-screen -translate-x-1/2 border-t border-primary-foreground/10 px-5 py-3 text-center text-xs text-primary-foreground/60 md:px-8">
           © {new Date().getFullYear()} KIDIA. All rights reserved.
         </div>
       </div>
     </div>
   </footer>
+  </div>
 );
