@@ -128,18 +128,19 @@ const ProductDetail = () => {
 
             <PinCheck />
 
-            <Accordion type="multiple" defaultValue={["fabric"]}>
-              <AccordionItem value="fabric"><AccordionTrigger>Fabric & care</AccordionTrigger>
-                <AccordionContent><p className="mb-2">{p.fabric}</p><ul className="list-disc pl-5">{p.care.map((c) => <li key={c}>{c}</li>)}</ul></AccordionContent></AccordionItem>
-              <AccordionItem value="sizes"><AccordionTrigger>Available sizes</AccordionTrigger>
-                <AccordionContent>{sizes.map((s) => `${s}${p.stock[s] === 0 ? " (sold out)" : ""}`).join(" · ")}. Please check garment measurements in the size chart before ordering.</AccordionContent></AccordionItem>
-              <AccordionItem value="returns"><AccordionTrigger><span className="flex items-center gap-2"><RotateCcw className="h-4 w-4" />Returns & exchanges</span></AccordionTrigger>
-                <AccordionContent>Our returns and exchange policy will be published before launch. Unworn items with original tags will be eligible for exchange.</AccordionContent></AccordionItem>
-              <AccordionItem value="reviews"><AccordionTrigger>Reviews</AccordionTrigger>
-                <AccordionContent>No reviews yet. Reviews from verified buyers will appear here.</AccordionContent></AccordionItem>
-            </Accordion>
           </div>
         </div>
+
+        <Accordion type="multiple" defaultValue={["fabric"]} className="mt-14 max-w-4xl border-t border-primary/10 pt-6">
+          <AccordionItem value="fabric"><AccordionTrigger>Fabric & care</AccordionTrigger>
+            <AccordionContent><p className="mb-2">{p.fabric}</p><ul className="list-disc pl-5">{p.care.map((c) => <li key={c}>{c}</li>)}</ul></AccordionContent></AccordionItem>
+          <AccordionItem value="sizes"><AccordionTrigger>Available sizes</AccordionTrigger>
+            <AccordionContent>{sizes.map((s) => `${s}${p.stock[s] === 0 ? " (sold out)" : ""}`).join(" · ")}. Please check garment measurements in the size chart before ordering.</AccordionContent></AccordionItem>
+          <AccordionItem value="returns"><AccordionTrigger><span className="flex items-center gap-2"><RotateCcw className="h-4 w-4" />Returns & exchanges</span></AccordionTrigger>
+            <AccordionContent>Our returns and exchange policy will be published before launch. Unworn items with original tags will be eligible for exchange.</AccordionContent></AccordionItem>
+          <AccordionItem value="reviews"><AccordionTrigger>Reviews</AccordionTrigger>
+            <AccordionContent>No reviews yet. Reviews from verified buyers will appear here.</AccordionContent></AccordionItem>
+        </Accordion>
 
         {related.length > 0 && (
           <section className="mt-24"><h2 className="section-title mb-8">You may also like</h2>
