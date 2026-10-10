@@ -45,7 +45,7 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
 /** Giant cursive KIDIA wordmark */
 const Wordmark = () => {
   return (
-    <svg viewBox="-62 -73 900 344" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
+    <svg viewBox="-62 -43 900 283" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
       <text
         x="380" y="162" textAnchor="middle"
         className="font-script"
