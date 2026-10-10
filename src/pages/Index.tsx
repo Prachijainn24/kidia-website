@@ -1,11 +1,10 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Instagram, Heart, Ribbon, Mail, Star, Shirt } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Instagram, Heart, Ribbon, Star, Shirt } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { NewArrivals } from "@/components/NewArrivals";
-import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
@@ -82,12 +81,6 @@ const Index = () => (
       </div>
     </section>
 
-    <section className="bg-blush py-14 md:py-20" aria-labelledby="newsletter-title">
-      <div className="container-kidia grid items-center gap-8 md:grid-cols-2 md:gap-16">
-        <div className="flex items-start gap-5"><Mail className="h-12 w-12 shrink-0 text-primary" strokeWidth={1} /><div><p className="eyebrow mb-3">A note from KIDIA</p><h2 id="newsletter-title" className="font-serif text-3xl">Little updates.<br /><span className="italic">Lovely surprises.</span></h2><p className="mt-4 max-w-sm text-sm text-muted-foreground">New collections, festive edits and members-first news — straight to your inbox.</p></div></div>
-        <div className="postcard-edge bg-background p-6 sm:p-8"><Newsletter /></div>
-      </div>
-    </section>
   </Layout>
 );
 export default Index;
