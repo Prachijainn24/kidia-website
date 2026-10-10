@@ -1,4 +1,4 @@
-# Remix of kidswear clothing store website template
+# kidswear clothing store website
 
 Create a design-driven ecommerce website for a boutique brand selling home and lifestyle objects.
 
