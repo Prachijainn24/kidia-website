@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, Search, ShoppingBag, X, ChevronDown, Ruler } from "lucide-react";
 import { Logo } from "./Logo";
@@ -127,17 +127,37 @@ const Badge = ({ n }: { n: number }) =>
 
 export const Header = () => {
   const { user } = useAuth();
+  const { pathname } = useLocation();
   const cart = useCartCount();
   const wish = useWishlist((s) => s.ids.length);
   const [mega, setMega] = useState<string | null>(null);
   const [search, setSearch] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (y > last + 6) setHidden(true);
+      else if (y < last - 6) setHidden(false);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const solid = !isHome || scrolled;
 
   return (
     <>
-      <AnnouncementBar />
-      <header className="sticky top-3 z-40 px-3 sm:px-5" onMouseLeave={() => setMega(null)}>
-        <div className="container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl md:h-[74px]">
+      <div className={cn(isHome ? "fixed inset-x-0" : "sticky", "top-0 z-40 transition-transform duration-300 ease-out", hidden && "-translate-y-full")}>
+        <AnnouncementBar />
+        <header className="px-3 pt-3 sm:px-5" onMouseLeave={() => setMega(null)}>
+          <div className={cn("container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border transition-colors duration-300 md:h-[74px]", solid ? "border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl" : "border-transparent bg-transparent")}>
           <div className="flex items-center gap-2">
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />

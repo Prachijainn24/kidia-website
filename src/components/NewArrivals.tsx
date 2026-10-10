@@ -37,7 +37,7 @@ export const NewArrivals = () => {
         onMouseLeave={() => setPaused(false)}
         className="relative isolate overflow-hidden bg-secondary"
       >
-        <div className="relative h-[460px] w-full overflow-hidden sm:h-[560px] md:h-auto md:aspect-[16/9] md:max-h-[88vh]">
+        <div className="relative h-[100svh] min-h-[520px] w-full overflow-hidden">
           <AnimatePresence mode="sync">
             <motion.img
               key={index}
