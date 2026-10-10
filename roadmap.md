@@ -12,7 +12,7 @@
 - [x] Apply sage/cream boutique reference with distinct homepage sections; verify shopping and slideshow
 - [x] Hero banner photos re-framed so the children are never cut off; verified on desktop (1280 & 1600) and phone
 - [x] Floating translucent navbar pill; verified on desktop and phone
-- [ ] Navbar auto-hides on scroll down and returns on scroll up; hero takes full width/height with the navbar overlapping it
+- [x] Navbar auto-hides on scroll down and returns on scroll up; hero takes full width/height with the navbar overlapping it
 
 ## Phase 2 (next)
 - [x] Add animated brand videos and unique decorative props
