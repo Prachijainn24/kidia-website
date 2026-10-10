@@ -35,8 +35,7 @@ export const NewArrivals = () => {
       </div>
       <motion.div
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.7 }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -48,7 +47,7 @@ export const NewArrivals = () => {
               key={index}
               src={SLIDES[index].src}
               alt={SLIDES[index].alt}
-              loading="lazy"
+              loading="eager"
               initial={{ opacity: 0, scale: 1.04 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -60,7 +59,7 @@ export const NewArrivals = () => {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
         <div className="pointer-events-none container-kidia absolute inset-x-0 bottom-24">
           <p className="mb-3 text-sm text-primary-foreground">A new chapter of little styles</p>
-          <h2 id="new-arrivals-title" className="font-serif text-5xl font-normal leading-none text-primary-foreground sm:text-7xl md:text-8xl">New <span className="italic">Arrivals</span></h2>
+          <h1 id="new-arrivals-title" className="font-serif text-5xl font-normal leading-none text-primary-foreground sm:text-7xl md:text-8xl">New <span className="italic">Arrivals</span></h1>
         </div>
         <div className="container-kidia absolute inset-x-0 bottom-8">
           <Button asChild variant="link" className="h-auto rounded-none border-b border-primary-foreground px-0 py-2 text-sm font-bold text-primary-foreground hover:no-underline">

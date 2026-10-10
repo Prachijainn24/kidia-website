@@ -9,9 +9,8 @@ import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
-import heroGolden from "@/assets/hero-golden.jpg";
 import { BrandFilms } from "@/components/BrandFilms";
-import { Float, Flower, Sparkle, Sticker, Sunburst } from "@/components/Motifs";
+import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
@@ -46,7 +45,6 @@ const Index = () => (
       </div>
     </section>
 
-    <NewArrivals />
 
     <section className="wave-top relative -mt-4 bg-coral py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-butter text-butter" aria-hidden />
       <div className="container-kidia">
