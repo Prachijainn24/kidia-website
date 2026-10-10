@@ -44,3 +44,5 @@
 - [ ] Footer: phone — KIDIA wordmark letters squished, divider above copyright not edge-to-edge
 - [ ] Footer: top area behind the curve should be butter (match section above), curve only at the two top corners
 - [ ] Little favourites: remove the 1-8 number badges
+
+- [x] Footer: removed the KIDIA logo image from the brand side (user asked "remove this"); dropped the now-unused logoLight import.
