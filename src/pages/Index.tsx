@@ -56,7 +56,6 @@ const Index = () => (
       </div>
     </section>
 
-    <Bestsellers />
 
     <BrandFilms />
 
