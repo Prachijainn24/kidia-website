@@ -55,6 +55,6 @@
 - [x] Collection strip: smaller on phone only — narrower cards, shorter label strip, tighter heading/padding (md and up unchanged); verify height at 390px.
 - [x] Footer wordmark: add a sun and a diamond beside KIDIA (new Diamond motif added to Motifs.tsx).
 - [ ] Footer wordmark: add a shimmer sweep across the cursive KIDIA (skipped for reduced-motion users).
-- [ ] "Why parents choose KIDIA" section: try white/cream instead of green — pick whichever suits the boutique theme; verify contrast and the section above/below.
-- [ ] Footer wordmark: shimmer removed (user: "remove shimmer") — plain butter letters, no gloss sweep.
-- [ ] Scrollbar: match the theme (cream track, forest thumb) site-wide.
+- [x] "Why parents choose KIDIA" section: try white/cream instead of green — pick whichever suits the boutique theme; verify contrast and the section above/below.
+- [x] Footer wordmark: shimmer removed (user: "remove shimmer") — plain butter letters, no gloss sweep.
+- [x] Scrollbar: match the theme (cream track, forest thumb) site-wide.
