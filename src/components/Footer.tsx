@@ -60,7 +60,6 @@ export const Footer = () => (
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-primary-foreground/80">
               Fashionable, comfortable clothing for kids aged 1–12, designed in India for everyday play and every celebration.
             </p>
-            <p className="mt-4 font-hand text-2xl text-blush">Started by two mothers.</p>
 
             <div className="mt-6 flex gap-2.5">
               <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="KIDIA on Instagram" className="grid h-10 w-10 place-items-center rounded-full bg-coral text-primary-foreground transition hover:brightness-110">
