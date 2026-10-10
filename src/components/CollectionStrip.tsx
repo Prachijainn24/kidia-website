@@ -48,7 +48,7 @@ export const CollectionStrip = () => {
             to={c.link}
             className="group w-[44%] shrink-0 snap-start overflow-hidden rounded-2xl bg-card shadow-soft transition-transform duration-300 hover:-translate-y-1 sm:w-[28%] lg:w-[18.5%]"
           >
-            <div className="aspect-square overflow-hidden bg-muted">
+            <div className="aspect-[3/4] overflow-hidden bg-muted">
               <img src={c.image} alt={c.name} loading="lazy" width={768} height={1024} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" />
             </div>
             <div className={`flex h-12 items-center justify-center px-2 text-center ${TONES[i % TONES.length]}`}>
