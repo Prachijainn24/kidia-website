@@ -13,7 +13,8 @@ import NotFound from "./NotFound";
 const PAGE = 6;
 const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
 const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
-const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }, { v: "unisex", l: "Unisex" }];
+const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }];
+const GENDER_LABEL: Record<string, string> = { boys: "Boys", girls: "Girls", unisex: "Unisex" };
 
 type Key = "category" | "gender" | "age" | "size" | "colour" | "occasion" | "price" | "flags";
 
@@ -88,7 +89,7 @@ const Shop = () => {
     .forEach((n, i, arr) => { if (i && n - arr[i - 1] > 1) pageItems.push("…"); pageItems.push(n); });
 
   const chipLabel = (k: Key, v: string) =>
-    k === "category" ? categoryName(v) : k === "gender" ? GENDERS.find((g) => g.v === v)?.l : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
+    k === "category" ? categoryName(v) : k === "gender" ? GENDER_LABEL[v] : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
   const Group = ({ title, k, opts }: { title: string; k: Key; opts: { v: string; l: string; swatch?: string }[] }) => (
@@ -128,6 +129,45 @@ const Shop = () => {
 
   const title = q ? `Results for "${q}"` : collection?.title ?? "Shop All";
 
+  // Breadcrumb path, e.g. Home / Boys' Clothing / Boys / Ethnic Wear
+  const crumbs: { label: string; to?: string }[] = [{ label: "Home", to: "/" }];
+  if (collection) {
+    crumbs.push(
+      slug === "boys" || slug === "girls"
+        ? { label: slug === "boys" ? "Boys' Clothing" : "Girls' Clothing", to: `/shop?gender=${slug}` }
+        : slug === "diwali" || slug === "navratri"
+          ? { label: "Ethnic & Festive", to: "/collections/ethnic-festive" }
+          : { label: "Collections", to: "/shop" }
+    );
+    crumbs.push({ label: collection.title });
+    if (get("category").length === 1) crumbs.push({ label: categoryName(get("category")[0]) });
+  } else {
+    crumbs.push({ label: "Shop All", to: "/shop" });
+    if (get("category").length === 1) crumbs.push({ label: categoryName(get("category")[0]) });
+    else if (get("gender").length === 1) crumbs.push({ label: GENDER_LABEL[get("gender")[0]] ?? "Shop All" });
+    else if (q) crumbs.push({ label: `Search: ${q}` });
+  }
+
+  const Crumbs = ({ tone = "cream" }: { tone?: "cream" | "overlay" }) => (
+    <nav aria-label="Breadcrumb" className={tone === "overlay" ? "text-background/80" : "text-muted-foreground"}>
+      <ol className="flex flex-wrap items-center gap-1.5 text-xs">
+        {crumbs.map((c, i) => {
+          const last = i === crumbs.length - 1;
+          return (
+            <li key={c.label + i} className="flex items-center gap-1.5">
+              {i > 0 && <span aria-hidden>/</span>}
+              {last || !c.to ? (
+                <span aria-current={last ? "page" : undefined} className={last ? "font-semibold text-primary" : undefined}>{c.label}</span>
+              ) : (
+                <Link to={c.to} className="transition-colors hover:text-primary hover:underline">{c.label}</Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+
   return (
     <Layout title={collection?.title ?? (q ? "Search" : "Shop All")} description={collection?.intro}>
       {collection?.banner ? (
@@ -135,15 +175,16 @@ const Shop = () => {
           <img src={collection.banner} alt="" className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-foreground/50" />
           <div className="container-kidia relative flex h-full flex-col justify-end pb-10 text-background">
-            <h1 className="font-serif text-3xl md:text-5xl">{collection.title}</h1>
+            <Crumbs tone="overlay" />
+            <h1 className="mt-2 font-serif text-3xl md:text-5xl">{collection.title}</h1>
             <p className="mt-2 opacity-90">{collection.intro}</p>
           </div>
         </section>
       ) : (
         <section className="bg-secondary py-12">
           <div className="container-kidia">
-            <nav className="mb-3 text-xs text-muted-foreground"><Link to="/" className="hover:text-primary">Home</Link> / {title}</nav>
-            <h1 className="font-serif text-4xl md:text-5xl">{title}</h1>
+            <Crumbs />
+            <h1 className="mt-3 font-serif text-4xl md:text-5xl">{title}</h1>
             {collection && <p className="mt-2 text-muted-foreground">{collection.intro}</p>}
           </div>
         </section>
