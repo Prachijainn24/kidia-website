@@ -190,7 +190,8 @@ export const Header = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </header>
+        </header>
+      </div>
 
       <Sheet open={mobile} onOpenChange={setMobile}>
         <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto bg-background">
