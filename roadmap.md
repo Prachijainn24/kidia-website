@@ -50,3 +50,7 @@
 - [x] "A Little Celebration" festive section: trimmed top/bottom space (py-20/28 -> pt-12 pb-20, md:pt-16 md:pb-24), heading margins and the Navratri stagger; desktop height 1189px (was ~1310).
 
 - [x] Footer wordmark: removed the star and both sparkles from around KIDIA and pulled the remaining decorations closer to the word.
+
+- [x] Footer wordmark: trimmed to two flowers only (user: "remove most elements"); star/sparkles/hanger/tee/bow/heart/butterfly/cloud removed from that block.
+- [x] Collection strip: smaller on phone only — narrower cards, shorter label strip, tighter heading/padding (md and up unchanged); verify height at 390px.
+- [x] Footer wordmark: add a sun and a diamond beside KIDIA (new Diamond motif added to Motifs.tsx).
