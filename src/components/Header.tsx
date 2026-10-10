@@ -24,7 +24,6 @@ const NAV = [
   { to: "/collections/boys", label: "Boys", mega: "boys" },
   { to: "/collections/girls", label: "Girls", mega: "girls" },
   { to: "/shop", label: "Clothing", mega: "all" },
-  { to: "/collections/ethnic-festive", label: "Ethnic & Festive", mega: "festive" },
   { to: "/collections/sale", label: "Sale" },
 ];
 
@@ -54,28 +53,17 @@ const AnnouncementBar = () => {
 
 const MegaMenu = ({ kind }: { kind: string }) => {
   const base = kind === "boys" ? "/collections/boys" : kind === "girls" ? "/collections/girls" : "/shop";
-  const cats = kind === "festive" ? [] : CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug));
+  const cats = CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug));
   return (
     <div className="grid grid-cols-3 gap-8 p-8">
-      {kind === "festive" ? (
-        <div className="col-span-2 grid grid-cols-2 gap-4">
-          {[{ to: "/collections/diwali", t: "Diwali Edit", s: "Little Lights, Big Looks", tone: "bg-butter" }, { to: "/collections/navratri", t: "Navratri Edit", s: "Twirl Into Festivities", tone: "bg-blush" }].map((x) => (
-            <Link key={x.to} to={x.to} className={cn("rounded-2xl p-6 transition hover:shadow-soft", x.tone)}>
-              <p className="font-serif text-xl text-foreground">{x.t}</p>
-              <p className="text-sm text-muted-foreground">{x.s}</p>
-            </Link>
+      <div className="col-span-2">
+        <p className="eyebrow mb-3">Shop by category</p>
+        <ul className="grid grid-cols-2 gap-2">
+          {cats.map((c) => (
+            <li key={c.slug}><Link className="text-sm hover:text-primary" to={`${base}?category=${c.slug}`}>{c.name}</Link></li>
           ))}
-        </div>
-      ) : (
-        <div className="col-span-2">
-          <p className="eyebrow mb-3">Shop by category</p>
-          <ul className="grid grid-cols-2 gap-2">
-            {cats.map((c) => (
-              <li key={c.slug}><Link className="text-sm hover:text-primary" to={`${base}?category=${c.slug}`}>{c.name}</Link></li>
-            ))}
-          </ul>
-        </div>
-      )}
+        </ul>
+      </div>
       <div>
         <p className="eyebrow mb-3">Shop by age</p>
         <ul className="space-y-2">
