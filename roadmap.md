@@ -34,3 +34,4 @@
 - [x] Remove the "Little moments, beautifully dressed" Instagram album section from the homepage
 - [ ] KIDIA logo: explore two concepts, get the user's pick, then apply it across the site
 - [ ] Footer: remove remaining extra space above and below the footer content
+- [ ] Little favourites: show only the top 8 bestsellers and improve the section's presentation
