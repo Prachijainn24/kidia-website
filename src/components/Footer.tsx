@@ -124,9 +124,9 @@ export const Footer = () => (
               style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.02em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 22, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
             >KIDIA</text>
           </svg>
-          <Float className="left-[4%] top-0 h-8 w-8 text-blush/80" delay={0.4}><Flower /></Float>
-          <Float className="right-[6%] top-1 h-7 w-7 text-marigold/90" delay={1.2}><Sparkle /></Float>
-          <Float className="left-[20%] bottom-0 h-9 w-9 text-sky/70" delay={0.8} spin><Sunburst /></Float>
+          <Float className="hidden left-[4%] top-0 h-8 w-8 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
+          <Float className="hidden right-[6%] top-1 h-7 w-7 text-marigold/90 sm:block" delay={1.2}><Sparkle /></Float>
+          <Float className="hidden left-[20%] bottom-0 h-9 w-9 text-sky/70 sm:block" delay={0.8} spin><Sunburst /></Float>
         </div>
 
         <div className="mt-2 border-t border-primary-foreground/10 py-3 text-center text-xs text-primary-foreground/60">
