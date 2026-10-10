@@ -93,7 +93,7 @@ const Shop = () => {
     k === "category" ? categoryName(v) : k === "gender" ? GENDER_LABEL[v] : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
-  const Group = ({ title, k, opts, defaultOpen = true, children }: { title: string; k?: Key; opts?: { v: string; l: string; swatch?: string }[]; defaultOpen?: boolean; children?: React.ReactNode }) => (
+  const Group = ({ title, k, opts, children }: { title: string; k?: Key; opts?: { v: string; l: string; swatch?: string }[]; children?: React.ReactNode }) => (
     <AccordionItem value={title} defaultOpen={defaultOpen} className="border-b border-primary/10">
       <AccordionTrigger className="py-4 text-sm font-bold hover:no-underline">{title}</AccordionTrigger>
       <AccordionContent className="pb-5">
@@ -114,7 +114,7 @@ const Shop = () => {
 
   const filters = (
     <Accordion type="multiple" defaultValue={["Size", "Price", "Category", "Colour", "Occasion"]} className="-mt-2">
-      <Group title="Size" defaultOpen>
+      <Group title="Size">
         <div className="flex flex-wrap gap-2">
           {ALL_SIZES.map((s) => (
             <button key={s} onClick={() => toggle("size", s)} aria-pressed={get("size").includes(s)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${get("size").includes(s) ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{s}</button>
