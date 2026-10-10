@@ -144,8 +144,8 @@ export const Header = () => {
     <>
       <div className={cn(isHome ? "fixed inset-x-0" : "sticky", "top-0 z-40 transition-transform duration-300 ease-out", hidden && "-translate-y-full")}>
         <AnnouncementBar />
-        <header className="px-3 pt-3 sm:px-5" onMouseLeave={() => setMega(null)}>
-          <div className={cn("container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border transition-colors duration-300 md:h-[74px]", solid ? "border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl" : "border-transparent bg-transparent")}>
+        <header className="px-3 pt-2 sm:px-5" onMouseLeave={() => setMega(null)}>
+          <div className={cn("container-kidia flex h-[54px] items-center justify-between gap-4 rounded-full border transition-colors duration-300 md:h-[60px]", solid ? "border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl" : "border-transparent bg-transparent")}>
           <div className="flex items-center gap-2">
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
@@ -153,7 +153,7 @@ export const Header = () => {
           <nav className="hidden min-[900px]:flex items-center gap-3 xl:gap-6" aria-label="Main">
             {NAV.map((n) => (
               <div key={n.to} onMouseEnter={() => setMega(n.mega ?? null)} className="relative">
-                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-[15px] xl:text-[17px] font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
+                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-3.5 text-[15px] xl:text-[17px] font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
                   {n.label}{n.mega && <ChevronDown className="h-3 w-3" />}
                 </NavLink>
               </div>
