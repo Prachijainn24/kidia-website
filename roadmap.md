@@ -42,3 +42,4 @@
 - [ ] Footer: remove the "Started by two mothers." line from the green side
 - [ ] Footer: remove "Mon–Sat, 10am–7pm IST" hours line
 - [ ] Footer: phone — KIDIA wordmark letters squished, divider above copyright not edge-to-edge
+- [ ] Footer: top area behind the curve should be butter (match section above), curve only at the two top corners
