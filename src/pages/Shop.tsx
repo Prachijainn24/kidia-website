@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, products, sizeStartAge } from "@/data/catalog";
 import NotFound from "./NotFound";
@@ -92,39 +93,39 @@ const Shop = () => {
     k === "category" ? categoryName(v) : k === "gender" ? GENDER_LABEL[v] : k === "age" ? AGE_GROUPS.find((a) => a.slug === v)?.label : k === "price" ? PRICES.find((p) => p.v === v)?.l : k === "flags" ? { instock: "In stock", discount: "On discount", new: "New", bestseller: "Bestseller" }[v] : v;
   const chips = (["category", "gender", "age", "size", "colour", "occasion", "price", "flags"] as Key[]).flatMap((k) => get(k).map((v) => ({ k, v })));
 
-  const Group = ({ title, k, opts }: { title: string; k: Key; opts: { v: string; l: string; swatch?: string }[] }) => (
-    <fieldset className="border-b py-5">
-      <legend className="mb-3 text-sm font-bold">{title}</legend>
-      <div className="space-y-2">
-        {opts.map((o) => (
-          <label key={o.v} className="flex cursor-pointer items-center gap-2 text-sm">
-            <Checkbox checked={get(k).includes(o.v)} onCheckedChange={() => toggle(k, o.v)} />
-            {o.swatch && <span className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: o.swatch }} />}
-            {o.l}
-          </label>
-        ))}
-      </div>
-    </fieldset>
+  const Group = ({ title, k, opts, defaultOpen = true, children }: { title: string; k?: Key; opts?: { v: string; l: string; swatch?: string }[]; defaultOpen?: boolean; children?: React.ReactNode }) => (
+    <AccordionItem value={title} defaultOpen={defaultOpen} className="border-b border-primary/10">
+      <AccordionTrigger className="py-4 text-sm font-bold hover:no-underline">{title}</AccordionTrigger>
+      <AccordionContent className="pb-5">
+        {children ?? (
+          <div className="space-y-2">
+            {opts!.map((o) => (
+              <label key={o.v} className="flex cursor-pointer items-center gap-2 text-sm">
+                <Checkbox checked={get(k!).includes(o.v)} onCheckedChange={() => toggle(k!, o.v)} />
+                {o.swatch && <span className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: o.swatch }} />}
+                {o.l}
+              </label>
+            ))}
+          </div>
+        )}
+      </AccordionContent>
+    </AccordionItem>
   );
 
   const filters = (
-    <div>
-      <Group title="Age group" k="age" opts={AGE_GROUPS.map((a) => ({ v: a.slug, l: a.label }))} />
-      <Group title="Category" k="category" opts={CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug)).map((c) => ({ v: c.slug, l: c.name }))} />
-      <Group title="Boys / Girls" k="gender" opts={GENDERS} />
-      <Group title="Price" k="price" opts={PRICES.map((p) => ({ v: p.v, l: p.l }))} />
-      <Group title="Occasion" k="occasion" opts={OCCASIONS.map((o) => ({ v: o, l: o }))} />
-      <Group title="Colour" k="colour" opts={COLOURS.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} />
-      <fieldset className="border-b py-5">
-        <legend className="mb-3 text-sm font-bold">Size</legend>
+    <Accordion type="multiple" defaultValue={["Size", "Price", "Category", "Colour", "Occasion"]} className="-mt-2">
+      <Group title="Size" defaultOpen>
         <div className="flex flex-wrap gap-2">
           {ALL_SIZES.map((s) => (
             <button key={s} onClick={() => toggle("size", s)} aria-pressed={get("size").includes(s)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${get("size").includes(s) ? "border-primary bg-primary text-primary-foreground" : "hover:border-primary"}`}>{s}</button>
           ))}
         </div>
-      </fieldset>
-      <Group title="More" k="flags" opts={[{ v: "instock", l: "In stock only" }, { v: "discount", l: "On discount" }, { v: "new", l: "New arrivals" }, { v: "bestseller", l: "Bestsellers" }]} />
-    </div>
+      </Group>
+      <Group title="Price" k="price" opts={PRICES.map((p) => ({ v: p.v, l: p.l }))} />
+      <Group title="Category" k="category" opts={CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug)).map((c) => ({ v: c.slug, l: c.name }))} />
+      <Group title="Colour" k="colour" opts={COLOURS.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} />
+      <Group title="Occasion" k="occasion" opts={OCCASIONS.map((o) => ({ v: o, l: o }))} />
+    </Accordion>
   );
 
   const title = q ? `Results for "${q}"` : collection?.title ?? "Shop All";
