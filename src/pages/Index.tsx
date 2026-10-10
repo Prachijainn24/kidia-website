@@ -38,6 +38,9 @@ const Index = () => (
 
     <CollectionStrip />
 
+    <Bestsellers />
+
+
     <section className="wave-top relative -mt-4 bg-coral py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-butter text-butter" aria-hidden />
       <div className="container-kidia">
         <div className="mb-10 text-center"><Sunburst className="mx-auto mb-3 h-12 w-12 text-butter" /><p className="mb-3 text-xs font-extrabold uppercase tracking-[0.2em] text-butter">Dressed for the moments that matter</p><h2 id="festive-title" className="font-display text-4xl font-extrabold text-background md:text-6xl">A Little <span className="text-butter">Celebration.</span></h2><p className="mx-auto mt-4 max-w-md font-semibold text-background/90">Tiny twirls, family festivities, and memories dressed in colour.</p></div>
