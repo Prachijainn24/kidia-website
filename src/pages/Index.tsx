@@ -21,7 +21,7 @@ const Bestsellers = () => {
     <section className="bg-blush/40 py-16 md:py-24" aria-labelledby="bestseller-title">
       <div className="container-kidia">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
-          <div className="flex items-center gap-4"><Heart strokeWidth={1} className="hidden h-12 w-12 text-accent sm:block" /><div><p className="eyebrow mb-2">The much-loved edit</p><h2 id="bestseller-title" className="section-title">Little favourites.</h2></div></div>
+          <div className="flex items-center gap-4"><Heart strokeWidth={1} className="hidden h-12 w-12 text-accent sm:block" /><div><h2 id="bestseller-title" className="section-title">Little favourites.</h2></div></div>
           <div className="flex items-center gap-3"><Button asChild variant="link" className="px-0"><Link to="/collections/bestsellers">All bestsellers <ArrowUpRight className="h-4 w-4" /></Link></Button><Button variant="outline" size="icon" aria-label="Previous bestsellers" onClick={() => scroll(-1)} className="rounded-full"><ChevronLeft /></Button><Button variant="outline" size="icon" aria-label="Next bestsellers" onClick={() => scroll(1)} className="rounded-full"><ChevronRight /></Button></div>
         </div>
         <div ref={ref} className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6">
