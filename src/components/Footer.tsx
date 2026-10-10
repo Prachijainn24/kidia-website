@@ -12,7 +12,7 @@ const policies = [["Refund & Returns Policy", "/refund-returns"], ["Privacy Poli
 
 export const Footer = () => (
   <footer className="bg-secondary">
-    <div className="container-kidia grid gap-8 py-10 md:grid-cols-2 md:py-12 lg:grid-cols-6">
+    <div className="container-kidia grid gap-8 py-5 md:grid-cols-2 md:py-7 lg:grid-cols-6">
       <div className="lg:col-span-2 space-y-4">
         <Logo />
         <p className="font-serif text-lg italic text-primary">Little Styles. Big Smiles.</p>
@@ -51,7 +51,7 @@ export const Footer = () => (
       </div>
     </div>
     <div className="border-t">
-      <div className="container-kidia py-4 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
+      <div className="container-kidia py-2.5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
     </div>
   </footer>
 );
