@@ -8,9 +8,11 @@ const cols = [
   { title: "Help", links: [["Size Guide", "/size-guide"], ["My Wishlist", "/wishlist"], ["My Bag", "/cart"], ["Shop All", "/shop"]] },
 ];
 
+const policies = [["Refund & Returns Policy", "/refund-returns"], ["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"]];
+
 export const Footer = () => (
   <footer className="bg-secondary">
-    <div className="container-kidia grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5">
+    <div className="container-kidia grid gap-8 py-10 md:grid-cols-2 md:py-12 lg:grid-cols-6">
       <div className="lg:col-span-2 space-y-4">
         <Logo />
         <p className="font-serif text-lg italic text-primary">Little Styles. Big Smiles.</p>
@@ -24,6 +26,14 @@ export const Footer = () => (
           </ul>
         </div>
       ))}
+      <div>
+        <h3 className="mb-4 font-sans text-sm font-bold uppercase tracking-wider">Policies</h3>
+        <ul className="space-y-2">
+          {policies.map(([l, to]) => (
+            <li key={to}><Link to={to} target="_blank" rel="noopener noreferrer" className="block text-sm text-muted-foreground hover:text-primary">{l}</Link></li>
+          ))}
+        </ul>
+      </div>
       <div>
         <h3 className="mb-4 font-sans text-sm font-bold uppercase tracking-wider">Customer care</h3>
         <ul className="space-y-3 text-sm text-muted-foreground">
@@ -41,7 +51,7 @@ export const Footer = () => (
       </div>
     </div>
     <div className="border-t">
-      <div className="container-kidia py-6 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
+      <div className="container-kidia py-4 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} KIDIA. All rights reserved.</div>
     </div>
   </footer>
 );

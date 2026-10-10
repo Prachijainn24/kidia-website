@@ -26,3 +26,7 @@
 - [ ] Razorpay (needs user's keys)
 - [x] Premium playful redesign: warm ivory/forest/terracotta/marigold palette, golden hero, refined celebration & parents sections, wavy dividers
 - [x] "A Little World of Style" identity: bold palette, playful motifs, sticker labels, coral festive band, green parents section, image lookbook replacing broken films
+
+- [x] Footer: remove the extra blank space so it looks tighter
+- [x] "Baby Approved, Parents Confirmed" review section after Why parents choose KIDIA (real reviews only)
+- [x] Remove the "Little stories in motion" lookbook section from the homepage
