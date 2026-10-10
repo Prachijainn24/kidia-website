@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { AGE_GROUPS } from "@/data/catalog";
-import { Float, Flower, Sparkle, Sunburst, Daisy } from "./Motifs";
+import { Float, Flower, Sparkle, Sunburst, Daisy, Diamond } from "./Motifs";
 
 const cols = [
   { title: "Shop", links: [["New Arrivals", "/collections/new-arrivals"], ["Boys", "/collections/boys"], ["Girls", "/collections/girls"], ["Ethnic & Festive", "/collections/ethnic-festive"], ["Sale", "/collections/sale"]] },
@@ -123,9 +123,12 @@ export const Footer = () => (
             >KIDIA</text>
           </svg>
 
-          {/* two little flowers, one each side of the word */}
+          {/* flowers, sun and diamond close around the word */}
           <Float className="left-[7%] top-[34%] h-6 w-6 text-blush/80 sm:left-[9%] sm:h-9 sm:w-9" delay={0.4}><Flower /></Float>
           <Float className="right-[7%] top-[34%] h-6 w-6 text-coral/80 sm:right-[9%] sm:h-8 sm:w-8" delay={0.2}><Daisy /></Float>
+          <Float className="left-[21%] top-[6%] h-6 w-6 text-marigold sm:left-[23%] sm:h-8 sm:w-8" delay={0.8} spin><Sunburst /></Float>
+          <Float className="right-[21%] bottom-[7%] h-5 w-5 text-sky/85 sm:right-[23%] sm:h-7 sm:w-7" delay={1.5}><Diamond /></Float>
+
 
 
         </div>

@@ -110,3 +110,11 @@ export const Cloud = ({ className }: P) => (
 export const Sticker = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest shadow-soft", className)}>{children}</span>
 );
+
+/** Faceted gem — little jewel accent */
+export const Diamond = ({ className }: P) => (
+  <svg viewBox="0 0 100 100" className={cn("fill-none stroke-current", className)} aria-hidden strokeWidth={7} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M30 20h40l22 24-42 46-42-46 22-24Z" />
+    <path d="M10 44h80M30 20l12 24M70 20 58 44M42 44 50 90M58 44 50 90" />
+  </svg>
+);
