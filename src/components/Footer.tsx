@@ -78,7 +78,6 @@ export const Footer = () => (
               <li><a href={`mailto:${CONTACT.email}`} className="flex items-center gap-2 hover:text-butter"><Mail className="h-4 w-4" />{CONTACT.email}</a></li>
               <li><a href={`tel:+${CONTACT.whatsappNumber}`} className="flex items-center gap-2 hover:text-butter"><Phone className="h-4 w-4" />{CONTACT.phoneDisplay}</a></li>
               <li><a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-butter"><MessageCircle className="h-4 w-4" />Chat on WhatsApp</a></li>
-              <li className="pt-1 text-primary-foreground/60">{CONTACT.hours}</li>
             </ul>
           </div>
 
@@ -121,7 +120,7 @@ export const Footer = () => (
             <text
               x="350" y="135" textAnchor="middle"
               className="font-serif"
-              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.02em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 22, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
+              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.05em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 14, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
             >KIDIA</text>
           </svg>
           <Float className="hidden left-[4%] top-0 h-8 w-8 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
@@ -129,7 +128,7 @@ export const Footer = () => (
           <Float className="hidden left-[20%] bottom-0 h-9 w-9 text-sky/70 sm:block" delay={0.8} spin><Sunburst /></Float>
         </div>
 
-        <div className="mt-2 border-t border-primary-foreground/10 py-3 text-center text-xs text-primary-foreground/60">
+        <div className="-mx-5 mt-2 border-t border-primary-foreground/10 px-5 py-3 text-center text-xs text-primary-foreground/60 md:-mx-8 md:px-8">
           © {new Date().getFullYear()} KIDIA. All rights reserved.
         </div>
       </div>
