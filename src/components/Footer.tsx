@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { AGE_GROUPS } from "@/data/catalog";
-import { Float, Flower, Sparkle, Sunburst, Daisy, Hanger, Tee, Bow, Heart, Star, Butterfly, Cloud } from "./Motifs";
+import { Float, Flower, Sparkle, Sunburst, Daisy, Hanger, Tee, Bow, Heart, Butterfly, Cloud } from "./Motifs";
 
 const cols = [
   { title: "Shop", links: [["New Arrivals", "/collections/new-arrivals"], ["Boys", "/collections/boys"], ["Girls", "/collections/girls"], ["Ethnic & Festive", "/collections/ethnic-festive"], ["Sale", "/collections/sale"]] },
@@ -123,29 +123,25 @@ export const Footer = () => (
             >KIDIA</text>
           </svg>
 
-          {/* left band */}
-          <Float className="hidden left-[2%] top-[16%] h-9 w-9 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
-          <Float className="hidden left-[7%] top-[52%] h-8 w-8 text-sky/80 lg:block" delay={0.9}><Hanger /></Float>
-          <Float className="hidden left-[3%] top-[80%] h-6 w-6 text-coral/80 sm:block" delay={1.4}><Heart /></Float>
+          {/* hugging the word — left */}
+          <Float className="hidden left-[9%] top-[24%] h-9 w-9 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
+          <Float className="hidden left-[13%] top-[54%] h-8 w-8 text-sky/80 lg:block" delay={0.9}><Hanger /></Float>
+          <Float className="hidden left-[10%] top-[76%] h-6 w-6 text-coral/80 sm:block" delay={1.4}><Heart /></Float>
 
-          {/* right band */}
-          <Float className="hidden right-[2%] top-[16%] h-8 w-8 text-coral/80 sm:block" delay={0.2}><Daisy /></Float>
-          <Float className="hidden right-[7%] top-[52%] h-8 w-8 text-plum/70 lg:block" delay={0.5}><Tee /></Float>
-          <Float className="hidden right-[3%] top-[80%] h-7 w-7 text-blush/90 sm:block" delay={0.6}><Bow /></Float>
+          {/* hugging the word — right */}
+          <Float className="hidden right-[9%] top-[24%] h-8 w-8 text-coral/80 sm:block" delay={0.2}><Daisy /></Float>
+          <Float className="hidden right-[13%] top-[54%] h-8 w-8 text-plum/70 lg:block" delay={0.5}><Tee /></Float>
+          <Float className="hidden right-[10%] top-[76%] h-7 w-7 text-blush/90 sm:block" delay={0.6}><Bow /></Float>
 
-          {/* above the word */}
-          <Float className="hidden left-[30%] top-[1%] h-6 w-6 text-butter/90 sm:block" delay={1.6}><Sparkle /></Float>
-          <Float className="hidden left-[49%] -top-[1%] h-6 w-6 text-marigold/90 sm:block" delay={1.1}><Star /></Float>
-          <Float className="hidden right-[30%] top-[1%] h-7 w-7 text-plum/70 lg:block" delay={2.1}><Butterfly /></Float>
-
-          {/* below the word */}
-          <Float className="hidden left-[27%] bottom-0 h-10 w-10 text-butter/90 sm:block" delay={0.8} spin><Sunburst /></Float>
-          <Float className="hidden left-[49%] -bottom-1 h-6 w-6 text-sky/80 sm:block" delay={1.9}><Cloud /></Float>
-          <Float className="hidden right-[27%] bottom-0 h-6 w-6 text-marigold/80 sm:block" delay={1.3}><Sparkle /></Float>
+          {/* just above and below the word */}
+          <Float className="hidden right-[22%] top-[2%] h-7 w-7 text-plum/70 lg:block" delay={2.1}><Butterfly /></Float>
+          <Float className="hidden left-[22%] bottom-0 h-10 w-10 text-butter/90 sm:block" delay={0.8} spin><Sunburst /></Float>
+          <Float className="hidden left-[48%] -bottom-1 h-6 w-6 text-sky/80 sm:block" delay={1.9}><Cloud /></Float>
 
           {/* phone: two tiny accents tucked in the wordmark's side padding */}
-          <Float className="left-[1%] top-[38%] h-5 w-5 text-blush/70 sm:hidden" delay={0.4}><Flower /></Float>
-          <Float className="right-[1%] top-[38%] h-5 w-5 text-marigold/80 sm:hidden" delay={1.2} spin><Sunburst /></Float>
+          <Float className="left-[2%] top-[38%] h-5 w-5 text-blush/70 sm:hidden" delay={0.4}><Flower /></Float>
+          <Float className="right-[2%] top-[38%] h-5 w-5 text-marigold/80 sm:hidden" delay={1.2} spin><Sunburst /></Float>
+
         </div>
 
 
