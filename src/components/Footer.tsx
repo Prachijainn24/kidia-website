@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { AGE_GROUPS } from "@/data/catalog";
-import { Float, Flower, Sparkle, Sunburst } from "./Motifs";
+import { Float, Flower, Sparkle, Sunburst, Daisy, Hanger, Tee, Bow, Heart, Star, Butterfly, Cloud } from "./Motifs";
 
 const cols = [
   { title: "Shop", links: [["New Arrivals", "/collections/new-arrivals"], ["Boys", "/collections/boys"], ["Girls", "/collections/girls"], ["Ethnic & Festive", "/collections/ethnic-festive"], ["Sale", "/collections/sale"]] },
@@ -113,19 +113,42 @@ export const Footer = () => (
           </StampPanel>
         </div>
 
-        {/* ---------- giant sticker wordmark ---------- */}
+        {/* ---------- giant cursive sticker wordmark, ringed with brand doodles ---------- */}
         <div className="relative mt-4 px-1">
-          <svg viewBox="0 0 700 160" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
+          <svg viewBox="-62 -73 900 344" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
             <text
-              x="350" y="135" textAnchor="middle"
-              className="font-serif"
-              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.05em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 14, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
+              x="380" y="162" textAnchor="middle"
+              className="font-script"
+              style={{ fontSize: 150, fontWeight: 400, letterSpacing: "0.02em", paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 13, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
             >KIDIA</text>
           </svg>
-          <Float className="hidden left-[4%] top-0 h-8 w-8 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
-          <Float className="hidden right-[6%] top-1 h-7 w-7 text-marigold/90 sm:block" delay={1.2}><Sparkle /></Float>
-          <Float className="hidden left-[20%] bottom-0 h-9 w-9 text-sky/70 sm:block" delay={0.8} spin><Sunburst /></Float>
+
+          {/* left band */}
+          <Float className="hidden left-[2%] top-[16%] h-9 w-9 text-blush/80 sm:block" delay={0.4}><Flower /></Float>
+          <Float className="hidden left-[7%] top-[52%] h-8 w-8 text-sky/80 lg:block" delay={0.9}><Hanger /></Float>
+          <Float className="hidden left-[3%] top-[80%] h-6 w-6 text-coral/80 sm:block" delay={1.4}><Heart /></Float>
+
+          {/* right band */}
+          <Float className="hidden right-[2%] top-[16%] h-8 w-8 text-coral/80 sm:block" delay={0.2}><Daisy /></Float>
+          <Float className="hidden right-[7%] top-[52%] h-8 w-8 text-plum/70 lg:block" delay={0.5}><Tee /></Float>
+          <Float className="hidden right-[3%] top-[80%] h-7 w-7 text-blush/90 sm:block" delay={0.6}><Bow /></Float>
+
+          {/* above the word */}
+          <Float className="hidden left-[30%] top-[1%] h-6 w-6 text-butter/90 sm:block" delay={1.6}><Sparkle /></Float>
+          <Float className="hidden left-[49%] -top-[1%] h-6 w-6 text-marigold/90 sm:block" delay={1.1}><Star /></Float>
+          <Float className="hidden right-[30%] top-[1%] h-7 w-7 text-plum/70 lg:block" delay={2.1}><Butterfly /></Float>
+
+          {/* below the word */}
+          <Float className="hidden left-[27%] bottom-0 h-10 w-10 text-butter/90 sm:block" delay={0.8} spin><Sunburst /></Float>
+          <Float className="hidden left-[49%] -bottom-1 h-6 w-6 text-sky/80 sm:block" delay={1.9}><Cloud /></Float>
+          <Float className="hidden right-[27%] bottom-0 h-6 w-6 text-marigold/80 sm:block" delay={1.3}><Sparkle /></Float>
+
+          {/* phone: two tiny accents tucked in the wordmark's side padding */}
+          <Float className="left-[1%] top-[38%] h-5 w-5 text-blush/70 sm:hidden" delay={0.4}><Flower /></Float>
+          <Float className="right-[1%] top-[38%] h-5 w-5 text-marigold/80 sm:hidden" delay={1.2} spin><Sunburst /></Float>
         </div>
+
+
 
         <div className="relative left-1/2 mt-2 w-screen -translate-x-1/2 border-t border-primary-foreground/10 px-5 py-3 text-center text-xs text-primary-foreground/60 md:px-8">
           © {new Date().getFullYear()} KIDIA. All rights reserved.
