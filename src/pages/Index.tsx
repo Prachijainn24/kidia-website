@@ -9,9 +9,8 @@ import { Newsletter } from "@/components/Newsletter";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
-import heroGolden from "@/assets/hero-golden.jpg";
 import { BrandFilms } from "@/components/BrandFilms";
-import { Float, Flower, Sparkle, Sticker, Sunburst } from "@/components/Motifs";
+import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
@@ -35,32 +34,7 @@ const Bestsellers = () => {
 
 const Index = () => (
   <Layout>
-    <section className="relative isolate overflow-hidden bg-butter" aria-labelledby="home-title">
-      <Float className="left-[44%] top-8 hidden h-20 w-20 text-marigold md:block" spin><Sunburst /></Float>
-      <Float className="bottom-10 left-[3%] h-14 w-14 text-coral" delay={1}><Flower /></Float>
-      <Float className="right-[3%] top-14 h-8 w-8 text-plum" delay={2}><Sparkle /></Float>
-      <div className="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-marigold/40 blur-0" aria-hidden />
-      <div className="container-kidia relative grid items-center gap-10 py-12 md:grid-cols-[1fr_1fr] md:py-20">
-        <div className="relative z-10">
-          <motion.div initial={{ opacity: 0, y: 12, rotate: -6 }} animate={{ opacity: 1, y: 0, rotate: -3 }} transition={{ duration: 0.5 }}><Sticker className="bg-plum text-primary-foreground"><Sparkle className="h-3 w-3 text-butter" /> The little style club</Sticker></motion.div>
-          <motion.h1 id="home-title" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-primary sm:text-6xl lg:text-[5.5rem]">Fresh from<br /><span className="text-accent">our wardrobe</span></motion.h1>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="mt-6 max-w-md text-base font-semibold leading-relaxed text-foreground sm:text-lg">From everyday adventures to festive twirls, discover outfits made for every chapter of childhood.</motion.p>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="h-13 rounded-full px-7 py-4 text-xs font-extrabold tracking-widest shadow-lift transition hover:-translate-y-0.5 hover:bg-accent"><Link to="/shop">SHOP THE COLLECTION <ArrowRight className="h-4 w-4" /></Link></Button>
-            <Button asChild size="lg" variant="outline" className="h-13 rounded-full border-2 border-primary bg-background px-7 py-4 text-xs font-extrabold tracking-widest text-primary hover:bg-primary hover:text-primary-foreground"><Link to="/collections/ethnic-festive">DISCOVER FESTIVE WEAR</Link></Button>
-          </motion.div>
-          <p className="mt-8 font-hand text-2xl text-plum">KIDIA — a little world of style · ages 1–12</p>
-        </div>
-        <motion.div initial={{ opacity: 0, scale: 0.94, rotate: 2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.9, delay: 0.15 }} className="relative">
-          <div className="absolute -left-4 top-6 h-full w-full rotate-[-3deg] rounded-[3rem] bg-coral" aria-hidden />
-          <div className="relative overflow-hidden rounded-[3rem] border-[6px] border-background shadow-lift">
-            <img src={heroGolden} alt="Two children in a marigold anarkali and forest-green kurta laughing in a sunlit courtyard" width={1600} height={1104} className="aspect-[4/5] w-full object-cover object-[72%_center] sm:aspect-[5/4] md:aspect-[4/5]" />
-          </div>
-          <Sticker className="absolute -bottom-3 right-6 rotate-3 bg-background text-accent">New season · 2026</Sticker>
-          <span className="absolute -left-2 top-10 -rotate-6 rounded-xl bg-background px-3 py-2 font-hand text-xl text-primary shadow-soft">made for little adventures ✿</span>
-        </motion.div>
-      </div>
-    </section>
+    <NewArrivals />
 
     <section className="container-kidia py-16 md:py-24" aria-labelledby="category-title">
       <div className="grid items-start gap-10 lg:grid-cols-[1fr_3fr]">
@@ -71,7 +45,6 @@ const Index = () => (
       </div>
     </section>
 
-    <NewArrivals />
 
     <section className="wave-top relative -mt-4 bg-coral py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-butter text-butter" aria-hidden />
       <div className="container-kidia">
