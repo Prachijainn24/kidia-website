@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
+import { AGE_GROUPS } from "@/data/catalog";
 import logoLight from "@/assets/logo-blossom-light.png";
 import { Float, Flower, Sparkle, Sunburst } from "./Motifs";
 
@@ -28,7 +29,17 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
     <div aria-hidden className="pointer-events-none absolute inset-y-8 right-0 flex w-6 flex-col justify-between">
       {bumps(8).map((_, i) => <span key={`r${i}`} className="h-6 w-6 rounded-full bg-background" />)}
     </div>
-    <div className="relative flex-1 rounded-[1.5rem] bg-background px-6 py-7 md:px-8 md:py-8">{children}</div>
+    <div className="relative flex-1 rounded-[1.5rem] bg-background px-6 py-7 md:px-8 md:py-8">
+      <span aria-hidden className="pointer-events-none absolute inset-4 rounded-[1.1rem] border border-dashed border-primary/15" />
+      <div aria-hidden className="mb-6 flex items-center gap-3">
+        <Flower className="h-4 w-4 text-coral" />
+        <span className="h-px flex-1 bg-primary/10" />
+        <Sparkle className="h-4 w-4 text-marigold" />
+        <span className="h-px flex-1 bg-primary/10" />
+        <Sunburst className="h-4 w-4 text-sky" />
+      </div>
+      {children}
+    </div>
   </div>
 );
 
@@ -74,21 +85,30 @@ export const Footer = () => (
 
           {/* ---------- cream stamp panel with the links ---------- */}
           <StampPanel>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
+            <div className="relative grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
               {cols.map((c) => (
                 <div key={c.title}>
-                  <h3 className="font-sans text-[13px] font-extrabold uppercase tracking-[0.14em] text-plum">{c.title}</h3>
+                  <h3 className="font-sans text-[12px] font-extrabold uppercase tracking-[0.16em] text-plum">{c.title}</h3>
+                  <span aria-hidden className="mt-2 block h-[3px] w-7 rounded-full bg-coral/40" />
                   <ul className="mt-4 space-y-2.5">
-                    {c.links.map(([l, to]) => <li key={to}><Link to={to} className="text-sm text-muted-foreground transition hover:text-primary">{l}</Link></li>)}
+                    {c.links.map(([l, to]) => <li key={to}><Link to={to} className="inline-block text-sm text-muted-foreground transition hover:translate-x-0.5 hover:text-primary">{l}</Link></li>)}
                   </ul>
                 </div>
               ))}
               <div>
-                <h3 className="font-sans text-[13px] font-extrabold uppercase tracking-[0.14em] text-plum">Policies</h3>
+                <h3 className="font-sans text-[12px] font-extrabold uppercase tracking-[0.16em] text-plum">Policies</h3>
+                <span aria-hidden className="mt-2 block h-[3px] w-7 rounded-full bg-coral/40" />
                 <ul className="mt-4 space-y-2.5">
                   {policies.map(([l, to]) => (
-                    <li key={to}><Link to={to} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground transition hover:text-primary">{l}</Link></li>
+                    <li key={to}><Link to={to} target="_blank" rel="noopener noreferrer" className="inline-block text-sm text-muted-foreground transition hover:translate-x-0.5 hover:text-primary">{l}</Link></li>
                   ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-sans text-[12px] font-extrabold uppercase tracking-[0.16em] text-plum">Shop by age</h3>
+                <span aria-hidden className="mt-2 block h-[3px] w-7 rounded-full bg-coral/40" />
+                <ul className="mt-4 space-y-2.5">
+                  {AGE_GROUPS.map((a) => <li key={a.slug}><Link to={`/shop?age=${a.slug}`} className="inline-block text-sm text-muted-foreground transition hover:translate-x-0.5 hover:text-primary">{a.label}</Link></li>)}
                 </ul>
               </div>
             </div>
