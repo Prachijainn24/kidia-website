@@ -129,7 +129,7 @@ export const Footer = () => (
           <Float className="hidden left-[20%] bottom-0 h-9 w-9 text-sky/70 sm:block" delay={0.8} spin><Sunburst /></Float>
         </div>
 
-        <div className="-mx-5 mt-2 border-t border-primary-foreground/10 px-5 py-3 text-center text-xs text-primary-foreground/60 md:-mx-8 md:px-8">
+        <div className="relative left-1/2 mt-2 w-screen -translate-x-1/2 border-t border-primary-foreground/10 px-5 py-3 text-center text-xs text-primary-foreground/60 md:px-8">
           © {new Date().getFullYear()} KIDIA. All rights reserved.
         </div>
       </div>
