@@ -5,9 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import editorial from "@/assets/new-arrivals-editorial.jpg";
 import editorial2 from "@/assets/new-arrivals-editorial-2.jpg";
 import editorial3 from "@/assets/new-arrivals-editorial-3.jpg";
-import { products } from "@/data/catalog";
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/ProductCard";
 
 const SLIDES = [
   { src: editorial, alt: "Children modelling a peach floral frock and a mint co-ord set" },
@@ -17,7 +15,6 @@ const SLIDES = [
 const INTERVAL = 7000;
 
 export const NewArrivals = () => {
-  const newest = [...products.filter((p) => p.isNew), ...products.filter((p) => !p.isNew)].slice(0, 8);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -28,7 +25,7 @@ export const NewArrivals = () => {
   }, [paused]);
 
   return (
-    <section aria-labelledby="new-arrivals-title" className="bg-background pb-16 md:pb-24">
+    <section aria-labelledby="new-arrivals-title" className="bg-background">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -77,17 +74,6 @@ export const NewArrivals = () => {
           ))}
         </div>
       </motion.div>
-      <div className="container-kidia pt-10">
-        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="font-serif text-3xl italic text-primary md:text-4xl">Just landed, <span className="text-accent">just lovely.</span></p>
-          <Button asChild variant="link" className="h-auto shrink-0 px-0 text-xs font-bold sm:text-sm">
-            <Link to="/collections/new-arrivals">View All<ArrowUpRight /></Link>
-          </Button>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
-          {newest.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </div>
     </section>
   );
 };
