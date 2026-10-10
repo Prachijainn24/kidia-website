@@ -144,7 +144,7 @@ const Shop = () => {
   } else {
     crumbs.push({ label: "Shop All", to: "/shop" });
     if (get("category").length === 1) crumbs.push({ label: categoryName(get("category")[0]) });
-    else if (get("gender").length === 1) crumbs.push({ label: GENDERS.find((g) => g.v === get("gender")[0])?.l ?? "Shop All" });
+    else if (get("gender").length === 1) crumbs.push({ label: GENDER_LABEL[get("gender")[0]] ?? "Shop All" });
     else if (q) crumbs.push({ label: `Search: ${q}` });
   }
 
