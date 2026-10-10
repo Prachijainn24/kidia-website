@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useReducedMotion } from "framer-motion";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { AGE_GROUPS } from "@/data/catalog";
@@ -43,35 +42,15 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-/** Giant cursive KIDIA with a slow shimmer sweep across the letters */
+/** Giant cursive KIDIA wordmark */
 const Wordmark = () => {
-  const reduced = useReducedMotion();
   return (
     <svg viewBox="-62 -73 900 344" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
-      <defs>
-        <linearGradient id="kidia-shimmer" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="hsl(var(--background))" stopOpacity="0" />
-          <stop offset="40%" stopColor="hsl(var(--background))" stopOpacity="0" />
-          <stop offset="50%" stopColor="hsl(var(--background))" stopOpacity="0.95" />
-          <stop offset="60%" stopColor="hsl(var(--background))" stopOpacity="0" />
-          <stop offset="100%" stopColor="hsl(var(--background))" stopOpacity="0" />
-          {!reduced && (
-            <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0" dur="3.6s" repeatCount="indefinite" />
-          )}
-        </linearGradient>
-      </defs>
       <text
         x="380" y="162" textAnchor="middle"
         className="font-script"
         style={{ fontSize: 150, fontWeight: 400, letterSpacing: "0.02em", paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 13, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
       >KIDIA</text>
-      {!reduced && (
-        <text
-          x="380" y="162" textAnchor="middle"
-          className="font-script"
-          style={{ fontSize: 150, fontWeight: 400, letterSpacing: "0.02em", fill: "url(#kidia-shimmer)" }}
-        >KIDIA</text>
-      )}
     </svg>
   );
 };
