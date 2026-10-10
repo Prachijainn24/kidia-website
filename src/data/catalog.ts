@@ -10,6 +10,15 @@ import frock from "@/assets/p-frock.jpg";
 import diwali from "@/assets/diwali.jpg";
 import navratri from "@/assets/navratri.jpg";
 import hero from "@/assets/hero.jpg";
+import catBoys from "@/assets/cat-boys.jpg";
+import catGirls from "@/assets/cat-girls.jpg";
+import catEthnic from "@/assets/cat-ethnic.jpg";
+import catFestive from "@/assets/cat-festive.jpg";
+import catEssentials from "@/assets/cat-essentials.jpg";
+import catParty from "@/assets/cat-party.jpg";
+import catNightwear from "@/assets/cat-nightwear.jpg";
+import catCoords from "@/assets/cat-coords.jpg";
+
 
 export const images = { kurta, dress, coord, night, anarkali, tee, dhoti, frock, diwali, navratri, hero };
 
@@ -47,15 +56,16 @@ export const AGE_GROUPS = [
 ];
 
 export const CATEGORIES = [
-  { slug: "boys", name: "Boys' Clothing", image: kurta, link: "/collections/boys" },
-  { slug: "girls", name: "Girls' Clothing", image: frock, link: "/collections/girls" },
-  { slug: "ethnic", name: "Ethnic Wear", image: anarkali, link: "/shop?category=ethnic" },
-  { slug: "festive", name: "Festive Collection", image: diwali, link: "/collections/ethnic-festive" },
-  { slug: "essentials", name: "Everyday Essentials", image: tee, link: "/shop?category=essentials" },
-  { slug: "party", name: "Party & Occasion", image: dress, link: "/shop?category=party" },
-  { slug: "nightwear", name: "Nightwear", image: night, link: "/shop?category=nightwear" },
-  { slug: "coords", name: "Co-ord Sets", image: coord, link: "/shop?category=coords" },
+  { slug: "boys", name: "Boys' Clothing", image: catBoys, link: "/collections/boys" },
+  { slug: "girls", name: "Girls' Clothing", image: catGirls, link: "/collections/girls" },
+  { slug: "ethnic", name: "Ethnic Wear", image: catEthnic, link: "/shop?category=ethnic" },
+  { slug: "festive", name: "Festive Collection", image: catFestive, link: "/collections/ethnic-festive" },
+  { slug: "essentials", name: "Everyday Essentials", image: catEssentials, link: "/shop?category=essentials" },
+  { slug: "party", name: "Party & Occasion", image: catParty, link: "/shop?category=party" },
+  { slug: "nightwear", name: "Nightwear", image: catNightwear, link: "/shop?category=nightwear" },
+  { slug: "coords", name: "Co-ord Sets", image: catCoords, link: "/shop?category=coords" },
 ];
+
 
 export const OCCASIONS = ["Everyday", "Festive", "Party", "Wedding", "Birthday", "Bedtime"];
 
