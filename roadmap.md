@@ -37,3 +37,5 @@
 - [x] Little favourites: top 8 bestsellers only, numbered ranking grid
 - [x] Announcement bar: short phone messages so nothing is cut off; full lines on desktop
 - [ ] Footer: improve the cream stamp panel (columns, decoration, balance)
+- [ ] Footer: shrink stamp-panel content so it sits inside the dotted frame
+- [ ] Footer: bigger KIDIA wordmark in a different font
