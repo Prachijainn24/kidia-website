@@ -1,14 +1,13 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Instagram, Heart, Ribbon, Star, Shirt } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles, Ruler, Heart, Ribbon, Star, Shirt } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { NewArrivals } from "@/components/NewArrivals";
 import { CollectionStrip } from "@/components/CollectionStrip";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, images, products } from "@/data/catalog";
-import { CONTACT, instagramUrl } from "@/data/contact";
 import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 import { BabyApproved } from "@/components/BabyApproved";
 
