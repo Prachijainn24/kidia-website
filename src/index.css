@@ -83,4 +83,8 @@
   .scallop-bottom { -webkit-mask: radial-gradient(22px 16px at 50% 100%, transparent 98%, #000) bottom/44px 100% repeat-x; mask: radial-gradient(22px 16px at 50% 100%, transparent 98%, #000) bottom/44px 100% repeat-x; }
   .line-pattern { background-image: repeating-linear-gradient(135deg, hsl(var(--primary) / 0.06) 0 1px, transparent 1px 14px); }
   .postcard-edge { outline: 1px dashed hsl(var(--primary) / 0.35); outline-offset: -12px; }
+
+  /* sticker-style footer wordmark: butter fill with a thick cream outline behind it */
+  .kidia-wordmark { @apply font-display font-extrabold tracking-tighter leading-[0.8]; font-size: clamp(4rem, 19vw, 11rem); }
+  .kidia-wordmark-outline { @apply font-display font-extrabold tracking-tighter leading-[0.8]; font-size: clamp(4rem, 19vw, 11rem); color: transparent; -webkit-text-stroke: 0.085em hsl(var(--background)); }
 }
