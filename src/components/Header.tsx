@@ -137,7 +137,7 @@ export const Header = () => {
     <>
       <AnnouncementBar />
       <header className="sticky top-3 z-40 px-3 sm:px-5" onMouseLeave={() => setMega(null)}>
-        <div className="container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border border-foreground/10 bg-background/93 shadow-soft backdrop-blur-xl md:h-[74px]">
+        <div className="container-kidia flex h-[68px] items-center justify-between gap-4 rounded-full border border-foreground/10 bg-background/95 shadow-soft backdrop-blur-xl md:h-[74px]">
           <div className="flex items-center gap-2">
             <button className="min-[900px]:hidden rounded-full p-2 hover:bg-muted" aria-label="Open menu" onClick={() => setMobile(true)}><Menu className="h-5 w-5" /></button>
             <Logo />
