@@ -40,3 +40,5 @@
 - [ ] Footer: shrink stamp-panel content so it sits inside the dotted frame
 - [ ] Footer: bigger KIDIA wordmark in a different font
 - [ ] Footer: remove the "Started by two mothers." line from the green side
+- [ ] Footer: remove "Mon–Sat, 10am–7pm IST" hours line
+- [ ] Footer: phone — KIDIA wordmark letters squished, divider above copyright not edge-to-edge
