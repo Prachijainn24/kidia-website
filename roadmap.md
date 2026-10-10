@@ -28,3 +28,4 @@
 - [x] "A Little World of Style" identity: bold palette, playful motifs, sticker labels, coral festive band, green parents section, image lookbook replacing broken films
 
 - [ ] Footer: remove the extra blank space so it looks tighter
+- [ ] "Baby Approved, Parents Confirmed" review section after Why parents choose KIDIA (real reviews only)
