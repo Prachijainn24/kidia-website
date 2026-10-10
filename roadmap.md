@@ -61,6 +61,6 @@
 - [x] "Why parents choose KIDIA": reverted to the original green section (user asked to change the white back to green).
 - [x] Navbar pill: reduce the white space above and below the links (top/bottom inside the floating bar).
 - [x] Baby approved section: decreased the white space below the review panel (desktop 28px, phone 20px bottom padding).
-- [ ] Product cards: decrease card height (user is on /collections/sale).
-- [ ] Shop/collection list: numbered pagination.
-- [ ] Product page: customer review section styled like the user\u2019s reference image.
+- [x] Product cards: decrease card height.
+- [x] Shop/collection list: numbered pagination.
+- [x] Product page: customer review section styled like the reference.
