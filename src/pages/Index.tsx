@@ -9,7 +9,6 @@ import { CollectionStrip } from "@/components/CollectionStrip";
 import { Button } from "@/components/ui/button";
 import { AGE_GROUPS, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
-import { BrandFilms } from "@/components/BrandFilms";
 import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 import { BabyApproved } from "@/components/BabyApproved";
 
@@ -62,7 +61,6 @@ const Index = () => (
     </section>
 
 
-    <BrandFilms />
 
     <section className="container-kidia py-16 md:py-24" aria-labelledby="lookbook-title">
       <div className="grid items-center gap-8 md:grid-cols-[1fr_1.4fr]">
