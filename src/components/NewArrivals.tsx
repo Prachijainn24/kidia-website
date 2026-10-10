@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import editorial from "@/assets/new-arrivals-editorial.jpg";
 import editorial2 from "@/assets/new-arrivals-editorial-2.jpg";
 import editorial3 from "@/assets/new-arrivals-editorial-3.jpg";
@@ -26,28 +25,23 @@ export const NewArrivals = () => {
 
   return (
     <section aria-labelledby="new-arrivals-title" className="bg-background">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7 }}
+      <div
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
-        className="relative isolate overflow-hidden bg-secondary"
+        className="relative isolate overflow-hidden bg-foreground"
       >
         <div className="relative h-[100svh] min-h-[520px] w-full overflow-hidden">
-          <AnimatePresence mode="sync">
-            <motion.img
-              key={index}
-              src={SLIDES[index].src}
-              alt={SLIDES[index].alt}
+          {SLIDES.map((slide, i) => (
+            <img
+              key={slide.src}
+              src={slide.src}
+              alt={slide.alt}
               loading="eager"
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              className="absolute inset-0 h-full w-full object-cover"
+              decoding="async"
+              aria-hidden={i !== index}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${i === index ? "opacity-100" : "opacity-0"}`}
             />
-          </AnimatePresence>
+          ))}
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/25 via-45% to-transparent" />
         <div className="pointer-events-none container-kidia absolute inset-x-0 bottom-24">
@@ -59,7 +53,7 @@ export const NewArrivals = () => {
             <Link to="/collections/new-arrivals">Shop Now<ArrowUpRight className="h-5 w-5" /></Link>
           </Button>
         </div>
-        <div className="absolute right-4 top-4 flex gap-1 sm:right-6 sm:top-6">
+        <div className="absolute bottom-6 right-4 flex gap-1 sm:right-6">
           {SLIDES.map((_, i) => (
             <Button
               key={i}
@@ -73,7 +67,7 @@ export const NewArrivals = () => {
             ><span className={`h-2 rounded-full transition-all duration-500 ${i === index ? "w-5 bg-primary-foreground" : "w-2 bg-primary-foreground/50"}`} /></Button>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
