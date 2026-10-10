@@ -58,3 +58,4 @@
 - [x] "Why parents choose KIDIA" section: try white/cream instead of green — pick whichever suits the boutique theme; verify contrast and the section above/below.
 - [x] Footer wordmark: shimmer removed (user: "remove shimmer") — plain butter letters, no gloss sweep.
 - [x] Scrollbar: match the theme (cream track, forest thumb) site-wide.
+- [x] "Why parents choose KIDIA": reverted to the original green section (user asked to change the white back to green).
