@@ -34,18 +34,18 @@ export const CollectionStrip = () => {
         </Button>
       </div>
 
-      <div ref={ref} onScroll={update} className="no-scrollbar -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1">
+      <div ref={ref} onScroll={update} className="no-scrollbar -mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-1 sm:gap-3">
         {CATEGORIES.map((c, i) => (
           <Link
             key={c.slug}
             to={c.link}
-            className="group w-[42%] shrink-0 snap-start overflow-hidden rounded-xl bg-card shadow-soft transition-transform duration-300 hover:-translate-y-0.5 sm:w-[26%] lg:w-[11.8%]"
+            className="group w-[33%] shrink-0 snap-start overflow-hidden rounded-lg bg-card shadow-soft transition-transform duration-300 hover:-translate-y-0.5 sm:w-[26%] sm:rounded-xl lg:w-[11.8%]"
           >
             <div className="aspect-square overflow-hidden bg-muted">
               <img src={c.image} alt={c.name} loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
             </div>
-            <div className={`flex h-8 items-center justify-center px-1 text-center ${TONES[i % TONES.length]}`}>
-              <h3 className="whitespace-nowrap font-sans text-[10px] font-bold tracking-tight text-primary">{c.name}</h3>
+            <div className={`flex h-6 items-center justify-center px-1 text-center sm:h-8 ${TONES[i % TONES.length]}`}>
+              <h3 className="whitespace-nowrap font-sans text-[9px] font-bold tracking-tight text-primary sm:text-[10px]">{c.name}</h3>
             </div>
           </Link>
         ))}
