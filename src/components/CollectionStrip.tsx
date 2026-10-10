@@ -26,9 +26,9 @@ export const CollectionStrip = () => {
   }, []);
 
   return (
-    <section className="container-kidia py-8 md:py-12" aria-labelledby="category-title">
-      <div className="mb-4 flex items-end justify-between gap-4">
-        <h2 id="category-title" className="font-display text-2xl font-extrabold tracking-tight text-primary md:text-3xl">Collection</h2>
+    <section className="container-kidia py-5 sm:py-8 md:py-12" aria-labelledby="category-title">
+      <div className="mb-3 flex items-end justify-between gap-4 sm:mb-4">
+        <h2 id="category-title" className="font-display text-xl font-extrabold tracking-tight text-primary sm:text-2xl md:text-3xl">Collection</h2>
         <Button asChild variant="link" className="hidden px-0 text-[11px] font-bold uppercase tracking-[0.14em] text-primary/60 hover:text-primary sm:inline-flex">
           <Link to="/shop">Shop all <ArrowUpRight className="h-3.5 w-3.5" /></Link>
         </Button>
@@ -51,7 +51,7 @@ export const CollectionStrip = () => {
         ))}
       </div>
 
-      <div className="mx-auto mt-4 h-[3px] w-40 overflow-hidden rounded-full bg-primary/12" aria-hidden>
+      <div className="mx-auto mt-3 h-[3px] w-32 overflow-hidden rounded-full bg-primary/12 sm:mt-4 sm:w-40" aria-hidden>
         <div
           className="h-full rounded-full bg-primary transition-[margin,width] duration-200"
           style={{ width: `${progress.size * 100}%`, marginLeft: `${progress.start * 100}%` }}
