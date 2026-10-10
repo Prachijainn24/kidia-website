@@ -44,9 +44,10 @@ const StampPanel = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const Footer = () => (
-  <footer className="overflow-hidden rounded-t-[50%_48px] bg-primary md:rounded-t-[50%_80px]">
-    <div className="relative px-5 pb-4 pt-16 md:px-8 md:pt-24">
-      <div className="container-kidia">
+  <div className="bg-butter/35">
+    <footer className="overflow-hidden rounded-t-[2.5rem] bg-primary md:rounded-t-[4rem]">
+      <div className="relative px-5 pb-4 pt-10 md:px-8 md:pt-14">
+        <div className="container-kidia">
         <span aria-hidden className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-marigold/15 blur-2xl" />
         <span aria-hidden className="pointer-events-none absolute -bottom-28 right-1/3 h-72 w-72 rounded-full bg-coral/10 blur-3xl" />
 
