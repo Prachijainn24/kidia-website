@@ -64,3 +64,4 @@
 - [x] Product cards: decrease card height.
 - [x] Shop/collection list: numbered pagination.
 - [x] Product page: customer review section styled like the reference.
+- Remove Unisex option from Boys/Girls filter in Shop
