@@ -15,7 +15,6 @@ const SLIDES = [
 const INTERVAL = 7000;
 
 export const NewArrivals = () => {
-  const newest = [...products.filter((p) => p.isNew), ...products.filter((p) => !p.isNew)].slice(0, 8);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
