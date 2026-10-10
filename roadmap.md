@@ -29,3 +29,4 @@
 
 - [ ] Footer: remove the extra blank space so it looks tighter
 - [ ] "Baby Approved, Parents Confirmed" review section after Why parents choose KIDIA (real reviews only)
+- [ ] Remove the "Little stories in motion" lookbook section from the homepage
