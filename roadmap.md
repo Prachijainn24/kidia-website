@@ -59,3 +59,4 @@
 - [x] Footer wordmark: shimmer removed (user: "remove shimmer") — plain butter letters, no gloss sweep.
 - [x] Scrollbar: match the theme (cream track, forest thumb) site-wide.
 - [x] "Why parents choose KIDIA": reverted to the original green section (user asked to change the white back to green).
+- [ ] Navbar pill: reduce the white space above and below the links (top/bottom inside the floating bar).
