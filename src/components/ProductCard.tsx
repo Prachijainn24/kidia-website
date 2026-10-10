@@ -35,7 +35,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
   return (
     <motion.article initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} className="group flex h-full flex-col">
       <Link to={`/product/${p.slug}`} className="flex flex-1 flex-col">
-        <div className={`relative aspect-[3/4] overflow-hidden rounded-[1.5rem] ${tone}`}>
+        <div className={`relative aspect-[4/5] overflow-hidden rounded-[1.5rem] ${tone}`}>
           <img src={p.images[0]} alt={p.name} loading="lazy" width={768} height={1024} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
           {p.images[1] && <img src={p.images[1]} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100" />}
           <div className="absolute left-3 top-3 flex flex-col gap-1">
@@ -45,7 +45,7 @@ export const ProductCard = ({ p }: { p: Product }) => {
           </div>
           <WishButton p={p} className="absolute right-3 top-3" />
         </div>
-        <div className="mt-3 flex-1 space-y-1 px-1">
+        <div className="mt-2 flex-1 space-y-1 px-1">
           <h3 className="font-sans text-sm font-semibold leading-snug text-foreground line-clamp-2">{p.name}</h3>
           <div className="flex items-baseline gap-2">
             <span className="font-bold text-foreground">{formatINR(p.price)}</span>
@@ -60,11 +60,11 @@ export const ProductCard = ({ p }: { p: Product }) => {
         </div>
       </Link>
       {available ? (
-        <Button onClick={() => setQuick(true)} className="mt-3 h-11 w-full rounded-full text-sm font-bold transition hover:bg-accent">
+        <Button onClick={() => setQuick(true)} className="mt-2 h-10 w-full rounded-full text-sm font-bold transition hover:bg-accent">
           <ShoppingBag className="h-4 w-4" />Add to Cart
         </Button>
       ) : (
-        <Button disabled variant="secondary" className="mt-3 h-11 w-full rounded-md">Sold out</Button>
+        <Button disabled variant="secondary" className="mt-2 h-10 w-full rounded-md">Sold out</Button>
       )}
       <QuickAdd p={p} open={quick} onOpenChange={setQuick} />
     </motion.article>
