@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { AGE_GROUPS } from "@/data/catalog";
-import { Float, Flower, Sparkle, Sunburst, Daisy, Hanger, Tee, Bow, Heart, Star, Butterfly, Cloud } from "./Motifs";
+import { Float, Flower, Sparkle, Sunburst, Daisy, Hanger, Tee, Bow, Heart, Butterfly, Cloud } from "./Motifs";
 
 const cols = [
   { title: "Shop", links: [["New Arrivals", "/collections/new-arrivals"], ["Boys", "/collections/boys"], ["Girls", "/collections/girls"], ["Ethnic & Festive", "/collections/ethnic-festive"], ["Sale", "/collections/sale"]] },
