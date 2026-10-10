@@ -20,9 +20,9 @@ const MESSAGES = [
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/collections/sale", label: "Sale" },
   { to: "/collections/boys", label: "Boys", mega: "boys" },
   { to: "/collections/girls", label: "Girls", mega: "girls" },
+  { to: "/collections/sale", label: "Sale" },
 ];
 
 
