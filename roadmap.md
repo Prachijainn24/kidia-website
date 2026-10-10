@@ -39,3 +39,4 @@
 - [ ] Footer: improve the cream stamp panel (columns, decoration, balance)
 - [ ] Footer: shrink stamp-panel content so it sits inside the dotted frame
 - [ ] Footer: bigger KIDIA wordmark in a different font
+- [ ] Footer: remove the "Started by two mothers." line from the green side
