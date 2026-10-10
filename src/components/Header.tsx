@@ -152,7 +152,7 @@ export const Header = () => {
           <nav className="hidden min-[900px]:flex items-center gap-3 xl:gap-6" aria-label="Main">
             {NAV.map((n) => (
               <div key={n.to} onMouseEnter={() => setMega(n.mega ?? null)} className="relative">
-                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-[13px] xl:text-sm font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
+                <NavLink to={n.to} end className={({ isActive }) => cn("flex items-center gap-1 py-6 text-[15px] xl:text-[17px] font-semibold whitespace-nowrap transition-colors hover:text-primary", isActive ? "text-primary" : "text-foreground/80", n.label === "Sale" && "text-accent")}>
                   {n.label}{n.mega && <ChevronDown className="h-3 w-3" />}
                 </NavLink>
               </div>
