@@ -32,5 +32,7 @@
 - [x] Remove the "Little stories in motion" lookbook section from the homepage
 - [x] Sizes section: trim extra top/bottom space (py-8 md:py-12)
 - [x] Remove the "Little moments, beautifully dressed" Instagram album section from the homepage
-- [ ] KIDIA logo: explore two concepts, get the user's pick, then apply it across the site
-- [ ] Footer: remove remaining extra space above and below the footer content
+- [x] KIDIA logo: "Little blossom" mark chosen, applied in the header, footer and browser tab icon
+- [x] Footer: rebuild as a green rounded card with a scalloped cream stamp panel, link columns and a giant sticker wordmark (from the uploaded reference)
+- [x] Little favourites: top 8 bestsellers only, numbered ranking grid
+- [x] Announcement bar: short phone messages so nothing is cut off; full lines on desktop

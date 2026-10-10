@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Sunburst } from "./Motifs";
+import logoWide from "@/assets/logo-blossom-wide.png";
 
 export const Logo = ({ className }: { className?: string }) => (
-  <Link to="/" aria-label="KIDIA home" className={cn("inline-flex items-baseline font-display text-2xl md:text-3xl font-extrabold tracking-tight text-primary", className)}>
-    KID
-    <span className="relative">
-      I
-      <Sunburst className="absolute -top-3.5 left-1/2 h-4 w-4 -translate-x-1/2 text-marigold" />
-    </span>
-    A
+  <Link to="/" aria-label="KIDIA home" className={cn("inline-flex items-center", className)}>
+    <img src={logoWide} alt="KIDIA" width={1038} height={295} loading="eager" decoding="async" className="h-8 w-auto md:h-9" />
   </Link>
 );
