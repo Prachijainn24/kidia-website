@@ -61,14 +61,6 @@ const Index = () => (
     </section>
 
 
-
-    <section className="container-kidia py-16 md:py-24" aria-labelledby="lookbook-title">
-      <div className="grid items-center gap-8 md:grid-cols-[1fr_1.4fr]">
-        <div className="text-center md:text-left"><Instagram className="mb-4 inline-block h-7 w-7 text-accent" strokeWidth={1} /><p className="eyebrow mb-3">The KIDIA album</p><h2 id="lookbook-title" className="section-title">Little moments,<br /><span className="italic">beautifully dressed.</span></h2><a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 border-b border-primary pb-2 text-sm font-semibold text-primary">@{CONTACT.instagramHandle}<ArrowUpRight className="h-4 w-4" /></a></div>
-        <div className="grid grid-cols-2 items-center gap-4 sm:gap-7"><Link to="/collections/ethnic-festive" className="block -rotate-3 bg-card p-3 shadow-soft transition hover:rotate-0"><img src={images.hero} alt="Sibling festive styles from the KIDIA lookbook" loading="lazy" width={1920} height={1088} className="aspect-[4/5] w-full object-cover object-right" /><p className="py-3 text-center font-serif text-sm italic">Together is our favourite.</p></Link><Link to="/collections/girls" className="mt-12 block rotate-3 bg-card p-3 shadow-soft transition hover:rotate-0"><img src={images.dress} alt="Blush dress for a special little occasion" loading="lazy" width={768} height={1024} className="aspect-[4/5] w-full object-cover" /><p className="py-3 text-center font-serif text-sm italic">A little dress-up day.</p></Link></div>
-      </div>
-    </section>
-
     <section className="relative overflow-hidden bg-primary py-16 text-primary-foreground md:py-24" aria-labelledby="promise-title"><Float className="right-[4%] top-8 h-20 w-20 text-marigold/80" spin><Sunburst /></Float><Float className="bottom-8 left-[45%] h-12 w-12 text-blush/70" delay={1}><Flower /></Float>
       <div className="container-kidia grid gap-10 md:grid-cols-[1.1fr_1fr] md:gap-20">
         <motion.div {...fade}><Sticker className="mb-5 bg-butter text-primary">From one parent to another</Sticker><h2 id="promise-title" className="font-display text-4xl font-extrabold leading-tight text-butter md:text-5xl">Why parents<br />choose KIDIA</h2><p className="mt-6 max-w-md font-hand text-3xl text-blush">Started by two mothers.<br />Chosen with a mother's heart.</p><p className="mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/85">KIDIA was started by two mothers who wanted clothes their own children would love to wear, and that they would feel good buying. Every piece is chosen with a parent's eye for comfort, quality and joy.</p><Heart className="mt-6 h-8 w-8 fill-coral text-coral" strokeWidth={1} /></motion.div>
