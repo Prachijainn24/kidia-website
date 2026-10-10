@@ -14,7 +14,7 @@ const CHECKS = [
 ];
 
 export const BabyApproved = () => (
-  <section className="relative overflow-hidden bg-butter/35 py-16 md:py-24" aria-labelledby="approval-title">
+  <section className="relative overflow-hidden bg-butter/35 pb-5 pt-16 md:pb-7 md:pt-24" aria-labelledby="approval-title">
     <Float className="left-[3%] top-10 h-14 w-14 text-marigold/70" delay={0.4}><Flower /></Float>
     <Sparkle className="absolute bottom-10 right-[6%] h-6 w-6 text-coral" />
 
