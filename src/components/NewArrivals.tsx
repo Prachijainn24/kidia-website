@@ -53,7 +53,7 @@ export const NewArrivals = () => {
             <Link to="/collections/new-arrivals">Shop Now<ArrowUpRight className="h-5 w-5" /></Link>
           </Button>
         </div>
-        <div className="absolute right-4 top-4 flex gap-1 sm:right-6 sm:top-6">
+        <div className="absolute bottom-6 right-4 flex gap-1 sm:right-6">
           {SLIDES.map((_, i) => (
             <Button
               key={i}
