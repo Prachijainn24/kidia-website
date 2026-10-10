@@ -5,8 +5,9 @@ import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Feather, Sparkles,
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { NewArrivals } from "@/components/NewArrivals";
+import { CollectionStrip } from "@/components/CollectionStrip";
 import { Button } from "@/components/ui/button";
-import { AGE_GROUPS, CATEGORIES, images, products } from "@/data/catalog";
+import { AGE_GROUPS, images, products } from "@/data/catalog";
 import { CONTACT, instagramUrl } from "@/data/contact";
 import { BrandFilms } from "@/components/BrandFilms";
 import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
@@ -35,15 +36,7 @@ const Index = () => (
   <Layout>
     <NewArrivals />
 
-    <section className="container-kidia py-16 md:py-24" aria-labelledby="category-title">
-      <div className="grid items-start gap-10 lg:grid-cols-[1fr_3fr]">
-        <motion.div {...fade} className="lg:sticky lg:top-28"><Ribbon className="mb-4 h-9 w-9 text-accent" strokeWidth={1} /><p className="eyebrow mb-3">Their little wardrobe</p><h2 id="category-title" className="font-serif text-3xl leading-tight md:text-4xl">A style for<br /><span className="italic">every day.</span></h2><Button asChild variant="link" className="mt-4 px-0"><Link to="/shop">Shop all clothing <ArrowUpRight className="h-4 w-4" /></Link></Button></motion.div>
-        <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">
-          {CATEGORIES.map((c) => <motion.div key={c.slug} {...fade}><Link to={c.link} className="group flex h-full flex-col"><div className="aspect-[4/5] overflow-hidden rounded-b-lg rounded-t-[6rem] bg-muted"><img src={c.image} alt={c.name} loading="lazy" width={768} height={1024} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105" /></div><div className="mt-3 flex min-h-[2.5rem] items-start justify-between gap-2"><h3 className="font-sans text-xs font-semibold sm:text-sm">{c.name}</h3><ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" /></div></Link></motion.div>)}
-        </div>
-      </div>
-    </section>
-
+    <CollectionStrip />
 
     <section className="wave-top relative -mt-4 bg-coral py-20 md:py-28" aria-labelledby="festive-title"><Star className="absolute right-[8%] top-16 h-5 w-5 fill-butter text-butter" aria-hidden />
       <div className="container-kidia">
