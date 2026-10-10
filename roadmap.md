@@ -46,3 +46,5 @@
 - [ ] Little favourites: remove the 1-8 number badges
 
 - [x] Footer: removed the KIDIA logo image from the brand side (user asked "remove this"); dropped the now-unused logoLight import.
+
+- [ ] "A Little Celebration" festive section (src/pages/Index.tsx ~line 49): reduce overall height a little bit.
