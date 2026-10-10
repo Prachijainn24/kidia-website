@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, MessageCircle, Mail, Phone } from "lucide-react";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
-import logoMark from "@/assets/logo-mark.png";
+import logoLight from "@/assets/logo-blossom-light.png";
 import { Float, Flower, Sparkle, Sunburst } from "./Motifs";
 
 const cols = [
@@ -42,7 +42,7 @@ export const Footer = () => (
         <div className="relative grid gap-6 lg:grid-cols-[0.9fr_1.6fr] lg:gap-12">
           {/* ---------- brand side, on the green ---------- */}
           <div className="flex flex-col">
-            <img src={logoMark} alt="" width={1024} height={1024} loading="lazy" className="h-14 w-auto md:h-16" />
+            <img src={logoLight} alt="KIDIA" width={1038} height={295} loading="lazy" className="h-16 w-auto md:h-20" />
             <p className="mt-5 font-display text-2xl font-extrabold leading-tight text-butter md:text-3xl">
               Little Styles.<br />Big Smiles.
             </p>
