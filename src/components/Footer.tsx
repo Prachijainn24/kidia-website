@@ -118,11 +118,11 @@ export const Footer = () => (
 
         {/* ---------- giant sticker wordmark ---------- */}
         <div className="relative mt-4 px-1">
-          <svg viewBox="0 0 700 160" className="mx-auto block h-auto w-full max-w-4xl" role="img" aria-label="KIDIA">
+          <svg viewBox="0 0 700 160" className="mx-auto block h-auto w-full max-w-5xl" role="img" aria-label="KIDIA">
             <text
-              x="350" y="122" textAnchor="middle"
+              x="350" y="135" textAnchor="middle"
               className="font-serif"
-              style={{ fontSize: 134, fontWeight: 600, letterSpacing: "0.02em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 20, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
+              style={{ fontSize: 150, fontWeight: 600, letterSpacing: "0.02em", fontVariationSettings: '"opsz" 144', paintOrder: "stroke", stroke: "hsl(var(--background))", strokeWidth: 22, strokeLinejoin: "round", fill: "hsl(var(--butter))" }}
             >KIDIA</text>
           </svg>
           <Float className="left-[4%] top-0 h-8 w-8 text-blush/80" delay={0.4}><Flower /></Float>
