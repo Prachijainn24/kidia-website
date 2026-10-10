@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, products, sizeStartAge } from "@/data/catalog";
 import NotFound from "./NotFound";
 
-const PAGE = 8;
+const PAGE = 6;
 const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
 const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
 const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }, { v: "unisex", l: "Unisex" }];
