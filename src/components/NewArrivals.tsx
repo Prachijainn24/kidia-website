@@ -5,9 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import editorial from "@/assets/new-arrivals-editorial.jpg";
 import editorial2 from "@/assets/new-arrivals-editorial-2.jpg";
 import editorial3 from "@/assets/new-arrivals-editorial-3.jpg";
-import { products } from "@/data/catalog";
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/ProductCard";
 
 const SLIDES = [
   { src: editorial, alt: "Children modelling a peach floral frock and a mint co-ord set" },
