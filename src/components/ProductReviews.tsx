@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Instagram, MessageCircle, Star } from "lucide-react";
 import { Product } from "@/data/catalog";
 import { REVIEWS, Review, averageRating, reviewDate, reviewsFor } from "@/data/reviews";
