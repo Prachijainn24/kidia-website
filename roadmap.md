@@ -66,3 +66,5 @@
 - [x] Product page: customer review section styled like the reference.
 - [x] Remove Unisex option from Boys/Girls filter in Shop (chips and crumbs still label it if a link carries ?gender=unisex)
 - [x] Festive section: restored to the pre-shrink layout from saved history (bigger heading, roomier spacing, wide two-card layout, thick borders); Diwali crop kept head-to-toe so the child's head is not cut off.
+- [x] Footer wordmark: decrease the band height from top and bottom (viewBox 344 -> 299 tall; desktop band 391px -> 340px).
+- [ ] Footer: increase the width of the cream stamp panel section.

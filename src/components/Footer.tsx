@@ -63,7 +63,7 @@ export const Footer = () => (
         <span aria-hidden className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-marigold/15 blur-2xl" />
         <span aria-hidden className="pointer-events-none absolute -bottom-28 right-1/3 h-72 w-72 rounded-full bg-coral/10 blur-3xl" />
 
-        <div className="relative grid gap-6 lg:grid-cols-[0.9fr_1.6fr] lg:gap-12">
+        <div className="relative grid gap-6 lg:grid-cols-[0.7fr_1.9fr] lg:gap-10">
           {/* ---------- brand side, on the green ---------- */}
           <div className="flex flex-col">
             <p className="mt-5 font-display text-2xl font-extrabold leading-tight text-butter md:text-3xl">
