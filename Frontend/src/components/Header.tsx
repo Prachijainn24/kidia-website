@@ -5,7 +5,8 @@ import { Heart, Menu, Search, ShoppingBag, X, ChevronDown, Ruler } from "lucide-
 import { Logo } from "./Logo";
 import { useCartCount } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { AGE_GROUPS, CATEGORIES, products } from "@/data/catalog";
+import { AGE_GROUPS, CATEGORIES } from "@/data/catalog";
+import { useProducts } from "@/context/ProductsContext";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { AccountMenu } from "./AccountMenu";
@@ -77,6 +78,7 @@ const MegaMenu = ({ kind }: { kind: string }) => {
 };
 
 const SearchBox = ({ onDone }: { onDone: () => void }) => {
+  const { products } = useProducts();
   const [q, setQ] = useState("");
   const nav = useNavigate();
   const term = q.trim().toLowerCase();

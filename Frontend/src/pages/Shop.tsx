@@ -8,12 +8,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, products, sizeStartAge } from "@/data/catalog";
+import { AGE_GROUPS, ALL_SIZES, CATEGORIES, COLLECTIONS, OCCASIONS, Product, categoryName, discountPct, inStock, sizeStartAge } from "@/data/catalog";
+import { useProducts } from "@/context/ProductsContext";
 import NotFound from "./NotFound";
 
 const PAGE = 6;
 const PRICES = [{ v: "0-999", l: "Under ₹1,000" }, { v: "1000-1999", l: "₹1,000 – ₹1,999" }, { v: "2000-2999", l: "₹2,000 – ₹2,999" }, { v: "3000-99999", l: "₹3,000 & above" }];
-const COLOURS = Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values());
 const GENDERS = [{ v: "boys", l: "Boys" }, { v: "girls", l: "Girls" }];
 const GENDER_LABEL: Record<string, string> = { boys: "Boys", girls: "Girls", unisex: "Unisex" };
 
@@ -53,11 +53,17 @@ const FilterGroup = ({ title, opts, variant = "check", selected, onToggle }: { t
 };
 
 const Shop = () => {
+  const { products } = useProducts();
   const { slug } = useParams();
   const [params, setParams] = useSearchParams();
   const gridRef = useRef<HTMLDivElement>(null);
   const [mobileFilters, setMobileFilters] = useState(false);
   const collection = slug ? COLLECTIONS[slug] : undefined;
+
+  const dynamicColours = useMemo(
+    () => Array.from(new Map(products.flatMap((p) => p.colours).map((c) => [c.name, c])).values()),
+    [products]
+  );
 
   const get = (k: Key) => params.get(k)?.split(",").filter(Boolean) ?? [];
   const q = params.get("q") ?? "";
@@ -109,7 +115,7 @@ const Shop = () => {
     if (sort === "recommended") s.sort((a, b) => Number(!!b.bestseller) + Number(!!b.isNew) - (Number(!!a.bestseller) + Number(!!a.isNew)));
     return s;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params, collection]);
+  }, [params, collection, products]);
 
   if (slug && !collection) return <NotFound />;
 
@@ -131,7 +137,7 @@ const Shop = () => {
       <FilterGroup title="Size" variant="pills" opts={ALL_SIZES.map((s) => ({ v: s, l: s }))} selected={get("size")} onToggle={(v) => toggle("size", v)} />
       <FilterGroup title="Price" opts={PRICES.map((p) => ({ v: p.v, l: p.l }))} selected={get("price")} onToggle={(v) => toggle("price", v)} />
       <FilterGroup title="Category" opts={CATEGORIES.filter((c) => !["boys", "girls", "festive"].includes(c.slug)).map((c) => ({ v: c.slug, l: c.name }))} selected={get("category")} onToggle={(v) => toggle("category", v)} />
-      <FilterGroup title="Colour" opts={COLOURS.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} selected={get("colour")} onToggle={(v) => toggle("colour", v)} />
+      <FilterGroup title="Colour" opts={dynamicColours.map((c) => ({ v: c.name, l: c.name, swatch: c.hex }))} selected={get("colour")} onToggle={(v) => toggle("colour", v)} />
       <FilterGroup title="Occasion" opts={OCCASIONS.map((o) => ({ v: o, l: o }))} selected={get("occasion")} onToggle={(v) => toggle("occasion", v)} />
     </Accordion>
   );

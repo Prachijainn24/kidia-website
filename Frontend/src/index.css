@@ -95,4 +95,16 @@
   /* sticker-style footer wordmark: butter fill with a thick cream outline behind it */
   .kidia-wordmark { @apply font-display font-extrabold tracking-tighter leading-[0.8]; font-size: clamp(4rem, 19vw, 11rem); }
   .kidia-wordmark-outline { @apply font-display font-extrabold tracking-tighter leading-[0.8]; font-size: clamp(4rem, 19vw, 11rem); color: transparent; -webkit-text-stroke: 0.085em hsl(var(--background)); }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slideDown { animation: slideDown 0.2s ease-out forwards; }
+
+  @keyframes scaleUp {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate-scaleUp { animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 }

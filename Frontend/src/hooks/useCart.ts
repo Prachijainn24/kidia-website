@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { products, Product } from "@/data/catalog";
+import { getLiveProduct } from "@/context/ProductsContext";
 
 export interface CartLine { key: string; productId: string; size: string; colour: string; quantity: number }
 
@@ -12,7 +13,7 @@ interface CartState {
   clear: () => void;
 }
 
-const maxFor = (productId: string, size: string) => products.find((p) => p.id === productId)?.stock[size] ?? 0;
+const maxFor = (productId: string, size: string) => (getLiveProduct(productId) || products.find((p) => p.id === productId))?.stock[size] ?? 0;
 
 export const useCart = create<CartState>()(
   persist(
@@ -38,4 +39,4 @@ export const useCart = create<CartState>()(
 );
 
 export const useCartCount = () => useCart((s) => s.lines.reduce((n, l) => n + l.quantity, 0));
-export const lineProduct = (l: CartLine) => products.find((p) => p.id === l.productId)!;
+export const lineProduct = (l: CartLine) => getLiveProduct(l.productId) || products.find((p) => p.id === l.productId)!;

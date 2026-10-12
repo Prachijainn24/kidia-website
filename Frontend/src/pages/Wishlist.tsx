@@ -3,10 +3,11 @@ import { Heart } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { products } from "@/data/catalog";
+import { useProducts } from "@/context/ProductsContext";
 import { useWishlist } from "@/hooks/useWishlist";
 
 const Wishlist = () => {
+  const { products } = useProducts();
   const ids = useWishlist((s) => s.ids);
   const list = ids.map((id) => products.find((p) => p.id === id)).filter(Boolean) as typeof products;
   return (

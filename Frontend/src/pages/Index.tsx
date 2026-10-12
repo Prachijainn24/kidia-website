@@ -6,7 +6,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { NewArrivals } from "@/components/NewArrivals";
 import { CollectionStrip } from "@/components/CollectionStrip";
 import { Button } from "@/components/ui/button";
-import { AGE_GROUPS, images, products } from "@/data/catalog";
+import { AGE_GROUPS, images } from "@/data/catalog";
+import { useProducts } from "@/context/ProductsContext";
 import { Float, Flower, Sticker, Sunburst } from "@/components/Motifs";
 import { BabyApproved } from "@/components/BabyApproved";
 
@@ -14,6 +15,7 @@ import { BabyApproved } from "@/components/BabyApproved";
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 
 const Bestsellers = () => {
+  const { products } = useProducts();
   const top = products.filter(p => p.bestseller).slice(0, 8);
   return (
     <section className="bg-blush/40 py-16 md:py-24" aria-labelledby="bestseller-title">

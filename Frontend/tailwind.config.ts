@@ -65,6 +65,12 @@ export default {
         coral: "hsl(var(--coral))",
         success: "hsl(var(--success))",
         "primary-soft": "hsl(var(--primary-soft))",
+        "dark-navy": "#0F172A",
+        "muted-gray": "#475569",
+        "light-border": "#E2E8F0",
+        "soft-bg": "#F8FAFC",
+        "primary-hover": "#0C7D6E",
+        "accent-light": "#e8f6ea",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
