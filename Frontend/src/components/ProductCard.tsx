@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Heart, ShoppingBag, Zap, CheckCircle2 } from "lucide-react";
+import { Heart, ShoppingBag, CheckCircle2, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Product, discountPct, formatINR, inStock } from "@/data/catalog";
 import { useWishlist } from "@/hooks/useWishlist";
 import { QuickAdd } from "./QuickAdd";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { getProductRatingStats, syncReviewsFromSupabase } from "@/services/reviewService";
 
 export const WishButton = ({ p, className }: { p: Product; className?: string }) => {
   const saved = useWishlist((s) => s.ids.includes(p.id));
@@ -45,6 +46,18 @@ export const ProductCard = ({ p }: { p: Product }) => {
     (sum, n) => sum + (Number(n) || 0),
     0
   );
+  // Rating statistics — strictly genuine customer reviews
+  const [stats, setStats] = useState(() => getProductRatingStats(p.id));
+
+  useEffect(() => {
+    syncReviewsFromSupabase().then(() => {
+      setStats(getProductRatingStats(p.id));
+    });
+
+    const onUpdate = () => setStats(getProductRatingStats(p.id));
+    window.addEventListener("kidia_reviews_updated", onUpdate);
+    return () => window.removeEventListener("kidia_reviews_updated", onUpdate);
+  }, [p.id]);
 
   return (
     <motion.article
@@ -61,16 +74,8 @@ export const ProductCard = ({ p }: { p: Product }) => {
             loading="lazy"
             width={768}
             height={1024}
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
-          {p.images[1] && (
-            <img
-              src={p.images[1]}
-              alt=""
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
-            />
-          )}
           <div className="absolute left-3 top-3 flex flex-col gap-1">
             {p.bestseller && (
               <span className="rounded-full bg-amber-400 text-dark-navy px-2.5 py-1 text-[10px] font-black uppercase tracking-wider shadow-xs">
@@ -83,6 +88,16 @@ export const ProductCard = ({ p }: { p: Product }) => {
               </span>
             )}
           </div>
+
+          {/* Real Customer Star Rating Badge — strictly shown only when verified reviews exist */}
+          {stats.reviewCount > 0 && (
+            <div className="absolute left-3 bottom-3 z-20 flex items-center gap-1 rounded-full bg-background/90 backdrop-blur-md px-2.5 py-1 text-[11px] font-bold text-foreground shadow-soft border border-border/50">
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400 shrink-0" />
+              <span>{stats.averageRating.toFixed(1)}</span>
+              <span className="text-[10px] text-muted-foreground font-semibold">({stats.reviewCount})</span>
+            </div>
+          )}
+
           <WishButton p={p} className="absolute right-3 top-3" />
         </div>
 

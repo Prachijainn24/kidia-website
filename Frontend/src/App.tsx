@@ -16,6 +16,9 @@ import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./hooks/useAuth";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
+import MyOrders from "./pages/MyOrders";
+import CustomerOrderDetail from "./pages/CustomerOrderDetail";
+import Payment from "./pages/Payment";
 import ResetPassword from "./pages/ResetPassword";
 import RefundReturns from "./pages/RefundReturns";
 import Privacy from "./pages/Privacy";
@@ -32,6 +35,7 @@ import OrderDetails from "./admin/pages/OrderDetails";
 import CategoryManagement from "./admin/pages/CategoryManagement";
 import ProductReviews from "./admin/pages/ProductReviews";
 import UserManagement from "./admin/pages/UserManagement";
+import CustomerDetailView from "./admin/pages/CustomerDetailView";
 import ContactDetails from "./admin/pages/ContactDetails";
 import AdminSettings from "./admin/pages/AdminSettings";
 
@@ -59,6 +63,9 @@ const App = () => (
             <Route path="/size-guide" element={<SizeGuide />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/orders" element={<MyOrders />} />
+            <Route path="/orders/:orderId" element={<CustomerOrderDetail />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/refund-returns" element={<RefundReturns />} />
             <Route path="/privacy" element={<Privacy />} />
@@ -77,6 +84,7 @@ const App = () => (
               <Route path="order-details" element={<OrderDetails />} />
               <Route path="reviews" element={<ProductReviews />} />
               <Route path="users" element={<UserManagement />} />
+              <Route path="users/:userId" element={<CustomerDetailView />} />
               <Route path="contacts" element={<ContactDetails />} />
               <Route path="contact-details" element={<ContactDetails />} />
               <Route path="settings" element={<AdminSettings />} />

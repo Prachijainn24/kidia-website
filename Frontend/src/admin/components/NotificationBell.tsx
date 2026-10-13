@@ -2,20 +2,35 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bell, ShoppingBag, AlertTriangle, MessageSquare, Trash2, CheckCheck, Clock } from "lucide-react";
 import { getNotifications, markAsRead, markAllAsRead, deleteNotification } from "../services/adminApi";
 
-const formatRelativeTime = (dateString: string) => {
+const formatRelativeTime = (rawDate?: any): string => {
+  if (!rawDate) return "Just now";
   try {
-    const diffMs = Date.now() - new Date(dateString).getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
+    const d = new Date(rawDate);
+    const time = d.getTime();
+    if (isNaN(time)) return "Just now";
 
-    if (diffMins < 1) return "Just now";
+    const diffMs = Date.now() - time;
+    // Allow for slight client-server clock skew or immediate actions
+    if (diffMs < 60000) return "Just now";
+
+    const diffMins = Math.floor(diffMs / 60000);
     if (diffMins < 60) return `${diffMins}m ago`;
+
+    const diffHours = Math.floor(diffMins / 60);
     if (diffHours < 24) return `${diffHours}h ago`;
+
+    const diffDays = Math.floor(diffHours / 24);
     if (diffDays === 1) return "Yesterday";
-    return `${diffDays}d ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return d.toLocaleDateString("en-IN", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   } catch {
-    return "";
+    return "Just now";
   }
 };
 
@@ -37,6 +52,9 @@ const NotificationBell: React.FC = () => {
 
   useEffect(() => {
     fetchNotifs();
+    // Auto-refresh notifications every 10 seconds to catch newly placed orders
+    const interval = setInterval(fetchNotifs, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -54,18 +72,32 @@ const NotificationBell: React.FC = () => {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const handleMarkAll = async () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true, is_read: true })));
     await markAllAsRead();
     fetchNotifs();
   };
 
   const handleRead = async (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n._id === id || n.id === id ? { ...n, isRead: true, is_read: true } : n))
+    );
     await markAsRead(id);
     fetchNotifs();
   };
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
+  const handleDelete = async (item: any, e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-    await deleteNotification(id);
+    const idToDelete = item._id || item.id;
+    // Optimistic UI update: remove ONLY this clicked item, never all items
+    setNotifications((prev) =>
+      prev.filter((n) => {
+        if (idToDelete && (n._id === idToDelete || n.id === idToDelete)) return false;
+        if (n.title === item.title && n.message === item.message) return false;
+        return true;
+      })
+    );
+    await deleteNotification(idToDelete, item);
     fetchNotifs();
   };
 
@@ -85,6 +117,7 @@ const NotificationBell: React.FC = () => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-muted-foreground hover:text-foreground rounded-xl hover:bg-muted/60 transition-all cursor-pointer"
         aria-label="Notifications"
@@ -112,6 +145,7 @@ const NotificationBell: React.FC = () => {
             </div>
             {unreadCount > 0 && (
               <button
+                type="button"
                 onClick={handleMarkAll}
                 className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
               >
@@ -126,33 +160,48 @@ const NotificationBell: React.FC = () => {
                 No new notifications
               </div>
             ) : (
-              notifications.map((item) => (
-                <div
-                  key={item._id}
-                  onClick={() => handleRead(item._id)}
-                  className={`p-3 flex items-start gap-3 hover:bg-muted/40 transition-colors cursor-pointer ${
-                    !item.isRead ? "bg-primary/5" : ""
-                  }`}
-                >
-                  <div className="p-2 rounded-xl bg-muted/60 shrink-0">
-                    {getIcon(item.type)}
-                  </div>
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
-                    <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{item.message}</p>
-                    <p className="text-[10px] text-muted-foreground/70 mt-1 flex items-center gap-1 font-medium">
-                      <Clock size={10} /> {formatRelativeTime(item.createdAt)}
-                    </p>
-                  </div>
-                  <button
-                    onClick={(e) => handleDelete(item._id, e)}
-                    className="p-1 text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10 transition-colors cursor-pointer"
-                    title="Delete"
+              notifications.map((item, idx) => {
+                const notifId = item._id || item.id || `notif-idx-${idx}`;
+                const notifDate = item.createdAt || item.created_at || item.timestamp;
+                return (
+                  <div
+                    key={notifId}
+                    onClick={() => handleRead(notifId)}
+                    className={`p-3 flex items-start gap-3 hover:bg-muted/40 transition-colors cursor-pointer group ${
+                      !item.isRead ? "bg-primary/5" : ""
+                    }`}
                   >
-                    <Trash2 size={13} />
-                  </button>
-                </div>
-              ))
+                    <div className="p-2 rounded-xl bg-muted/60 shrink-0">
+                      {getIcon(item.type)}
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
+                        {!item.isRead && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" title="Unread" />
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{item.message}</p>
+                      <p
+                        className="text-[10px] text-muted-foreground/80 mt-1.5 flex items-center gap-1 font-medium"
+                        title={notifDate ? new Date(notifDate).toLocaleString("en-IN") : ""}
+                      >
+                        <Clock size={11} className="text-muted-foreground/60 shrink-0" />
+                        <span>{formatRelativeTime(notifDate)}</span>
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => handleDelete(item, e)}
+                      className="p-1.5 text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10 transition-colors cursor-pointer shrink-0 opacity-80 group-hover:opacity-100"
+                      title="Delete notification"
+                      aria-label="Delete notification"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                );
+              })
             )}
           </div>
         </div>

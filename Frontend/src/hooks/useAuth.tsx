@@ -33,9 +33,21 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const saved = localStorage.getItem("kidia_auth_user") || localStorage.getItem("kidia_bypass_session");
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  });
+  const [profile, setProfile] = useState<UserProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem("kidia_auth_profile") || localStorage.getItem("kidia_bypass_profile");
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  });
+  const [loading, setLoading] = useState(!user);
 
   const fetchProfile = async (userId: string, email?: string) => {
     try {
@@ -158,6 +170,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
+      localStorage.removeItem("kidia_auth_user");
+      localStorage.removeItem("kidia_auth_profile");
       localStorage.removeItem("kidia_bypass_session");
       localStorage.removeItem("kidia_bypass_profile");
       await supabase.auth.signOut();
@@ -184,6 +198,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const currentUser = error ? null : data.user;
           if (currentUser) {
             setUser(currentUser);
+            try {
+              localStorage.setItem("kidia_auth_user", JSON.stringify(currentUser));
+            } catch {}
             await fetchProfile(currentUser.id, currentUser.email);
           } else {
             // Check if there is an active local bypass session
@@ -204,6 +221,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setProfile(null);
               }
             } else {
+              localStorage.removeItem("kidia_auth_user");
+              localStorage.removeItem("kidia_auth_profile");
               setUser(null);
               setProfile(null);
             }

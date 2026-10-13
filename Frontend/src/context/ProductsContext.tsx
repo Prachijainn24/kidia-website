@@ -90,8 +90,14 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       )
       .subscribe();
 
+    const handleInvChange = () => {
+      fetchProducts();
+    };
+    window.addEventListener("kidia_inventory_changed", handleInvChange);
+
     return () => {
       supabase.removeChannel(channel);
+      window.removeEventListener("kidia_inventory_changed", handleInvChange);
     };
   }, [fetchProducts]);
 

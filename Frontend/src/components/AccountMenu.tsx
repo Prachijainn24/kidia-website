@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { UserRound, LogIn, LogOut, UserPlus, LayoutDashboard, ShoppingBag, ShieldCheck } from "lucide-react";
+import { UserRound, LogIn, LogOut, UserPlus, LayoutDashboard, ShoppingBag, ShieldCheck, Package } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -84,7 +84,13 @@ export function AccountMenu() {
             <DropdownMenuItem asChild className="rounded-xl cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary text-foreground hover:text-primary transition-colors group">
               <Link to="/account" className="flex items-center text-foreground group-hover:text-primary group-focus:text-primary font-semibold py-2 px-2.5 w-full">
                 <UserRound className="mr-2 h-4 w-4 text-muted-foreground group-hover:text-primary group-focus:text-primary transition-colors shrink-0" />
-                <span>My Profile & Orders</span>
+                <span>My Profile</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="rounded-xl cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary text-foreground hover:text-primary transition-colors group">
+              <Link to="/orders" className="flex items-center text-foreground group-hover:text-primary group-focus:text-primary font-semibold py-2 px-2.5 w-full">
+                <Package className="mr-2 h-4 w-4 text-muted-foreground group-hover:text-primary group-focus:text-primary transition-colors shrink-0" />
+                <span>My Orders</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="rounded-xl cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary text-foreground hover:text-primary transition-colors group">

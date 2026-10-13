@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { createClient } from "@supabase/supabase-js";
 import { products as CATALOG, CATEGORIES, Product } from "@/data/catalog";
+import { adjustInventoryForOrder } from "@/services/orderService";
 
 export interface AdminProduct {
   _id: string;
@@ -48,12 +49,7 @@ export interface AdminOrder {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
-  shippingAddress: {
-    address: string;
-    city: string;
-    state?: string;
-    pincode: string;
-  };
+  shippingAddress: any;
   items: {
     productId: string;
     heading: string;
@@ -64,7 +60,10 @@ export interface AdminOrder {
     image?: string;
   }[];
   totalAmount: number;
-  orderStatus: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  orderStatus: "placed" | "accepted" | "packed" | "shipping" | "delivered" | "cancelled" | "delivery_failed";
+  courierName?: string;
+  trackingId?: string;
+  deliveredAt?: string;
   paymentMethod: string;
   paymentStatus: "pending" | "paid" | "failed";
   createdAt: string;
@@ -205,16 +204,33 @@ export const getDashboardData = async (_user?: any, _range = "all") => {
   };
 };
 
-// Helper to ensure authenticated admin operations
-async function getAdminClient() {
-  const { data } = await supabase.auth.getSession();
-  if (!data?.session) {
-    await supabase.auth.signInWithPassword({
+// Dedicated authenticated admin client independent of storefront customer session
+let dedicatedAdminClient: any = null;
+export async function getAdminClient() {
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://gmwyetmtaiavvcsspxvf.supabase.co";
+  const SUPABASE_KEY =
+    import.meta.env.VITE_SUPABASE_ANON_KEY ||
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdtd3lldG10YWlhdnZjc3NweHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4MTIwMjMsImV4cCI6MjEwNzM4ODAyM30._TECHGq0-0kR-lLNuQKL_fC_9eqfRW5pypbnXCzDIe4";
+
+  if (!dedicatedAdminClient) {
+    dedicatedAdminClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    await dedicatedAdminClient.auth.signInWithPassword({
       email: "admin@kidia.com",
       password: "Admin123",
     });
+  } else {
+    const { data } = await dedicatedAdminClient.auth.getSession();
+    if (!data?.session) {
+      await dedicatedAdminClient.auth.signInWithPassword({
+        email: "admin@kidia.com",
+        password: "Admin123",
+      });
+    }
   }
-  return supabase;
+  return dedicatedAdminClient;
 }
 
 // Products API
@@ -549,85 +565,344 @@ export const toggleCategoryStatus = async (id: string) => {
 };
 
 // Orders API — Supabase only, no hardcoded data
+export const dbToUiStatus = (dbStatus?: string): AdminOrder["orderStatus"] => {
+  switch (dbStatus) {
+    case "pending":
+      return "placed";
+    case "processing":
+      return "accepted";
+    case "shipped":
+      return "shipping";
+    case "delivered":
+      return "delivered";
+    case "cancelled":
+      return "cancelled";
+    default:
+      return (dbStatus as any) || "placed";
+  }
+};
+
+export const uiToDbStatus = (status?: string): string => {
+  switch (status) {
+    case "placed":
+      return "pending";
+    case "accepted":
+    case "packed":
+      return "processing";
+    case "shipping":
+      return "shipped";
+    case "delivered":
+      return "delivered";
+    case "cancelled":
+    case "delivery_failed":
+      return "cancelled";
+    default:
+      return status || "pending";
+  }
+};
+
+// Orders API — Supabase database is single source of truth
 export const getAllOrders = async () => {
   try {
-    const { data, error } = await supabase.from("orders").select("*, order_items(*)").order("created_at", { ascending: false });
-    if (!error && data) {
-      const mapped: AdminOrder[] = data.map((d: any) => ({
-        _id: d.id,
-        orderNumber: `KD-${d.id.substring(0, 5).toUpperCase()}`,
-        userId: d.user_id,
-        customerName: d.customer_name || "Customer",
-        customerEmail: d.customer_email || "",
-        customerPhone: d.customer_phone || "",
-        shippingAddress: d.shipping_address || { address: "", city: "", pincode: "" },
-        items: (d.order_items || []).map((item: any) => ({
+    const client = await getAdminClient();
+    const { data, error } = await client
+      .from("orders")
+      .select("*, order_items(*)")
+      .order("created_at", { ascending: false });
+
+    if (!error && Array.isArray(data)) {
+      const mapped: AdminOrder[] = data.map((d: any) => {
+        let orderNum = "";
+        let backupItems: any[] = [];
+        let uiStatusFromNotes = "";
+        let courierFromNotes = "";
+        let trackingFromNotes = "";
+        let deliveredAtFromNotes = "";
+
+        if (d.notes) {
+          if (d.notes.startsWith("KD-")) {
+            orderNum = d.notes;
+          } else {
+            try {
+              const parsed = JSON.parse(d.notes);
+              orderNum = parsed.orderNumber || "";
+              if (parsed.uiStatus) uiStatusFromNotes = parsed.uiStatus;
+              if (parsed.courierName) courierFromNotes = parsed.courierName;
+              if (parsed.trackingId) trackingFromNotes = parsed.trackingId;
+              if (parsed.deliveredAt) deliveredAtFromNotes = parsed.deliveredAt;
+              if (Array.isArray(parsed.items)) backupItems = parsed.items;
+            } catch {}
+          }
+        }
+        if (!orderNum) {
+          orderNum = `KD-${(d.id || "").substring(0, 6).toUpperCase()}`;
+        }
+
+        const dbItems = (d.order_items || []).map((item: any) => ({
           productId: item.product_id,
           heading: item.product_name,
           price: Number(item.price),
           quantity: item.quantity,
           size: item.size,
           colour: item.colour,
-        })),
-        totalAmount: Number(d.total_amount),
-        orderStatus: d.status,
-        paymentMethod: d.payment_method || "COD",
-        paymentStatus: d.payment_status || "pending",
-        createdAt: d.created_at,
-      }));
-      return { data: { orders: mapped } };
+          image: CATALOG.find((c) => c.id === item.product_id || c.name === item.product_name)?.images[0] || "/placeholder.svg",
+        }));
+
+        const items = dbItems.length > 0 ? dbItems : backupItems.map((bi: any) => ({
+          ...bi,
+          image: CATALOG.find((c) => c.id === bi.productId || c.name === bi.heading)?.images[0] || "/placeholder.svg",
+        }));
+
+        const effectiveStatus = (uiStatusFromNotes as any) || dbToUiStatus(d.status);
+
+        return {
+          _id: d.id,
+          orderNumber: orderNum,
+          userId: d.user_id,
+          customerName: d.customer_name || "Customer",
+          customerEmail: d.customer_email || "",
+          customerPhone: d.customer_phone || "",
+          shippingAddress: d.shipping_address || { address: "", city: "", pincode: "" },
+          items,
+          totalAmount: Number(d.total_amount),
+          orderStatus: effectiveStatus,
+          courierName: courierFromNotes,
+          trackingId: trackingFromNotes,
+          deliveredAt: deliveredAtFromNotes,
+          paymentMethod: d.payment_method || "Online",
+          paymentStatus: d.payment_status || "paid",
+          createdAt: d.created_at,
+        };
+      });
+
+      // Keep localStorage in sync with database so no deleted ghost orders linger
+      try {
+        localStorage.setItem("kidia_customer_orders", JSON.stringify(mapped));
+      } catch {}
+
+      return {
+        data: {
+          orders: mapped.sort((a, b) => {
+            const timeA = new Date(a.createdAt || 0).getTime() || 0;
+            const timeB = new Date(b.createdAt || 0).getTime() || 0;
+            return timeB - timeA;
+          }),
+        },
+      };
     }
   } catch (err) {
     console.warn("Supabase orders fetch error", err);
   }
 
-  // Empty — no hardcoded fallback
-  return { data: { orders: [] as AdminOrder[] } };
+  // Fallback ONLY if network/database was offline/unreachable
+  let localOrders: any[] = [];
+  try {
+    const raw = localStorage.getItem("kidia_customer_orders");
+    if (raw) localOrders = JSON.parse(raw);
+  } catch {}
+
+  return {
+    data: {
+      orders: localOrders,
+    },
+  };
 };
 
-export const updateOrderStatus = async (orderId: string, status: string) => {
+export const updateOrderStatus = async (
+  orderId: string,
+  status: string,
+  courierName?: string,
+  trackingId?: string
+) => {
+  const deliveredAt = status === "delivered" ? new Date().toISOString() : undefined;
+  const dbStatus = uiToDbStatus(status);
+
+  // 1. Update in local storage
   try {
-    await supabase.from("orders").update({ status }).eq("id", orderId);
-  } catch {
-    // Ignore
+    const raw = localStorage.getItem("kidia_customer_orders");
+    if (raw) {
+      const orders: any[] = JSON.parse(raw);
+      const updated = orders.map((o) => {
+        if (o._id === orderId || o.id === orderId) {
+          return {
+            ...o,
+            orderStatus: status as any,
+            status: status as any,
+            ...(courierName ? { courierName, courier_name: courierName } : {}),
+            ...(trackingId ? { trackingId, tracking_id: trackingId } : {}),
+            ...(deliveredAt ? { deliveredAt, delivered_at: deliveredAt } : {}),
+          };
+        }
+        return o;
+      });
+      localStorage.setItem("kidia_customer_orders", JSON.stringify(updated));
+    }
+  } catch {}
+
+  // 2. Update in Supabase with admin privileges
+  try {
+    const client = await getAdminClient();
+    const { data: existingRow } = await client
+      .from("orders")
+      .select("notes, status, order_items(*)")
+      .eq("id", orderId)
+      .maybeSingle();
+
+    let notesObj: any = {};
+    let orderItemsToAdjust: any[] = [];
+
+    if (existingRow?.notes) {
+      if (existingRow.notes.startsWith("KD-")) {
+        notesObj.orderNumber = existingRow.notes;
+      } else {
+        try {
+          notesObj = JSON.parse(existingRow.notes);
+          if (Array.isArray(notesObj.items) && notesObj.items.length > 0) {
+            orderItemsToAdjust = notesObj.items;
+          }
+        } catch {}
+      }
+    }
+
+    if (Array.isArray(existingRow?.order_items) && existingRow.order_items.length > 0) {
+      orderItemsToAdjust = existingRow.order_items.map((it: any) => ({
+        productId: it.product_id,
+        heading: it.product_name,
+        price: Number(it.price),
+        quantity: it.quantity,
+        size: it.size,
+        colour: it.colour,
+      }));
+    }
+
+    const prevUiStatus = notesObj.uiStatus || dbToUiStatus(existingRow?.status);
+    const isNowCancelled = status === "cancelled" || status === "delivery_failed";
+    const wasCancelled = prevUiStatus === "cancelled" || prevUiStatus === "delivery_failed";
+
+    if (isNowCancelled && !wasCancelled && orderItemsToAdjust.length > 0) {
+      await adjustInventoryForOrder(orderItemsToAdjust, "increase");
+    } else if (!isNowCancelled && wasCancelled && orderItemsToAdjust.length > 0) {
+      await adjustInventoryForOrder(orderItemsToAdjust, "decrease");
+    }
+
+    notesObj.uiStatus = status;
+    if (courierName) notesObj.courierName = courierName;
+    if (trackingId) notesObj.trackingId = trackingId;
+    if (deliveredAt) notesObj.deliveredAt = deliveredAt;
+
+    const updatePayload: any = {
+      status: dbStatus,
+      notes: JSON.stringify(notesObj),
+    };
+
+    const { error } = await client.from("orders").update(updatePayload).eq("id", orderId);
+    if (error) {
+      console.error("Supabase updateOrderStatus error:", error);
+      throw error;
+    }
+  } catch (err) {
+    console.error("Failed to update order status in Supabase:", err);
+    throw err;
   }
+
   return { data: { success: true } };
 };
 
-// Reviews API — Supabase only, no hardcoded data
+// Reviews API — Dedicated admin client with Supabase persistence and catalog fallback
 export const getVendorReviewsApi = async () => {
   try {
-    const { data, error } = await supabase.from("reviews").select("*, products(name)").order("created_at", { ascending: false });
-    if (!error && data) {
-      const mapped: AdminReview[] = data.map((r: any) => ({
-        _id: r.id,
-        productId: r.product_id,
-        productName: r.products?.name || "",
-        parentName: r.parent_name,
-        childInfo: r.child_info,
-        rating: r.rating,
-        comment: r.quote,
-        isApproved: r.is_approved,
-        createdAt: r.created_at,
-      }));
+    const client = await getAdminClient();
+    const { data, error } = await client
+      .from("reviews")
+      .select("*, products(name)")
+      .order("created_at", { ascending: false });
+
+    if (!error && Array.isArray(data)) {
+      // Also check local storage reviews and sync any missing review to Supabase
+      try {
+        const rawLocal = localStorage.getItem("kidia_customer_product_reviews");
+        if (rawLocal) {
+          const localReviews = JSON.parse(rawLocal);
+          const existingIds = new Set(data.map((r: any) => r.id));
+          const existingQuotes = new Set(data.map((r: any) => `${r.product_id}_${r.quote}`));
+          for (const lr of localReviews) {
+            const key = `${lr.productId}_${lr.comment}`;
+            if (!existingIds.has(lr.id) && !existingQuotes.has(key)) {
+              // Sync missing to Supabase
+              const adminUser = (await client.auth.getUser()).data?.user;
+              await client.from("reviews").insert([{
+                id: lr.id.startsWith("rev_") ? undefined : lr.id,
+                user_id: adminUser?.id,
+                product_id: lr.productId,
+                parent_name: lr.customerName,
+                child_info: "Verified Purchase",
+                rating: lr.rating,
+                quote: lr.comment,
+                is_approved: true,
+              }]);
+            }
+          }
+        }
+      } catch (localSyncErr) {
+        console.warn("Local review sync note:", localSyncErr);
+      }
+
+      // Re-fetch or map data
+      const mapped: AdminReview[] = data.map((r: any) => {
+        const prod = CATALOG.find((p) => p.id === r.product_id);
+        return {
+          _id: r.id,
+          productId: r.product_id,
+          productName: r.products?.name || prod?.name || "Boutique Design",
+          parentName: r.parent_name || "Verified Customer",
+          childInfo: r.child_info || "Verified Purchase",
+          rating: Number(r.rating) || 5,
+          comment: r.quote || "",
+          isApproved: r.is_approved !== false,
+          createdAt: r.created_at || new Date().toISOString(),
+        };
+      });
       return { data: { reviews: mapped } };
     }
   } catch (err) {
     console.warn("Supabase reviews fetch error", err);
   }
 
+  // Local storage fallback if offline
+  try {
+    const raw = localStorage.getItem("kidia_customer_product_reviews");
+    if (raw) {
+      const list = JSON.parse(raw);
+      const mapped: AdminReview[] = list.map((lr: any) => {
+        const prod = CATALOG.find((p) => p.id === lr.productId);
+        return {
+          _id: lr.id,
+          productId: lr.productId,
+          productName: lr.productName || prod?.name || "Boutique Design",
+          parentName: lr.customerName,
+          childInfo: "Verified Purchase",
+          rating: lr.rating,
+          comment: lr.comment,
+          isApproved: true,
+          createdAt: lr.createdAt,
+        };
+      });
+      return { data: { reviews: mapped } };
+    }
+  } catch {}
+
   return { data: { reviews: [] as AdminReview[] } };
 };
 
 export const toggleReviewApprovalApi = async (id: string) => {
   try {
-    // Fetch current state, then toggle
-    const { data: current } = await supabase.from("reviews").select("is_approved").eq("id", id).single();
+    const client = await getAdminClient();
+    const { data: current } = await client.from("reviews").select("is_approved").eq("id", id).single();
     if (current) {
-      await supabase.from("reviews").update({ is_approved: !current.is_approved }).eq("id", id);
+      await client.from("reviews").update({ is_approved: !current.is_approved }).eq("id", id);
     }
-  } catch {
-    // Ignore
+  } catch (err) {
+    console.warn("Failed to toggle review approval:", err);
   }
   return { data: { success: true } };
 };
@@ -754,44 +1029,181 @@ export const deleteContactApi = async (id: string) => {
 };
 
 // Notifications API — Supabase only, no hardcoded data
+const DELETED_NOTIFS_KEY = "kidia_deleted_notifications";
+
+// Notifications API — Combined Supabase & Local Store with full persistence
 export const getNotifications = async () => {
+  let deletedIds = new Set<string>();
   try {
-    const { data, error } = await supabase.from("notifications").select("*").order("created_at", { ascending: false });
-    if (!error && data) {
-      const mapped = data.map((n: any) => ({
-        _id: n.id,
-        title: n.title,
-        message: n.message,
-        type: n.type,
-        isRead: n.is_read,
-        createdAt: n.created_at,
-      }));
-      return { data: { notifications: mapped } };
+    const rawDel = localStorage.getItem(DELETED_NOTIFS_KEY);
+    if (rawDel) {
+      const arr = JSON.parse(rawDel);
+      if (Array.isArray(arr)) deletedIds = new Set(arr);
+    }
+  } catch {}
+
+  let localNotifs: any[] = [];
+  try {
+    const raw = localStorage.getItem("kidia_admin_notifications");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        localNotifs = parsed
+          .filter((n: any) => {
+            if (n.id && deletedIds.has(String(n.id))) return false;
+            if (n._id && deletedIds.has(String(n._id))) return false;
+            if (deletedIds.has(`${n.title}::${n.message}`)) return false;
+            return true;
+          })
+          .map((n: any) => ({
+            _id: n.id || n._id || `notif_${Date.now()}`,
+            id: n.id || n._id,
+            title: n.title,
+            message: n.message,
+            type: n.type || "order",
+            isRead: !!(n.is_read || n.isRead),
+            createdAt: n.created_at || n.createdAt || new Date().toISOString(),
+            created_at: n.created_at || n.createdAt || new Date().toISOString(),
+          }));
+      }
+    }
+  } catch {}
+
+  try {
+    const client = await getAdminClient();
+    const { data, error } = await client.from("notifications").select("*").order("created_at", { ascending: false });
+    if (!error && data && data.length > 0) {
+      const mapped = data
+        .filter((n: any) => {
+          if (deletedIds.has(String(n.id))) return false;
+          if (deletedIds.has(`${n.title}::${n.message}`)) return false;
+          return true;
+        })
+        .map((n: any) => ({
+          _id: n.id,
+          id: n.id,
+          title: n.title,
+          message: n.message,
+          type: n.type || "order",
+          isRead: !!n.is_read,
+          createdAt: n.created_at || new Date().toISOString(),
+          created_at: n.created_at || new Date().toISOString(),
+        }));
+
+      const seenIds = new Set(mapped.map((m) => m._id));
+      const combined = [...mapped];
+      for (const ln of localNotifs) {
+        if (!seenIds.has(ln._id)) combined.push(ln);
+      }
+      return {
+        data: {
+          notifications: combined.sort((a, b) => {
+            const tA = new Date(a.createdAt || 0).getTime() || 0;
+            const tB = new Date(b.createdAt || 0).getTime() || 0;
+            return tB - tA;
+          }),
+        },
+      };
     }
   } catch (err) {
     console.warn("Supabase notifications fetch error", err);
   }
 
-  return { data: { notifications: [] as any[] } };
+  return {
+    data: {
+      notifications: localNotifs.sort((a, b) => {
+        const tA = new Date(a.createdAt || 0).getTime() || 0;
+        const tB = new Date(b.createdAt || 0).getTime() || 0;
+        return tB - tA;
+      }),
+    },
+  };
 };
 
 export const markAsRead = async (id: string) => {
   try {
-    await supabase.from("notifications").update({ is_read: true }).eq("id", id);
+    const raw = localStorage.getItem("kidia_admin_notifications");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const updated = parsed.map((n: any) =>
+          n.id === id || n._id === id ? { ...n, is_read: true, isRead: true } : n
+        );
+        localStorage.setItem("kidia_admin_notifications", JSON.stringify(updated));
+      }
+    }
+  } catch {}
+
+  try {
+    const client = await getAdminClient();
+    await client.from("notifications").update({ is_read: true }).eq("id", id);
   } catch {}
   return { data: { success: true } };
 };
 
 export const markAllAsRead = async () => {
   try {
-    await supabase.from("notifications").update({ is_read: true }).eq("is_read", false);
+    const raw = localStorage.getItem("kidia_admin_notifications");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const updated = parsed.map((n: any) => ({ ...n, is_read: true, isRead: true }));
+        localStorage.setItem("kidia_admin_notifications", JSON.stringify(updated));
+      }
+    }
+  } catch {}
+
+  try {
+    const client = await getAdminClient();
+    await client.from("notifications").update({ is_read: true }).eq("is_read", false);
   } catch {}
   return { data: { success: true } };
 };
 
-export const deleteNotification = async (id: string) => {
+export const deleteNotification = async (id?: string, item?: any) => {
+  const strId = id ? String(id) : "";
+  const sig = item?.title && item?.message ? `${item.title}::${item.message}` : "";
+
+  // 1. Permanently remove from localStorage notifications
   try {
-    await supabase.from("notifications").delete().eq("id", id);
+    const raw = localStorage.getItem("kidia_admin_notifications");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const filtered = parsed.filter((n: any) => {
+          if (strId && (String(n.id) === strId || String(n._id) === strId)) return false;
+          if (sig && `${n.title}::${n.message}` === sig) return false;
+          return true;
+        });
+        localStorage.setItem("kidia_admin_notifications", JSON.stringify(filtered));
+      }
+    }
+  } catch (err) {
+    console.warn("Failed to delete notification from localStorage", err);
+  }
+
+  // 2. Add to deleted blacklist so it NEVER reappears from Supabase or caches
+  try {
+    const rawDel = localStorage.getItem(DELETED_NOTIFS_KEY);
+    const delList: string[] = rawDel ? JSON.parse(rawDel) : [];
+    if (strId && !delList.includes(strId)) {
+      delList.push(strId);
+    }
+    if (sig && !delList.includes(sig)) {
+      delList.push(sig);
+    }
+    localStorage.setItem(DELETED_NOTIFS_KEY, JSON.stringify(delList));
   } catch {}
+
+  // 3. Delete from Supabase using authenticated admin client
+  if (strId) {
+    try {
+      const client = await getAdminClient();
+      await client.from("notifications").delete().eq("id", strId);
+    } catch (err) {
+      console.warn("Supabase notification delete warning:", err);
+    }
+  }
+
   return { data: { success: true } };
 };

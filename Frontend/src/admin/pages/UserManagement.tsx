@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   allUsers,
   deleteUserApi,
   toggleUserSuspensionApi,
   addCustomerApi,
+  getAllOrders,
   AdminUser,
+  AdminOrder,
 } from "../services/adminApi";
+import { formatINR } from "@/data/catalog";
 import {
   Users,
   Search,
@@ -19,16 +23,78 @@ import {
   Calendar,
   UserPlus,
   X,
+  Eye,
+  ShoppingBag,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  Truck,
+  AlertTriangle,
 } from "lucide-react";
 
+export const OrderStatusPill: React.FC<{ status: string }> = ({ status }) => {
+  switch (status) {
+    case "placed":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-800 border border-amber-500/20">
+          <Clock size={10} className="text-amber-600" /> Placed
+        </span>
+      );
+    case "accepted":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-800 border border-blue-500/20">
+          <Check size={10} className="text-blue-600" /> Accepted
+        </span>
+      );
+    case "packed":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-800 border border-purple-500/20">
+          <Package size={10} className="text-purple-600" /> Packed
+        </span>
+      );
+    case "shipping":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
+          <Truck size={10} /> In Transit
+        </span>
+      );
+    case "delivered":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600/15 text-emerald-800 border border-emerald-600/30">
+          <CheckCircle2 size={10} className="text-emerald-600" /> Delivered
+        </span>
+      );
+    case "cancelled":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-destructive/10 text-destructive border border-destructive/20">
+          <XCircle size={10} /> Cancelled
+        </span>
+      );
+    case "delivery_failed":
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/15 text-red-900 border border-red-500/30">
+          <AlertTriangle size={10} /> Failed
+        </span>
+      );
+    default:
+      return (
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-muted text-foreground capitalize">
+          {status}
+        </span>
+      );
+  }
+};
+
 const UserManagement: React.FC = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState<AdminUser[]>([]);
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toastMessage, setToastMessage] = useState("");
 
   // Add customer modal states
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formName, setFormName] = useState("");
   const [formEmail, setFormEmail] = useState("");
@@ -41,19 +107,40 @@ const UserManagement: React.FC = () => {
     setTimeout(() => setToastMessage(""), 3000);
   };
 
-  const loadUsers = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const res = await allUsers();
-      setUsers(res.data.users || []);
+      const [usersRes, ordersRes] = await Promise.all([
+        allUsers(),
+        getAllOrders(),
+      ]);
+      setUsers(usersRes.data.users || []);
+      setOrders(ordersRes.data.orders || []);
+    } catch (err) {
+      console.warn("Failed to load users and orders", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadUsers();
+    loadData();
   }, []);
+
+  const getCustomerOrders = (customer: AdminUser): AdminOrder[] => {
+    return orders.filter(
+      (o) =>
+        (o.userId && o.userId === customer._id) ||
+        (o.customerEmail && o.customerEmail.toLowerCase() === customer.email.toLowerCase())
+    );
+  };
+
+  const getCustomerTotalSpent = (customer: AdminUser): number => {
+    const custOrders = getCustomerOrders(customer);
+    return custOrders
+      .filter((o) => o.orderStatus !== "cancelled" && o.orderStatus !== "delivery_failed")
+      .reduce((sum, o) => sum + (Number(o.totalAmount) || 0), 0);
+  };
 
   const handleCreateCustomer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,13 +160,13 @@ const UserManagement: React.FC = () => {
       });
 
       showToast("Customer account created successfully!");
-      setIsModalOpen(false);
+      setIsAddModalOpen(false);
       setFormName("");
       setFormEmail("");
       setFormPhone("");
       setFormPassword("Customer@123");
       setFormStatus("active");
-      await loadUsers();
+      await loadData();
     } catch (err: any) {
       showToast("Error: " + (err?.message || "Failed to create customer"));
     } finally {
@@ -91,17 +178,18 @@ const UserManagement: React.FC = () => {
     try {
       await toggleUserSuspensionApi(id);
       showToast("User account status updated");
-      loadUsers();
+      loadData();
     } catch {
       showToast("Failed to update status");
     }
   };
 
   const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this customer record?")) return;
     try {
       await deleteUserApi(id);
       showToast("User record removed");
-      loadUsers();
+      loadData();
     } catch {
       showToast("Failed to delete user");
     }
@@ -117,7 +205,7 @@ const UserManagement: React.FC = () => {
   }, [users, search]);
 
   return (
-    <div className="space-y-6 text-left max-w-4xl mx-auto">
+    <div className="space-y-6 text-left max-w-5xl mx-auto">
       {/* Toast */}
       {toastMessage && (
         <div className="fixed top-20 right-6 z-50 bg-foreground text-background text-xs font-bold px-4 py-2.5 rounded-xl shadow-soft flex items-center gap-2 animate-slideDown">
@@ -133,12 +221,12 @@ const UserManagement: React.FC = () => {
             Customers & Profiles
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 font-medium">
-            Manage registered customer accounts synced with Supabase authentication.
+            Manage registered customer accounts, inspect lifetime spend, order history, and saved addresses.
           </p>
         </div>
 
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsAddModalOpen(true)}
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all shadow-soft cursor-pointer shrink-0"
         >
           <UserPlus size={15} />
@@ -171,8 +259,9 @@ const UserManagement: React.FC = () => {
               <tr className="border-b border-border/60 text-muted-foreground uppercase text-[10px] font-black tracking-wider bg-muted/30">
                 <th className="py-3 px-4">Customer</th>
                 <th className="py-3 px-4">Contact</th>
+                <th className="py-3 px-4">Orders</th>
+                <th className="py-3 px-4">Total Spent</th>
                 <th className="py-3 px-4">Joined</th>
-                <th className="py-3 px-4">Role</th>
                 <th className="py-3 px-4">Status</th>
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
@@ -180,103 +269,142 @@ const UserManagement: React.FC = () => {
             <tbody className="divide-y divide-border/40 font-medium">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-muted-foreground">
+                  <td colSpan={7} className="py-12 text-center text-muted-foreground">
                     <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary mb-2" />
-                    <span>Loading customers...</span>
+                    <span>Loading customer profiles & orders...</span>
                   </td>
                 </tr>
               ) : filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-muted-foreground">
+                  <td colSpan={7} className="py-12 text-center text-muted-foreground">
                     <Users className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
                     <p className="font-bold text-foreground">No customers registered yet</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Customers will appear here when they sign up on the storefront or when you add them.
+                      Customers will appear here when they register or place orders on the storefront.
                     </p>
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((u) => (
-                  <tr key={u._id} className="hover:bg-muted/30 transition-colors">
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center shrink-0 border border-primary/20 text-xs">
-                          {u.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-bold text-foreground text-xs">{u.name}</p>
-                          <p className="text-[10px] text-muted-foreground font-mono">{u._id.slice(0, 8)}...</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-1.5 text-foreground font-medium">
-                          <Mail size={12} className="text-muted-foreground" />
-                          <span>{u.email}</span>
-                        </div>
-                        {u.phone && (
-                          <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
-                            <Phone size={11} className="text-muted-foreground" />
-                            <span>{u.phone}</span>
+                filteredUsers.map((u) => {
+                  const custOrders = getCustomerOrders(u);
+                  const custSpent = getCustomerTotalSpent(u);
+
+                  return (
+                    <tr
+                      key={u._id}
+                      onClick={() => navigate(`/admin/users/${u._id}`)}
+                      className="hover:bg-muted/40 transition-colors cursor-pointer group"
+                    >
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center shrink-0 border border-primary/20 text-xs group-hover:scale-105 transition-transform">
+                            {u.name.charAt(0).toUpperCase()}
                           </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4 text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar size={12} className="text-muted-foreground" />
-                        <span>
-                          {u.createdAt
-                            ? new Date(u.createdAt).toLocaleDateString("en-IN", {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                              })
-                            : "Recent"}
+                          <div>
+                            <Link
+                              to={`/admin/users/${u._id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="font-bold text-foreground text-xs group-hover:text-primary transition-colors hover:underline block truncate"
+                              title="View Customer Profile"
+                            >
+                              {u.name}
+                            </Link>
+                            <p className="text-[10px] text-muted-foreground font-mono">{u._id.slice(0, 8)}...</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1.5 text-foreground font-medium">
+                            <Mail size={12} className="text-muted-foreground" />
+                            <span>{u.email}</span>
+                          </div>
+                          {u.phone && (
+                            <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
+                              <Phone size={11} className="text-muted-foreground" />
+                              <span>{u.phone}</span>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-secondary text-foreground border border-border">
+                          <ShoppingBag size={10} className="text-primary" />
+                          {custOrders.length} {custOrders.length === 1 ? "order" : "orders"}
                         </span>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary">
-                        {u.role}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                          u.status === "active"
-                            ? "bg-primary-soft/50 text-primary"
-                            : "bg-destructive/10 text-destructive"
-                        }`}
-                      >
-                        {u.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => handleToggle(u._id)}
-                          className={`p-1.5 rounded-lg hover:bg-muted/60 cursor-pointer ${
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="font-bold text-foreground text-xs">
+                          {formatINR(custSpent)}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-muted-foreground">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar size={12} className="text-muted-foreground" />
+                          <span>
+                            {u.createdAt
+                              ? new Date(u.createdAt).toLocaleDateString("en-IN", {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                })
+                              : "Recent"}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                             u.status === "active"
-                              ? "text-muted-foreground hover:text-marigold"
-                              : "text-marigold hover:text-primary"
+                              ? "bg-primary-soft/50 text-primary"
+                              : "bg-destructive/10 text-destructive"
                           }`}
-                          title={u.status === "active" ? "Suspend user" : "Activate user"}
                         >
-                          {u.status === "active" ? <UserMinus size={14} /> : <UserCheck size={14} />}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(u._id)}
-                          className="p-1.5 text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10 cursor-pointer"
-                          title="Delete user"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                          {u.status}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/admin/users/${u._id}`);
+                            }}
+                            className="p-1.5 rounded-lg text-primary hover:bg-primary/10 cursor-pointer inline-flex items-center justify-center transition-colors"
+                            title="View Customer Profile & Orders"
+                          >
+                            <Eye size={14} />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggle(u._id);
+                            }}
+                            className={`p-1.5 rounded-lg hover:bg-muted/60 cursor-pointer ${
+                              u.status === "active"
+                                ? "text-muted-foreground hover:text-marigold"
+                                : "text-marigold hover:text-primary"
+                            }`}
+                            title={u.status === "active" ? "Suspend user" : "Activate user"}
+                          >
+                            {u.status === "active" ? <UserMinus size={14} /> : <UserCheck size={14} />}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(u._id);
+                            }}
+                            className="p-1.5 text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10 cursor-pointer"
+                            title="Delete user"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -284,7 +412,7 @@ const UserManagement: React.FC = () => {
       </div>
 
       {/* Add Customer Modal */}
-      {isModalOpen && (
+      {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 backdrop-blur-xs p-4">
           <div className="bg-card border border-border rounded-3xl max-w-md w-full p-6 shadow-soft relative text-left">
             <div className="flex items-center justify-between pb-4 border-b border-border/60">
@@ -298,7 +426,7 @@ const UserManagement: React.FC = () => {
                 </div>
               </div>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsAddModalOpen(false)}
                 className="p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted/60 cursor-pointer"
               >
                 <X size={16} />
@@ -368,7 +496,7 @@ const UserManagement: React.FC = () => {
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border/60">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => setIsAddModalOpen(false)}
                   className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/60 cursor-pointer"
                 >
                   Cancel

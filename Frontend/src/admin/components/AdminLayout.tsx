@@ -22,8 +22,8 @@ const AdminLayout: React.FC = () => {
     navigate("/auth");
   };
 
-  // If still loading initial auth state and no user is loaded yet
-  if (loading && !user) {
+  // If still loading or verifying authorization, show clean loader instead of premature rejection
+  if (loading && !isAdmin) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
         <Loader2 className="h-8 w-8 text-primary animate-spin mb-3" />
@@ -34,8 +34,8 @@ const AdminLayout: React.FC = () => {
     );
   }
 
-  // If NOT logged in or logged in as a non-admin customer account
-  if (!user || !isAdmin) {
+  // Only if auth has finished loading and user is genuinely not an admin
+  if (!loading && (!user || !isAdmin)) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-card border border-border rounded-3xl p-8 shadow-soft text-center">

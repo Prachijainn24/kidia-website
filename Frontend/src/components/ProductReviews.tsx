@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Instagram, MessageCircle, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Instagram, MessageCircle, Star, CheckCircle2 } from "lucide-react";
 import { Product } from "@/data/catalog";
 import { REVIEWS, Review, averageRating, reviewDate, reviewsFor } from "@/data/reviews";
 import { CONTACT, instagramUrl, whatsappUrl } from "@/data/contact";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getReviewsForProduct, syncReviewsFromSupabase, ProductReviewItem } from "@/services/reviewService";
 
 const SHOWN = 3;
 
@@ -49,7 +50,29 @@ const ReviewRow = ({ r }: { r: Review }) => {
 };
 
 export const ProductReviews = ({ p }: { p: Product }) => {
-  const list = reviewsFor(p.id);
+  const [customerReviews, setCustomerReviews] = useState<ProductReviewItem[]>(() =>
+    getReviewsForProduct(p.id)
+  );
+
+  useEffect(() => {
+    syncReviewsFromSupabase().then(() => {
+      setCustomerReviews(getReviewsForProduct(p.id));
+    });
+
+    const onUpdate = () => setCustomerReviews(getReviewsForProduct(p.id));
+    window.addEventListener("kidia_reviews_updated", onUpdate);
+    return () => window.removeEventListener("kidia_reviews_updated", onUpdate);
+  }, [p.id]);
+
+  const customerList: Review[] = customerReviews.map((cr) => ({
+    quote: cr.comment,
+    parent: cr.customerName,
+    child: "Verified Buyer",
+    rating: cr.rating,
+    date: cr.createdAt,
+    productId: p.id,
+  }));
+  const list = [...customerList, ...reviewsFor(p.id)];
   const avg = averageRating(list);
   const [all, setAll] = useState(false);
   const shown = all ? list : list.slice(0, SHOWN);

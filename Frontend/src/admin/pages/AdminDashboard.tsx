@@ -60,16 +60,20 @@ const AdminDashboard: React.FC = () => {
 
   const ordersPieData = useMemo(() => {
     const counts: Record<string, number> = {
+      placed: 0,
+      accepted: 0,
+      packed: 0,
+      shipping: 0,
       delivered: 0,
-      processing: 0,
-      shipped: 0,
-      pending: 0,
       cancelled: 0,
     };
     (data.orders || []).forEach((o: any) => {
-      const st = (o.orderStatus || "pending").toLowerCase();
+      const st = (o.orderStatus || "placed").toLowerCase();
       if (counts[st] !== undefined) counts[st]++;
-      else counts.pending++;
+      else if (st === "pending") counts.placed++;
+      else if (st === "processing") counts.packed++;
+      else if (st === "shipped") counts.shipping++;
+      else counts.placed = (counts.placed || 0) + 1;
     });
     return Object.entries(counts).map(([name, value]) => ({
       name: name.charAt(0).toUpperCase() + name.slice(1),

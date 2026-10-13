@@ -154,7 +154,7 @@ export default function Auth() {
 
         try {
           await supabase.from("profiles").upsert(newProfile);
-        } catch {}
+        } catch { }
 
         const activeUser: any = {
           id: userId,
@@ -276,15 +276,15 @@ export default function Auth() {
             {forgot
               ? "Forgot your password?"
               : signup
-              ? "Join the KIDIA family."
-              : "Lovely to see you again."}
+                ? "Join the KIDIA family."
+                : "Lovely to see you again."}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             {forgot
               ? "We'll send a link to help you start fresh."
               : signup
-              ? "Create your customer account for lovely wardrobe moments."
-              : "Sign in to access your orders, wishlist, or store management."}
+                ? "Create your customer account for lovely wardrobe moments."
+                : "Sign in to access your orders, wishlist, or store management."}
           </p>
 
           {!forgot && (
