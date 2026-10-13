@@ -106,25 +106,25 @@ const CategoryManagement: React.FC = () => {
     <div className="space-y-6 text-left max-w-4xl mx-auto">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-50 bg-dark-navy text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 animate-slideDown">
-          <Check size={14} className="text-emerald-400" />
+        <div className="fixed top-20 right-6 z-50 bg-foreground text-background text-xs font-bold px-4 py-2.5 rounded-xl shadow-soft flex items-center gap-2 animate-slideDown">
+          <Check size={14} className="text-butter" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-dark-navy tracking-tight font-sans">
+        <h1 className="text-2xl sm:text-3xl font-serif font-black text-foreground tracking-tight">
           Boutique Categories
         </h1>
-        <p className="text-xs sm:text-sm text-muted-gray mt-1 font-medium">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-1 font-medium">
           Create and organize kidswear collections featured on the customer navigation menu.
         </p>
       </div>
 
       {/* Create New Category Card */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
-        <h3 className="text-xs font-black text-muted-gray uppercase tracking-wider mb-3">
+      <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-soft">
+        <h3 className="text-xs font-black text-muted-foreground uppercase tracking-wider mb-3">
           Add New Boutique Category
         </h3>
         <form onSubmit={handleCreate} className="flex gap-2">
@@ -134,12 +134,12 @@ const CategoryManagement: React.FC = () => {
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
             placeholder="e.g. Daily Essentials, Festive Kurtas..."
-            className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-dark-navy focus:outline-none focus:border-[#0F9D8A]"
+            className="flex-1 px-3.5 py-2.5 rounded-xl border border-border bg-muted/20 text-xs text-foreground focus:outline-none focus:border-primary focus:bg-card transition-all"
           />
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#0F9D8A] hover:bg-[#0C7D6E] text-white text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all shadow-soft cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 size={14} className="animate-spin" /> : <Plus size={15} />}
             <span>Add Category</span>
@@ -148,31 +148,31 @@ const CategoryManagement: React.FC = () => {
       </div>
 
       {/* Search and List Card */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+      <div className="bg-card border border-border/80 rounded-2xl shadow-soft overflow-hidden">
+        <div className="p-4 border-b border-border/60 flex items-center justify-between bg-muted/20">
           <div className="relative w-64">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search categories..."
-              className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:bg-white focus:outline-none"
+              className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-card border border-border text-xs text-foreground focus:outline-none focus:border-primary"
             />
           </div>
-          <span className="text-xs font-bold text-muted-gray">
+          <span className="text-xs font-bold text-muted-foreground">
             {filtered.length} categories active
           </span>
         </div>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-border/40">
           {loading ? (
-            <div className="py-12 text-center text-muted-gray text-xs">
-              <Loader2 className="w-5 h-5 animate-spin mx-auto text-[#0F9D8A] mb-1" />
+            <div className="py-12 text-center text-muted-foreground text-xs">
+              <Loader2 className="w-5 h-5 animate-spin mx-auto text-primary mb-1" />
               <span>Loading categories...</span>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="py-12 text-center text-muted-gray text-xs">
+            <div className="py-12 text-center text-muted-foreground text-xs">
               No categories found
             </div>
           ) : (
@@ -181,7 +181,7 @@ const CategoryManagement: React.FC = () => {
               return (
                 <div
                   key={cat._id}
-                  className="p-4 flex items-center justify-between hover:bg-slate-50/60 transition-colors"
+                  className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors"
                 >
                   {isEditing ? (
                     <div className="flex items-center gap-2 flex-1 mr-4">
@@ -189,30 +189,30 @@ const CategoryManagement: React.FC = () => {
                         type="text"
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
-                        className="flex-1 px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-dark-navy"
+                        className="flex-1 px-3 py-1.5 rounded-lg border border-primary text-xs font-bold text-foreground bg-card"
                         autoFocus
                       />
                       <button
                         onClick={() => handleUpdate(cat._id)}
-                        className="p-1.5 bg-[#0F9D8A] text-white rounded-lg hover:bg-[#0C7D6E]"
+                        className="p-1.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
                       >
                         <Check size={14} />
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
-                        className="p-1.5 bg-slate-100 text-muted-gray rounded-lg hover:bg-slate-200"
+                        className="p-1.5 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80"
                       >
                         <X size={14} />
                       </button>
                     </div>
                   ) : (
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-teal-50 text-[#0F9D8A] flex items-center justify-center font-bold text-xs">
+                      <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs border border-primary/20">
                         <Tag size={15} />
                       </div>
                       <div>
-                        <p className="font-bold text-dark-navy text-xs">{cat.name}</p>
-                        <p className="text-[10px] text-muted-gray">
+                        <p className="font-bold text-foreground text-xs">{cat.name}</p>
+                        <p className="text-[10px] text-muted-foreground">
                           Slug: /{cat.slug || cat.name.toLowerCase().replace(/\s+/g, "-")}
                         </p>
                       </div>
@@ -224,8 +224,8 @@ const CategoryManagement: React.FC = () => {
                       onClick={() => handleToggle(cat._id)}
                       className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1 ${
                         cat.isActive !== false
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-slate-100 text-slate-500"
+                          ? "bg-primary-soft/50 text-primary"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       {cat.isActive !== false ? (
@@ -245,7 +245,7 @@ const CategoryManagement: React.FC = () => {
                           setEditingId(cat._id);
                           setEditName(cat.name);
                         }}
-                        className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100"
+                        className="p-1.5 text-muted-foreground hover:text-primary rounded-lg hover:bg-muted/60"
                         title="Edit name"
                       >
                         <Pencil size={13} />
@@ -254,7 +254,7 @@ const CategoryManagement: React.FC = () => {
 
                     <button
                       onClick={() => handleDelete(cat._id)}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                      className="p-1.5 text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10"
                       title="Delete category"
                     >
                       <Trash2 size={13} />

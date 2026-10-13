@@ -2,14 +2,14 @@ import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const COLORS: Record<string, string> = {
-  delivered: "#10B981",
-  processing: "#3B82F6",
-  shipped: "#06B6D4",
-  pending: "#F59E0B",
-  cancelled: "#EF4444",
+  delivered: "#304A3C", // Kidia Primary Forest
+  processing: "#EE9B00", // Kidia Marigold
+  shipped: "#52796F", // Kidia Soft Sage
+  pending: "#DDA15E", // Kidia Butter/Honey
+  cancelled: "#D64C33", // Kidia Terracotta
 };
 
-const DEFAULT_COLOR = "#94A3B8";
+const DEFAULT_COLOR = "#8F7E75";
 
 interface OrdersPieChartProps {
   data: { name: string; value: number }[];
@@ -19,22 +19,22 @@ const OrdersPieChart: React.FC<OrdersPieChartProps> = ({ data }) => {
   const activeData = data.filter((item) => item.value > 0);
 
   return (
-    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full h-full flex flex-col justify-between">
+    <div className="bg-card border border-border/80 rounded-2xl p-5 sm:p-6 shadow-soft hover:shadow-lift transition-all duration-300 text-left w-full h-full flex flex-col justify-between">
       <div>
-        <h3 className="text-sm font-extrabold text-dark-navy tracking-tight">
+        <h3 className="text-base font-serif font-black text-foreground tracking-tight">
           Orders Fulfillment Overview
         </h3>
-        <p className="text-xs text-muted-gray mt-0.5 font-medium">
+        <p className="text-xs text-muted-foreground mt-0.5 font-medium">
           Status distribution of placed boutique orders.
         </p>
       </div>
 
       <div className="w-full h-72 min-h-[280px] flex items-center justify-center mt-4">
         {activeData.length === 0 ? (
-          <div className="w-full h-full flex flex-col items-center justify-center border border-dashed border-light-border/80 rounded-2xl p-6 bg-slate-50/50">
+          <div className="w-full h-full flex flex-col items-center justify-center border border-dashed border-border rounded-2xl p-6 bg-muted/20">
             <span className="text-2xl mb-1">📦</span>
-            <p className="text-xs font-bold text-muted-gray text-center">No orders placed yet</p>
-            <p className="text-[10px] text-muted-gray/80 mt-1 text-center font-medium">
+            <p className="text-xs font-bold text-muted-foreground text-center">No orders placed yet</p>
+            <p className="text-[10px] text-muted-foreground/80 mt-1 text-center font-medium">
               Fulfillment tracking starts with customer checkout.
             </p>
           </div>
@@ -60,25 +60,24 @@ const OrdersPieChart: React.FC<OrdersPieChartProps> = ({ data }) => {
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.98)",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "12px",
-                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.08)",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #E8DEC8",
+                  borderRadius: "16px",
+                  boxShadow: "0 8px 30px -12px rgba(48, 74, 60, 0.18)",
+                  fontFamily: "inherit",
                 }}
+                formatter={(val: any, name: any) => [`${val} orders`, name]}
               />
             </PieChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-3 pt-3 border-t border-slate-100">
-        {["Pending", "Processing", "Shipped", "Delivered", "Cancelled"].map((status) => (
-          <div key={status} className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-gray">
-            <span
-              className="w-2.5 h-2.5 rounded-full"
-              style={{ backgroundColor: COLORS[status.toLowerCase()] || DEFAULT_COLOR }}
-            />
-            <span>{status}</span>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-3 border-t border-border/40 mt-2">
+        {Object.entries(COLORS).map(([key, col]) => (
+          <div key={key} className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: col }} />
+            <span className="capitalize">{key}</span>
           </div>
         ))}
       </div>

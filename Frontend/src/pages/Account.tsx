@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function Account() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -40,9 +40,14 @@ export default function Account() {
     setBusy(false);
   };
   const logout = async () => {
-    setBusy(true); const { error } = await supabase.auth.signOut();
-    if (error) { setError("Could not sign out. Please try again."); setBusy(false); }
-    else navigate("/");
+    setBusy(true);
+    try {
+      await signOut();
+      navigate("/");
+    } catch {
+      setError("Could not sign out. Please try again.");
+      setBusy(false);
+    }
   };
   return <Layout title="My profile"><section className="container-kidia py-12 md:py-20">
     <div className="mx-auto max-w-2xl">

@@ -19,6 +19,7 @@ interface AuthContextType {
   loading: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  setBypassSession: (user: User, profile?: UserProfile | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   signOut: async () => {},
   refreshProfile: async () => {},
+  setBypassSession: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -45,10 +47,71 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!error && data) {
         setProfile(data as UserProfile);
+        try {
+          localStorage.setItem("kidia_bypass_profile", JSON.stringify(data));
+        } catch {}
         return;
       }
 
+      // If not found by ID, try looking up by email
+      if (email) {
+        const cleanEmail = email.trim().toLowerCase();
+        const { data: emailData } = await supabase
+          .from("profiles")
+          .select("*")
+          .ilike("email", cleanEmail)
+          .maybeSingle();
+
+        if (emailData) {
+          setProfile(emailData as UserProfile);
+          try {
+            localStorage.setItem("kidia_bypass_profile", JSON.stringify(emailData));
+          } catch {}
+          return;
+        }
+      }
+
       // If user is admin by email, fallback profile
+      if (email?.toLowerCase() === "admin@kidia.com") {
+        const adminProf: UserProfile = {
+          id: userId,
+          email: "admin@kidia.com",
+          display_name: "Kidia Admin",
+          role: "admin",
+          status: "active",
+        };
+        setProfile(adminProf);
+        try {
+          localStorage.setItem("kidia_bypass_profile", JSON.stringify(adminProf));
+        } catch {}
+      } else {
+        const cached = localStorage.getItem("kidia_bypass_profile");
+        if (cached) {
+          try {
+            setProfile(JSON.parse(cached));
+            return;
+          } catch {}
+        }
+        if (email) {
+          setProfile({
+            id: userId,
+            email,
+            display_name: email.split("@")[0],
+            role: "customer",
+            status: "active",
+          });
+        } else {
+          setProfile(null);
+        }
+      }
+    } catch {
+      const cached = localStorage.getItem("kidia_bypass_profile");
+      if (cached) {
+        try {
+          setProfile(JSON.parse(cached));
+          return;
+        } catch {}
+      }
       if (email?.toLowerCase() === "admin@kidia.com") {
         setProfile({
           id: userId,
@@ -57,16 +120,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           role: "admin",
           status: "active",
         });
-      } else {
-        setProfile(null);
-      }
-    } catch {
-      if (email?.toLowerCase() === "admin@kidia.com") {
+      } else if (email) {
         setProfile({
           id: userId,
-          email: "admin@kidia.com",
-          display_name: "Kidia Admin",
-          role: "admin",
+          email,
+          display_name: email.split("@")[0],
+          role: "customer",
           status: "active",
         });
       } else {
@@ -81,12 +140,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const setBypassSession = (bypassUser: User, customProfile?: UserProfile | null) => {
+    try {
+      localStorage.setItem("kidia_bypass_session", JSON.stringify(bypassUser));
+      if (customProfile) {
+        localStorage.setItem("kidia_bypass_profile", JSON.stringify(customProfile));
+      }
+    } catch {}
+    setUser(bypassUser);
+    if (customProfile) {
+      setProfile(customProfile);
+    } else {
+      void fetchProfile(bypassUser.id, bypassUser.email);
+    }
+    setLoading(false);
+  };
+
   const signOut = async () => {
     try {
+      localStorage.removeItem("kidia_bypass_session");
+      localStorage.removeItem("kidia_bypass_profile");
       await supabase.auth.signOut();
     } finally {
       setUser(null);
       setProfile(null);
+      setLoading(false);
     }
   };
 
@@ -94,21 +172,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let active = true;
     let revision = 0;
 
+    const safetyTimer = setTimeout(() => {
+      if (active) setLoading(false);
+    }, 1200);
+
     const validate = async (isInitial = false) => {
       const current = ++revision;
       try {
         const { data, error } = await supabase.auth.getUser();
         if (active && current === revision) {
           const currentUser = error ? null : data.user;
-          setUser(currentUser);
           if (currentUser) {
+            setUser(currentUser);
             await fetchProfile(currentUser.id, currentUser.email);
           } else {
-            setProfile(null);
+            // Check if there is an active local bypass session
+            const savedBypass = localStorage.getItem("kidia_bypass_session");
+            const savedBypassProfile = localStorage.getItem("kidia_bypass_profile");
+            if (savedBypass) {
+              try {
+                const parsed = JSON.parse(savedBypass);
+                setUser(parsed);
+                if (savedBypassProfile) {
+                  try {
+                    setProfile(JSON.parse(savedBypassProfile));
+                  } catch {}
+                }
+                await fetchProfile(parsed.id, parsed.email);
+              } catch {
+                setUser(null);
+                setProfile(null);
+              }
+            } else {
+              setUser(null);
+              setProfile(null);
+            }
           }
         }
+      } catch (err) {
+        console.error("Auth validation error", err);
       } finally {
-        if (active && current === revision && isInitial) {
+        if (active && (isInitial || current === revision)) {
           setLoading(false);
         }
       }
@@ -118,10 +222,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
-        ++revision;
-        setUser(null);
-        setProfile(null);
-        setLoading(false);
+        // Only clear state if no local bypass session exists
+        if (!localStorage.getItem("kidia_bypass_session")) {
+          ++revision;
+          setUser(null);
+          setProfile(null);
+          setLoading(false);
+        }
       } else {
         // Do NOT reset loading to true on tab change / token refresh
         window.setTimeout(() => {
@@ -134,6 +241,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       active = false;
+      clearTimeout(safetyTimer);
       subscription.unsubscribe();
     };
   }, []);
@@ -151,6 +259,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         signOut,
         refreshProfile,
+        setBypassSession,
       }}
     >
       {children}

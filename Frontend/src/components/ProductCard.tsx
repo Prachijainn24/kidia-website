@@ -155,9 +155,9 @@ export const ProductCard = ({ p }: { p: Product }) => {
       {available ? (
         <Button
           onClick={() => setQuick(true)}
-          className="mt-2.5 h-10 w-full rounded-full text-xs font-bold transition bg-[#0F9D8A] hover:bg-[#0C7D6E] text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+          className="mt-2.5 h-10 w-full rounded-full text-xs font-bold transition bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          <ShoppingBag className="h-3.5 w-3.5 text-white" />
+          <ShoppingBag className="h-3.5 w-3.5 text-primary-foreground" />
           <span>Add To Cart</span>
         </Button>
       ) : (

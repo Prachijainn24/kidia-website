@@ -37,28 +37,28 @@ const ProductStats: React.FC<ProductStatsProps> = ({
       title: "Total Designs",
       value: totalProducts,
       icon: <Package size={16} />,
-      colorClass: "bg-blue-50 text-blue-700 border-blue-200/60",
+      colorClass: "bg-butter/50 text-foreground border-butter",
     },
     {
       id: "In Stock",
       title: "Active In-Stock",
       value: activeProducts,
       icon: <CheckCircle size={16} />,
-      colorClass: "bg-emerald-50 text-emerald-700 border-emerald-200/60",
+      colorClass: "bg-primary-soft/50 text-primary border-primary/20",
     },
     {
       id: "Low Stock",
       title: "Low Inventory (≤3)",
       value: lowStockProducts,
       icon: <AlertTriangle size={16} />,
-      colorClass: "bg-amber-50 text-amber-700 border-amber-200/60",
+      colorClass: "bg-marigold/15 text-marigold border-marigold/30",
     },
     {
       id: "Sold",
       title: "Sold Out",
       value: outOfStockProducts,
       icon: <XCircle size={16} />,
-      colorClass: "bg-rose-50 text-rose-700 border-rose-200/60",
+      colorClass: "bg-accent/15 text-accent border-accent/30",
     },
   ];
 
@@ -70,17 +70,17 @@ const ProductStats: React.FC<ProductStatsProps> = ({
           <div
             key={card.title}
             onClick={() => onCardClick && onCardClick(card.id)}
-            className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between bg-white text-left ${
+            className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between bg-card text-left ${
               isSelected
-                ? "border-[#0F9D8A] shadow-md ring-2 ring-[#0F9D8A]/20"
-                : "border-slate-200 hover:border-slate-300 shadow-sm"
+                ? "border-primary shadow-soft ring-2 ring-primary/20 bg-primary/5"
+                : "border-border/80 hover:border-primary/40 shadow-soft"
             }`}
           >
             <div>
-              <p className="text-[11px] font-bold text-muted-gray uppercase tracking-wider">
+              <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                 {card.title}
               </p>
-              <p className="text-xl sm:text-2xl font-black text-dark-navy mt-1">
+              <p className="text-xl sm:text-2xl font-display font-black text-foreground mt-1">
                 {card.value}
               </p>
             </div>
